@@ -1,0 +1,52 @@
+{
+  "author": "dev@payloadcms.com",
+  "description": "A PayloadCMS Plugin that generates PDF reports on various collections based on templates you design.",
+  "devDependencies": {
+    "@payloadcms/eslint-config": "^0.0.1",
+    "@swc/jest": "^0.2.28",
+    "@types/jest": "^29.5.11",
+    "@typescript-eslint/eslint-plugin": "5.12.1",
+    "@typescript-eslint/parser": "5.12.1",
+    "dotenv": "^8.2.0",
+    "eslint": "^8.19.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "2.25.4",
+    "eslint-plugin-prettier": "^4.0.0",
+    "jest": "^29.7.0",
+    "payload": "^2.0.14",
+    "prettier": "^2.7.1",
+    "react": "^18.0.0",
+    "typescript": "^4.8.4",
+    "webpack": "^5.90.3"
+  },
+  "homepage:": "https://payloadcms.com",
+  "keywords": [
+    "payload",
+    "cms",
+    "plugin",
+    "typescript",
+    "react",
+    "template"
+  ],
+  "license": "MIT",
+  "main": "dist/index.js",
+  "name": "pdf-generator",
+  "peerDependencies": {
+    "payload": "^2.0.0"
+  },
+  "repository": "git@github.com:payloadcms/payload-plugin-template.git",
+  "scripts": {
+    "build": "tsc",
+    "clean": "rimraf dist && rimraf dev/yarn.lock",
+    "lint": "eslint src",
+    "lint:fix": "eslint --fix --ext .ts,.tsx src",
+    "prepublishOnly": "yarn clean && yarn build && cd dev && yarn test",
+    "test": "cd dev && yarn test"
+  },
+  "types": "dist/index.d.ts",
+  "version": "0.0.0=1",
+  "dependencies": {
+    "primereact": "^10.6.6"
+  }
+}
