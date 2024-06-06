@@ -3,6 +3,11 @@ import { validateHexColor } from '../components/colorPicker/config';
 import colorPickerField from '../components/colorPicker/colorPickerField';
 import colorPickerCell from '../components/colorPicker/colorPickerCell';
 import { FieldSelectComponent } from '../components/fieldSelector/component';
+import { pdfTable } from '../blocks/table';
+import { pdfSection } from '../blocks/section';
+import { pdfText } from '../blocks/text';
+import { pdfPath } from '../blocks/path';
+import { pdfImage } from '../blocks/image';
 
 const PDFTemplates: CollectionConfig = {
   slug: 'pdf-templates',
@@ -107,7 +112,7 @@ const PDFTemplates: CollectionConfig = {
                     }
                   ],
                   admin: {
-                    condition: (siblingData) => {
+                    condition: (_, siblingData) => {
                       if(siblingData.pageSize === 'custom'){
                         return true
                       } else {
@@ -370,7 +375,7 @@ const PDFTemplates: CollectionConfig = {
                 }
               ],
               admin: {
-                condition: (siblingData)=>{
+                condition: (_, siblingData)=>{
                   return siblingData.useEncryption === true ? true : false
                 }
               }
@@ -425,30 +430,13 @@ const PDFTemplates: CollectionConfig = {
           fields: [
             {
               name: 'Fields',
-              type: 'array',
-              fields: [
-                {
-                  name: 'elementType',
-                  type: 'select',
-                  options: [
-                    {label: 'Form', value: 'Form'},
-                    {label: 'HTML', value: 'html'},
-                    {label: 'Image', value: 'image'},
-                    {label: 'Path', value: 'path'},
-                    {label: 'Section', value:'Section'},
-                    {label: 'Table', value: 'table'},
-                    {label: 'Text', value: 'text'},
-                  ]
-                },
-                //{
-                //  name: 'fieldName',
-                //  type: 'text',
-                //  admin: {
-                //    components: {
-                //      Field: FieldSelectComponent
-                //    }
-                //  }
-                //},
+              type: 'blocks',
+              blocks: [
+                pdfImage,
+                pdfPath,
+                pdfSection,
+                pdfTable,
+                pdfText,
               ]
             }
           ]
