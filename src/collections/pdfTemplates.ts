@@ -2,7 +2,6 @@ import { CollectionConfig } from 'payload/types';
 import { validateHexColor } from '../components/colorPicker/config';
 import colorPickerField from '../components/colorPicker/colorPickerField';
 import colorPickerCell from '../components/colorPicker/colorPickerCell';
-import { FieldSelectComponent } from '../components/fieldSelector/component';
 import { pdfTable } from '../blocks/table';
 import { pdfSection } from '../blocks/section';
 import { pdfText } from '../blocks/text';

@@ -1,6 +1,6 @@
 import { Block } from "payload/types";
-import { FieldSelectComponent } from "../components/fieldSelector/component";
 import { pdfElementPlacement } from "../fields/pdfElementPlacement";
+import { ArrayFieldSelectComponent } from "../components/fieldSelectComponents/arraySelector/component";
 
 export const pdfTable: Block = {
   slug: 'pdfTable',
@@ -12,7 +12,7 @@ export const pdfTable: Block = {
       type: 'text',
       admin: {
         components: {
-          Field: FieldSelectComponent
+          Field: ArrayFieldSelectComponent
         }
       }
     },

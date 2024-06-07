@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { SelectInput, useAllFormFields, useField } from 'payload/components/forms';
 
-export const FieldSelectComponent: React.FC<{ path: string }> = ({ path }) => {
+export const TextFieldSelectComponent: React.FC<{ path: string }> = ({ path }) => {
   const { value, setValue } = useField<string>({ path });
   const [options, setOptions] = React.useState([{label: '',value: 'none'}]);
 
@@ -15,10 +15,10 @@ export const FieldSelectComponent: React.FC<{ path: string }> = ({ path }) => {
         const data = await response.json()
         let fieldList: {label:string, value:string}[]
         if (data.docs[0] !== undefined){
-          fieldList = Object.entries(data.docs[0]).map((field: any) => {
+          fieldList = Object.keys(data.docs[0]).map((field: any) => {
             return {
-              label: `${field[0]}`,
-              value: `${field[0]}`
+              label: `${field}`,
+              value: `${field}`
             }
           })
         } else {

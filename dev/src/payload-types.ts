@@ -58,6 +58,27 @@ export interface User {
 export interface Test {
   id: string;
   someField?: string | null;
+  array?:
+    | {
+        text?: string | null;
+        textArea?: string | null;
+        richText?:
+          | {
+              [k: string]: unknown;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  group?: {
+    date?: string | null;
+    email?: string | null;
+    /**
+     * @minItems 2
+     * @maxItems 2
+     */
+    points?: [number, number] | null;
+  };
   updatedAt: string;
   createdAt: string;
 }
@@ -312,14 +333,164 @@ export interface PdfTemplate {
     layout?: ('continuous' | 'single' | 'twoleft' | 'tworight') | null;
     outlineDisplay?: ('none' | 'UseOutlines' | 'UseThumbs') | null;
   };
-  Fields?:
+  Fields?: (PDFImage | PDFPath | PDFSection | PDFTable | PDFText)[] | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PDFImage".
+ */
+export interface PDFImage {
+  pdfElementPlacement?: {
+    databaseType?: ('mongoDB' | 'other') | null;
+    xPosition?: number | null;
+    yPosition?: number | null;
+    /**
+     * @minItems 2
+     * @maxItems 2
+     */
+    elementPosition?: [number, number] | null;
+  };
+  /**
+   * @minItems 2
+   * @maxItems 2
+   */
+  imageWidth?: [number, number] | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'pdfImage';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PDFPath".
+ */
+export interface PDFPath {
+  pdfStrokeColor?: string | null;
+  pdfFillColor?: string | null;
+  pdfClosedPath?: boolean | null;
+  pathSourceField?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'pdfPath';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PDFSection".
+ */
+export interface PDFSection {
+  groupField?: string | null;
+  sectionOrientation: 'horizontal' | 'vertical';
+  sectionWidth?: number | null;
+  sectionHeight?: number | null;
+  topDivider?: boolean | null;
+  bottomDivider?: boolean | null;
+  leftDivider?: boolean | null;
+  rightDivider?: boolean | null;
+  groupFields?:
     | {
-        elementType?: ('Form' | 'html' | 'image' | 'path' | 'table' | 'text') | null;
+        textConfiguration?: {
+          fieldSelect?: string | null;
+          fieldLabel?: string | null;
+          multilineText?: boolean | null;
+          multilineWidth?: ('100pw' | '50pw' | '33pw' | '25pw' | '100sw' | '50sw' | '33sw' | '25sw' | 'fill') | null;
+          pdfElementPlacement?: {
+            databaseType?: ('mongoDB' | 'other') | null;
+            xPosition?: number | null;
+            yPosition?: number | null;
+            /**
+             * @minItems 2
+             * @maxItems 2
+             */
+            elementPosition?: [number, number] | null;
+          };
+          justification?: ('left' | 'center' | 'right' | 'justify') | null;
+          baseline?: ('alphabetic' | 'ideographic' | 'bottom' | 'top' | 'middle' | 'hanging') | null;
+          pdfElementRotation?: {
+            rotateElement?: boolean | null;
+            angle?: number | null;
+            rotationDirection?: ('0' | '1') | null;
+          };
+          characterSpacing?: number | null;
+          lineHeightFactor?: number | null;
+          textColorOverride?: boolean | null;
+          textColor?: string | null;
+          fontOverride?: boolean | null;
+          fontSelection?: string | null;
+        };
         id?: string | null;
       }[]
     | null;
-  updatedAt: string;
-  createdAt: string;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'pdfSection';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PDFTable".
+ */
+export interface PDFTable {
+  arrayField?: string | null;
+  pdfElementPlacement?: {
+    databaseType?: ('mongoDB' | 'other') | null;
+    xPosition?: number | null;
+    yPosition?: number | null;
+    /**
+     * @minItems 2
+     * @maxItems 2
+     */
+    elementPosition?: [number, number] | null;
+  };
+  printHeaders?: boolean | null;
+  autoSizeColumns?: boolean | null;
+  headers?:
+    | {
+        headerLabel?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  fontSize?: number | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'pdfTable';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PDFText".
+ */
+export interface PDFText {
+  textConfiguration?: {
+    fieldSelect?: string | null;
+    fieldLabel?: string | null;
+    multilineText?: boolean | null;
+    multilineWidth?: ('100pw' | '50pw' | '33pw' | '25pw' | '100sw' | '50sw' | '33sw' | '25sw' | 'fill') | null;
+    pdfElementPlacement?: {
+      databaseType?: ('mongoDB' | 'other') | null;
+      xPosition?: number | null;
+      yPosition?: number | null;
+      /**
+       * @minItems 2
+       * @maxItems 2
+       */
+      elementPosition?: [number, number] | null;
+    };
+    justification?: ('left' | 'center' | 'right' | 'justify') | null;
+    baseline?: ('alphabetic' | 'ideographic' | 'bottom' | 'top' | 'middle' | 'hanging') | null;
+    pdfElementRotation?: {
+      rotateElement?: boolean | null;
+      angle?: number | null;
+      rotationDirection?: ('0' | '1') | null;
+    };
+    characterSpacing?: number | null;
+    lineHeightFactor?: number | null;
+    textColorOverride?: boolean | null;
+    textColor?: string | null;
+    fontOverride?: boolean | null;
+    fontSelection?: string | null;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'pdfText';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

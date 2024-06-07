@@ -6,6 +6,7 @@ export const pdfImage: Block = {
   imageAltText: 'Creates a PDF image element from field values',
   interfaceName: 'PDFImage',
   fields:[
+    //Need to figure out how to get the existing uploads collection to ensure the plugin doesn't break Payload
     //{
     //  name: 'imageSource',
     //  type: 'relationship',

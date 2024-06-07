@@ -1,11 +1,12 @@
 import * as React from 'react';
 import { SelectInput, useAllFormFields, useField } from 'payload/components/forms';
 
-export const FieldSelectComponent: React.FC<{ path: string }> = ({ path }) => {
+export const ArrayFieldSelectComponent: React.FC<{ path: string }> = ({ path }) => {
   const { value, setValue } = useField<string>({ path });
   const [options, setOptions] = React.useState([{label: '',value: 'none'}]);
 
   const assigned = useAllFormFields()[0].assignedCollections.value
+  const parent = useAllFormFields()[0]
 
   // Fetch options on component mount
   React.useEffect(() => {
@@ -15,7 +16,9 @@ export const FieldSelectComponent: React.FC<{ path: string }> = ({ path }) => {
         const data = await response.json()
         let fieldList: {label:string, value:string}[]
         if (data.docs[0] !== undefined){
-          fieldList = Object.entries(data.docs[0]).map((field: any) => {
+          fieldList = Object.entries(data.docs[0]).filter((field: any)=>{
+            return field[1].constructor === Array ? true : false
+          }).map((field: any) => {
             return {
               label: `${field[0]}`,
               value: `${field[0]}`

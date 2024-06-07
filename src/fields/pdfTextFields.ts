@@ -3,6 +3,7 @@ import { FieldSelectComponent } from "../components/fieldSelector/component";
 import { pdfElementPlacement } from "./pdfElementPlacement";
 import { pdfElementRotation } from "./pdfElementRotation";
 import ColorPickerField from "../components/colorPicker/colorPickerField";
+import { TextFieldSelectComponent } from "../components/fieldSelectComponents/textSelector/component";
 
 export const pdfTextFields: Field = {
   name: 'textConfiguration',
@@ -13,7 +14,7 @@ export const pdfTextFields: Field = {
       type: 'text',
       admin: {
         components: {
-          Field: FieldSelectComponent
+          Field: TextFieldSelectComponent
         }
       }
     },
