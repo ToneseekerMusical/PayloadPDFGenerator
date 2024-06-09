@@ -1,11 +1,20 @@
 import * as React from 'react';
+import type { Props as SelectFieldProps } from 'payload/components/fields/Select'
 import { SelectInput, useAllFormFields, useField } from 'payload/components/forms';
+import { PluginConfig } from '../../../types'
 
-export const GroupFieldSelectComponent: React.FC<{ path: string }> = ({ path }) => {
-  const { value, setValue } = useField<string>({ path });
+type GroupFieldSelectFieldProps = SelectFieldProps & {
+  path: string,
+  pluginConfig: PluginConfig
+}
+
+export const GroupFieldSelectComponent: React.FC<GroupFieldSelectFieldProps> = (props) => {
+
+  const { value, setValue } = useField<string>({ path: props.path });
   const [options, setOptions] = React.useState([{label: '',value: 'none'}]);
 
   const assigned = useAllFormFields()[0].assignedCollections.value
+  const parent = useAllFormFields()[0]
 
   // Fetch options on component mount
   React.useEffect(() => {
@@ -15,10 +24,12 @@ export const GroupFieldSelectComponent: React.FC<{ path: string }> = ({ path }) 
         const data = await response.json()
         let fieldList: {label:string, value:string}[]
         if (data.docs[0] !== undefined){
-          fieldList = Object.keys(data.docs[0]).map((field: any) => {
+          fieldList = Object.entries(data.docs[0]).filter((field: any)=>{
+            return field[1].constructor === Object ? true : false
+          }).map((field: any) => {
             return {
-              label: `${field}`,
-              value: `${field}`
+              label: `${field[0]}`,
+              value: `${field[0]}`
             }
           })
         } else {
@@ -40,37 +51,21 @@ export const GroupFieldSelectComponent: React.FC<{ path: string }> = ({ path }) 
     fetchOptions();
   }, []);
 
-  React.useEffect(() => {
-    if (value && !Array.isArray(value)) {
-      // convert saved stringified array back to an array
-      const newValue = JSON.parse(value);
-      setValue(newValue)
-    }
-  }, [value]);
-
   return (
     <div>
       <label className='field-label'>
         Field Name
       </label>
       <SelectInput
-        path={path}
-        name={path}
+        path={props.path}
+        name={props.path}
         hasMany={false}
         options={options}
         value={value}
-        onChange={
-          (selectedOption) => {
-            if (!Array.isArray(selectedOption)) return
-            const newValue = selectedOption.map((option) => option.value)
-            setValue(newValue)
-          }
-        }
+        onChange={(e) => setValue(e.value)}
       />
     </div>
   )
 };
 
-function useCallback(arg0: (selectedOption: any) => void, arg1: ((val: unknown, modifyForm?: boolean) => void)[]) {
-  throw new Error('Function not implemented.');
-}
+export const getGroupFieldSelectField = (props: GroupFieldSelectFieldProps) => <GroupFieldSelectComponent {...props}/>

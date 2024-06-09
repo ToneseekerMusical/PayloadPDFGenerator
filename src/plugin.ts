@@ -1,20 +1,26 @@
 import type { Plugin } from 'payload/config'
 
 import { onInitExtension } from './onInitExtension'
-import type { PluginTypes } from './types'
+import type { PluginConfig } from './types'
 import { extendWebpackConfig } from './webpack'
 import AfterDashboard from './components/AfterDashboard'
 import PDFTemplates from './collections/pdfTemplates'
 import PDFHeader from './globals/pdfHeader'
 import PDFFooter from './globals/pdfFooter'
 import PDFWatermark from './globals/pdfWatermark'
-import { RowField, TabsField, UIField } from 'payload/types'
+import { BlockField, RowField, Tab, TabsField, UIField } from 'payload/types'
 import generatePDFButton from './components/generateButton/inputField'
 import generatePDFCell from './components/generateButton/cell'
 import PDFFonts from './globals/pdfFonts'
+import fieldWalk from './utils/fieldWalk'
+import { pdfImage } from './blocks/image'
+import { pdfPath } from './blocks/path'
+import { pdfSection } from './blocks/section'
+import { pdfTable } from './blocks/table'
+import { pdfText } from './blocks/text'
 
 export const PDFGenerator =
-  (pluginOptions: PluginTypes): Plugin =>
+  (pluginOptions: PluginConfig): Plugin =>
     (incomingConfig) => {
 
       if(!incomingConfig || !incomingConfig.collections){
@@ -36,7 +42,7 @@ export const PDFGenerator =
           {
             name: 'assignedCollections',
             type: 'select',
-            options: pluginOptions.collections.map((collection)=>({
+            options: pluginOptions.collections.map((collection:string)=>({
               label: collection, value: collection
             })),
             admin: {
@@ -45,6 +51,34 @@ export const PDFGenerator =
           }
         ]
       }
+
+      const fieldMapping: Tab = {
+        label: 'Field Mapping',
+        fields: [
+          {
+            name: 'Fields',
+            type: 'blocks',
+            blocks: [
+              pdfImage,
+              pdfPath,
+              pdfSection,
+              pdfTable,
+              pdfText,
+            ]
+          }
+        ]
+      }
+
+      const collectionFields = incomingConfig.collections.filter((collection)=>{
+        return pluginOptions?.collections?.includes(collection.slug)
+      }).map((collection)=>{
+        return {
+          collection: collection.slug,
+          fields: fieldWalk(collection.fields)
+        }
+      })
+
+      console.log(collectionFields)
 
       const pdfGeneratorButton: UIField = {
         name: 'generatePDF',
@@ -86,6 +120,9 @@ export const PDFGenerator =
       }
 
       PDFTemplates.fields.unshift(collectionSelection)
+
+      //@ts-expect-error
+      PDFTemplates.fields[1].tabs.push(fieldMapping)
 
       config.collections = [
         ...(config.collections || []),

@@ -424,22 +424,6 @@ const PDFTemplates: CollectionConfig = {
             }
           ]
         },
-        {
-          label: 'Field Mapping',
-          fields: [
-            {
-              name: 'Fields',
-              type: 'blocks',
-              blocks: [
-                pdfImage,
-                pdfPath,
-                pdfSection,
-                pdfTable,
-                pdfText,
-              ]
-            }
-          ]
-        }
       ]
     }
   ],

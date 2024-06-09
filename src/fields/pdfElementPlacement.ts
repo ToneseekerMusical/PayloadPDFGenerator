@@ -10,7 +10,8 @@ export const pdfElementPlacement: Field = {
       options: [
         {label: 'MongoDB', value: 'mongoDB'},
         {label: 'Other', value: 'other'},
-      ]
+      ],
+      defaultValue: 'mongoDB'
     },
     {
       name: 'xPosition',

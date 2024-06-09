@@ -12,37 +12,37 @@ const Tests: CollectionConfig = {
       type: 'text',
     },
     {
-      name: 'array',
+      name: 'sampleArray',
       type: 'array',
       fields: [
         {
-          name: 'text',
+          name: 'sampleText',
           type: 'text'
         },
         {
-          name: 'textArea',
+          name: 'sampleTextArea',
           type: 'textarea'
         },
         {
-          name: 'richText',
+          name: 'sampleRichText',
           type: 'richText'
         }
       ]
     },
     {
-      name: 'group',
+      name: 'sampleGroup',
       type: 'group',
       fields: [
         {
-          name: 'date',
+          name: 'sampleDate',
           type: 'date'
         },
         {
-          name: 'email',
+          name: 'sampleEmail',
           type: 'email'
         },
         {
-          name: 'points',
+          name: 'samplePoints',
           type: 'point'
         },
       ]

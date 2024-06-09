@@ -1,6 +1,6 @@
 import { Block } from "payload/types";
-import { FieldSelectComponent } from "../components/fieldSelector/component";
 import { pdfTextFields } from "../fields/pdfTextFields";
+import { GroupFieldSelectComponent } from "../components/fieldSelectComponents/groupSelector/component";
 
 export const pdfSection: Block = {
   slug: 'pdfSection',
@@ -12,7 +12,7 @@ export const pdfSection: Block = {
       type: 'text',
       admin: {
         components: {
-          Field: FieldSelectComponent
+          Field: GroupFieldSelectComponent
         }
       }
     },

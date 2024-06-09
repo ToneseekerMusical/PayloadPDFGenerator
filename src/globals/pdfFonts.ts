@@ -6,10 +6,7 @@ const PDFFonts: GlobalConfig = {
     group: "PDF Globals"
   },
   fields: [
-    {
-      name: 'title',
-      type: 'text',
-    },
+    
   ],
 }
 

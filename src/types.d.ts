@@ -1,4 +1,4 @@
-export interface PluginTypes {
+export interface PluginConfig {
   /**
    * Enable or disable plugin
    * @default false
