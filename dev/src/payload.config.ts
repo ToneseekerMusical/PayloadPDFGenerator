@@ -9,6 +9,7 @@ import { slateEditor } from '@payloadcms/richtext-slate'
 import { PDFGenerator } from '../../src/index'
 import Tests from './collections/Tests';
 import FormBuilder from '@payloadcms/plugin-form-builder';
+import { Media } from './collections/Media';
 
 export default buildConfig({
   admin: {
@@ -32,7 +33,7 @@ export default buildConfig({
   },
   editor: slateEditor({}),
   collections: [
-    Examples, Users, Tests,
+    Examples, Users, Tests, Media
   ],
   typescript: {
     outputFile: path.resolve(__dirname, 'payload-types.ts'),
@@ -58,7 +59,8 @@ export default buildConfig({
     PDFGenerator({
       enabled: true,
       tabbedUI: true,
-      collections: ['examples','tests']
+      collections: ['examples','tests'],
+      uploadsCollection: 'media'
     }),
   ],
   db: mongooseAdapter({

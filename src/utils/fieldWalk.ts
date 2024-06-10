@@ -1,10 +1,5 @@
 import { Field } from "payload/types"
-
-interface FieldList {
-  name: string,
-  type: string,
-  fields?: FieldList[]
-}[]
+import { FieldList } from "../types"
 
 export default function fieldWalk(fields: Field[]){
   const fieldList: FieldList = fields.filter((field)=>{

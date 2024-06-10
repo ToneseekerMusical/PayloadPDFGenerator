@@ -1,11 +1,11 @@
 import * as React from 'react';
 import type { Props as SelectFieldProps } from 'payload/components/fields/Select'
 import { SelectInput, useAllFormFields, useField } from 'payload/components/forms';
-import { PluginConfig } from '../../../types'
+import { CollectionFieldList, FieldList } from '../../../types';
 
 type ArrayFieldSelectFieldProps = SelectFieldProps & {
   path: string,
-  pluginConfig: PluginConfig
+  collectionConfig: CollectionFieldList[]
 }
 
 export const ArrayFieldSelectComponent: React.FC<ArrayFieldSelectFieldProps> = (props) => {
@@ -14,7 +14,13 @@ export const ArrayFieldSelectComponent: React.FC<ArrayFieldSelectFieldProps> = (
   const [options, setOptions] = React.useState([{label: '',value: 'none'}]);
 
   const assigned = useAllFormFields()[0].assignedCollections.value
-  const parent = useAllFormFields()[0]
+  //const parent = useAllFormFields()
+  const arrayFields = props.collectionConfig.filter((collection)=>{
+    return collection.collection === assigned ? true : false
+  })[0].fields.filter((fields)=>{
+    return fields.type === 'array' ? true : false
+  })[0]
+  console.log(arrayFields)
 
   // Fetch options on component mount
   React.useEffect(() => {

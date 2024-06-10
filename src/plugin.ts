@@ -1,7 +1,7 @@
 import type { Plugin } from 'payload/config'
 
 import { onInitExtension } from './onInitExtension'
-import type { PluginConfig } from './types'
+import type { CollectionFieldList, PluginConfig } from './types'
 import { extendWebpackConfig } from './webpack'
 import AfterDashboard from './components/AfterDashboard'
 import PDFTemplates from './collections/pdfTemplates'
@@ -51,25 +51,8 @@ export const PDFGenerator =
           }
         ]
       }
-
-      const fieldMapping: Tab = {
-        label: 'Field Mapping',
-        fields: [
-          {
-            name: 'Fields',
-            type: 'blocks',
-            blocks: [
-              pdfImage,
-              pdfPath,
-              pdfSection,
-              pdfTable,
-              pdfText,
-            ]
-          }
-        ]
-      }
-
-      const collectionFields = incomingConfig.collections.filter((collection)=>{
+      //@ts-expect-error
+      const collectionFields: CollectionFieldList = incomingConfig.collections.filter((collection)=>{
         return pluginOptions?.collections?.includes(collection.slug)
       }).map((collection)=>{
         return {
@@ -78,7 +61,22 @@ export const PDFGenerator =
         }
       })
 
-      console.log(collectionFields)
+      const fieldMapping: Tab = {
+        label: 'Field Mapping',
+        fields: [
+          {
+            name: 'Fields',
+            type: 'blocks',
+            blocks: [
+              pdfImage(pluginOptions.uploadsCollection),
+              pdfPath(collectionFields),
+              pdfSection(collectionFields),
+              pdfTable(collectionFields),
+              pdfText(collectionFields),
+            ]
+          }
+        ]
+      }
 
       const pdfGeneratorButton: UIField = {
         name: 'generatePDF',

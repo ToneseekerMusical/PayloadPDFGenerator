@@ -1,11 +1,12 @@
 import * as React from 'react';
 import type { Props as SelectFieldProps } from 'payload/components/fields/Select'
 import { SelectInput, useAllFormFields, useField } from 'payload/components/forms';
-import { PluginConfig } from '../../../types'
+import { CollectionFieldList, PluginConfig } from '../../../types'
 
 type GroupFieldSelectFieldProps = SelectFieldProps & {
   path: string,
-  pluginConfig: PluginConfig
+  collectionConfig: CollectionFieldList,
+  parentField?: string
 }
 
 export const GroupFieldSelectComponent: React.FC<GroupFieldSelectFieldProps> = (props) => {

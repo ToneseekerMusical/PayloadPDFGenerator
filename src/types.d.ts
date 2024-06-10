@@ -7,9 +7,20 @@ export interface PluginConfig {
   collections: string[],
   tabbedUI?: boolean,
   interfaceName?: string,
-  uploadsCollection?: string
+  uploadsCollection: string
 }
 
 export interface NewCollectionTypes {
   title: string
 }
+
+export interface FieldList {
+  name: string,
+  type: string,
+  fields?: FieldList[]
+}[]
+
+export interface CollectionFieldList {
+  collection: string;
+  fields: FieldList[];
+}[]
