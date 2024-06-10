@@ -11,6 +11,7 @@ export interface Config {
     examples: Example;
     users: User;
     tests: Test;
+    media: Media;
     forms: Form;
     'form-submissions': FormSubmission;
     'pdf-templates': PdfTemplate;
@@ -58,11 +59,11 @@ export interface User {
 export interface Test {
   id: string;
   someField?: string | null;
-  array?:
+  sampleArray?:
     | {
-        text?: string | null;
-        textArea?: string | null;
-        richText?:
+        sampleText?: string | null;
+        sampleTextArea?: string | null;
+        sampleRichText?:
           | {
               [k: string]: unknown;
             }[]
@@ -70,17 +71,40 @@ export interface Test {
         id?: string | null;
       }[]
     | null;
-  group?: {
-    date?: string | null;
-    email?: string | null;
+  sampleGroup?: {
+    sampleDate?: string | null;
+    sampleEmail?: string | null;
     /**
      * @minItems 2
      * @maxItems 2
      */
-    points?: [number, number] | null;
+    samplePoints?: [number, number] | null;
   };
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media".
+ */
+export interface Media {
+  id: string;
+  alt: string;
+  caption?:
+    | {
+        [k: string]: unknown;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -342,15 +366,10 @@ export interface PdfTemplate {
  * via the `definition` "PDFImage".
  */
 export interface PDFImage {
+  imageSource?: (string | null) | Media;
   pdfElementPlacement?: {
-    databaseType?: ('mongoDB' | 'other') | null;
     xPosition?: number | null;
     yPosition?: number | null;
-    /**
-     * @minItems 2
-     * @maxItems 2
-     */
-    elementPosition?: [number, number] | null;
   };
   /**
    * @minItems 2
@@ -390,19 +409,13 @@ export interface PDFSection {
   groupFields?:
     | {
         textConfiguration?: {
-          fieldSelect?: string | null;
+          sourceField?: string | null;
           fieldLabel?: string | null;
           multilineText?: boolean | null;
           multilineWidth?: ('100pw' | '50pw' | '33pw' | '25pw' | '100sw' | '50sw' | '33sw' | '25sw' | 'fill') | null;
           pdfElementPlacement?: {
-            databaseType?: ('mongoDB' | 'other') | null;
             xPosition?: number | null;
             yPosition?: number | null;
-            /**
-             * @minItems 2
-             * @maxItems 2
-             */
-            elementPosition?: [number, number] | null;
           };
           justification?: ('left' | 'center' | 'right' | 'justify') | null;
           baseline?: ('alphabetic' | 'ideographic' | 'bottom' | 'top' | 'middle' | 'hanging') | null;
@@ -430,26 +443,25 @@ export interface PDFSection {
  * via the `definition` "PDFTable".
  */
 export interface PDFTable {
-  arrayField?: string | null;
+  sourceField?: string | null;
+  tableTitle?: string | null;
   pdfElementPlacement?: {
-    databaseType?: ('mongoDB' | 'other') | null;
     xPosition?: number | null;
     yPosition?: number | null;
-    /**
-     * @minItems 2
-     * @maxItems 2
-     */
-    elementPosition?: [number, number] | null;
   };
-  printHeaders?: boolean | null;
-  autoSizeColumns?: boolean | null;
-  headers?:
-    | {
-        headerLabel?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  fontSize?: number | null;
+  columnSetup?: {
+    printHeaders?: boolean | null;
+    autoSizeColumns?: boolean | null;
+    headerFontSize?: number | null;
+    cellFontSize?: number | null;
+    columns?:
+      | {
+          sourceField?: string | null;
+          headerLabel?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
   id?: string | null;
   blockName?: string | null;
   blockType: 'pdfTable';
@@ -460,19 +472,13 @@ export interface PDFTable {
  */
 export interface PDFText {
   textConfiguration?: {
-    fieldSelect?: string | null;
+    sourceField?: string | null;
     fieldLabel?: string | null;
     multilineText?: boolean | null;
     multilineWidth?: ('100pw' | '50pw' | '33pw' | '25pw' | '100sw' | '50sw' | '33sw' | '25sw' | 'fill') | null;
     pdfElementPlacement?: {
-      databaseType?: ('mongoDB' | 'other') | null;
       xPosition?: number | null;
       yPosition?: number | null;
-      /**
-       * @minItems 2
-       * @maxItems 2
-       */
-      elementPosition?: [number, number] | null;
     };
     justification?: ('left' | 'center' | 'right' | 'justify') | null;
     baseline?: ('alphabetic' | 'ideographic' | 'bottom' | 'top' | 'middle' | 'hanging') | null;
@@ -562,7 +568,6 @@ export interface PdfWatermark {
  */
 export interface PdfFont {
   id: string;
-  title?: string | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }

@@ -6,51 +6,55 @@ import { CollectionFieldList, PluginConfig } from '../../../types'
 
 type TextFieldSelectFieldProps = SelectFieldProps & {
   path: string,
-  collectionConfig: CollectionFieldList,
+  collectionConfig: CollectionFieldList[],
   parentField?: string
 }
 
 export const TextFieldSelectComponent: React.FC<TextFieldSelectFieldProps> = (props) => {
   const { value, setValue } = useField<string>({ path: props.path });
   const [options, setOptions] = React.useState([{label: '',value: 'none'}]);
-
+  let parentField: string
   const assigned = useAllFormFields()[0].assignedCollections.value
+  if (props.parentField !== undefined) {
+    const parentPath = props.path.split(".").slice(0,2).join(".")+`.${props.parentField}`
+    parentField = `${useAllFormFields()[0][parentPath].value}`
+  }
 
   // Fetch options on component mount
-  React.useEffect(() => {
-    const fetchOptions = async () => {
-      try {
-        const response = await fetch(`${process.env.PAYLOAD_PUBLIC_SERVER_URL}/api/${assigned}`)
-        const data = await response.json()
-        let fieldList: {label:string, value:string}[]
-        if (data.docs[0] !== undefined){
-          fieldList = Object.entries(data.docs[0]).filter((field: any)=>{
-            return field[1].constructor === String ? true : false
-          }).map((field: any) => {
-            return {
-              label: `${field[0]}`,
-              value: `${field[0]}`
-            }
-          })
-        } else {
-          fieldList = [
-            {label:`Please create a document in ${assigned} collection`,value:''}
-          ]
-        }
-        
-        setOptions(
-          fieldList.sort(
-            (a, b) => a.label.localeCompare(b.label)
-          )
-        )
-      } catch (error) {
-        console.error('Error fetching data:', error);
+  React.useEffect(()=>{
+    const noArrays = [{label:`No array fields exist in the ${assigned} collection`, value: 'none'}]
+
+    const arrayFields = props.collectionConfig.filter((collection)=>{
+      return collection.collection === assigned ? true : false
+    })[0].fields.filter((fields)=>{
+      if (parentField === fields.name){
+        return fields.name === parentField ? true : false
+      } else if (props.parentField === undefined) {
+        const ignore = ['ui', 'row', 'group', 'collapsible', 'array']
+        return !ignore.includes(fields.type) ? true : false
       }
-    };
+    }).flatMap((field)=>{
+      if (parentField === field.name && field.fields !== undefined){
+        return field.fields.map((field)=>{
+          return {label: `${field.name}`, value: `${field.name}`}
+        })
+      } else if (parentField === field.name && field.fields === undefined){
+        return {label: `No fields exist on ${parentField}`, value: 'none'}
+      } else {
+        return {label: `${field.name}`, value: `${field.name}`}
+      }
+    })
 
-    fetchOptions();
-  }, []);
+    const fieldList = arrayFields.length === 0 ? noArrays : arrayFields
+    
+    arrayFields.length === 0 ? setValue('none') : null
 
+    setOptions(
+      fieldList.sort(
+        (a, b) => a.label.localeCompare(b.label)
+      )
+    )
+  }, [])
   return (
     <div>
       <label className='field-label'>

@@ -5,42 +5,21 @@ export const pdfElementPlacement: Field = {
   type: 'group',
   fields: [
     {
-      name: 'databaseType',
-      type: 'radio',
-      options: [
-        {label: 'MongoDB', value: 'mongoDB'},
-        {label: 'Other', value: 'other'},
-      ],
-      defaultValue: 'mongoDB'
+      type: 'row',
+      fields: [
+        {
+          name: 'xPosition',
+          type: 'number',
+          min: 0,
+          defaultValue: 0
+        },
+        {
+          name: 'yPosition',
+          type: 'number',
+          min: 0,
+          defaultValue: 0
+        },
+      ]
     },
-    {
-      name: 'xPosition',
-      type: 'number',
-      min: 0,
-      admin: {
-        condition: (_, siblingData)=>{
-          return siblingData.databaseType === 'other' ? true : false
-        }
-      }
-    },
-    {
-      name: 'yPosition',
-      type: 'number',
-      min: 0,
-      admin: {
-        condition: (_, siblingData)=>{
-          return siblingData.databaseType === 'other' ? true : false
-        }
-      }
-    },
-    {
-      name: 'elementPosition',
-      type: 'point',
-      admin: {
-        condition: (_, siblingData)=>{
-          return siblingData.databaseType === 'mongoDB' ? true : false
-        }
-      }
-    }
   ]
 }

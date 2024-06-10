@@ -2,6 +2,7 @@ import { Block } from "payload/types";
 import { pdfElementPlacement } from "../fields/pdfElementPlacement";
 import { ArrayFieldSelectComponent } from "../components/fieldSelectComponents/arraySelector/component";
 import { CollectionFieldList } from "../types";
+import { TextFieldSelectComponent } from "../components/fieldSelectComponents/textSelector/component";
 
 export function pdfTable(collectionConfig: CollectionFieldList){
   const block: Block = {
@@ -10,45 +11,75 @@ export function pdfTable(collectionConfig: CollectionFieldList){
     interfaceName: 'PDFTable',
     fields: [
       {
-        name: 'arrayField',
-        type: 'text',
-        admin: {
-          components: {
-            Field: (props) => ArrayFieldSelectComponent({...props, collectionConfig})
+        type: 'row',
+        fields: [
+          {
+            name: 'sourceField',
+            type: 'text',
+            admin: {
+              components: {
+                Field: (props) => ArrayFieldSelectComponent({...props, collectionConfig})
+              }
+            }
+          },
+          {
+            name: 'tableTitle',
+            type: 'text',
           }
-        }
+        ]
       },
       pdfElementPlacement,
       {
-        name: 'printHeaders',
-        type: 'checkbox',
-      },
-      {
-        name: 'autoSizeColumns',
-        type: "checkbox",
-        defaultValue: true
-      },
-      {
-        name: 'headers',
-        type: 'array',
+        name: 'columnSetup',
+        type: 'group',
         fields: [
           {
-            name: 'headerLabel',
-            type: 'text'
-          }
-        ],
-        admin:{
-          condition:(_, siblingData)=>{
-            return siblingData.printHeaders === true ? true : false
-          }
-        }
+            type: 'row',
+            fields: [
+              {
+                name: 'printHeaders',
+                type: 'checkbox',
+              },
+              {
+                name: 'autoSizeColumns',
+                type: "checkbox",
+                defaultValue: true
+              },
+              {
+                name: 'headerFontSize',
+                type: 'number',
+                min: 8,
+                defaultValue: 10
+              },
+              {
+                name: 'cellFontSize',
+                type: 'number',
+                min: 8,
+                defaultValue: 10
+              }
+            ]
+          },
+          {
+            name: 'columns',
+            type: 'array',
+            fields: [
+              {
+                name: 'sourceField',
+                type: 'text',
+                admin: {
+                  components: {
+                    Field: (props) => TextFieldSelectComponent({...props, collectionConfig, parentField:'sourceField'})
+                  }
+                }
+              },
+              {
+                name: 'headerLabel',
+                type: 'text',
+              }
+            ],
+          },
+        ]
       },
-      {
-        name: 'fontSize',
-        type: 'number',
-        min: 8,
-        defaultValue: 10
-      }
     ]
   }
   return block

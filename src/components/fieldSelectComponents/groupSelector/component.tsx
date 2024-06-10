@@ -5,7 +5,7 @@ import { CollectionFieldList, PluginConfig } from '../../../types'
 
 type GroupFieldSelectFieldProps = SelectFieldProps & {
   path: string,
-  collectionConfig: CollectionFieldList,
+  collectionConfig: CollectionFieldList[],
   parentField?: string
 }
 
@@ -18,39 +18,27 @@ export const GroupFieldSelectComponent: React.FC<GroupFieldSelectFieldProps> = (
   const parent = useAllFormFields()[0]
 
   // Fetch options on component mount
-  React.useEffect(() => {
-    const fetchOptions = async () => {
-      try {
-        const response = await fetch(`${process.env.PAYLOAD_PUBLIC_SERVER_URL}/api/${assigned}`)
-        const data = await response.json()
-        let fieldList: {label:string, value:string}[]
-        if (data.docs[0] !== undefined){
-          fieldList = Object.entries(data.docs[0]).filter((field: any)=>{
-            return field[1].constructor === Object ? true : false
-          }).map((field: any) => {
-            return {
-              label: `${field[0]}`,
-              value: `${field[0]}`
-            }
-          })
-        } else {
-          fieldList = [
-            {label:`Please create a document in ${assigned} collection`,value:''}
-          ]
-        }
-        
-        setOptions(
-          fieldList.sort(
-            (a, b) => a.label.localeCompare(b.label)
-          )
-        )
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
+  React.useEffect(()=>{
+    const noArrays = [{label:`No array fields exist in the ${assigned} collection`, value: 'none'}]
 
-    fetchOptions();
-  }, []);
+    const arrayFields = props.collectionConfig.filter((collection)=>{
+      return collection.collection === assigned ? true : false
+    })[0].fields.filter((fields)=>{
+      return fields.type === 'group' ? true : false
+    }).map((field)=>{
+      return {label: `${field.name}`, value: `${field.name}`}
+    })
+    
+    const fieldList = arrayFields.length === 0 ? noArrays : arrayFields
+    
+    arrayFields.length === 0 ? setValue('none') : null
+
+    setOptions(
+      fieldList.sort(
+        (a, b) => a.label.localeCompare(b.label)
+      )
+    )
+  }, [])
 
   return (
     <div>
