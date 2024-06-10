@@ -16,6 +16,7 @@ export const ArrayFieldSelectComponent: React.FC<ArrayFieldSelectFieldProps> = (
   const assigned = useAllFormFields()[0].assignedCollections.value
   //const parent = useAllFormFields()
 
+  //Need to add parent field filters
   React.useEffect(()=>{
     const noArrays = [{label:`No array fields exist in the ${assigned} collection`, value: 'none'}]
 

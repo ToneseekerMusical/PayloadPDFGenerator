@@ -17,7 +17,7 @@ export const GroupFieldSelectComponent: React.FC<GroupFieldSelectFieldProps> = (
   const assigned = useAllFormFields()[0].assignedCollections.value
   const parent = useAllFormFields()[0]
 
-  // Fetch options on component mount
+  //Need to add parent field filters
   React.useEffect(()=>{
     const noArrays = [{label:`No array fields exist in the ${assigned} collection`, value: 'none'}]
 

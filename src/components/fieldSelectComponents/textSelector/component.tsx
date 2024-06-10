@@ -20,7 +20,6 @@ export const TextFieldSelectComponent: React.FC<TextFieldSelectFieldProps> = (pr
     parentField = `${useAllFormFields()[0][parentPath].value}`
   }
 
-  // Fetch options on component mount
   React.useEffect(()=>{
     const noArrays = [{label:`No array fields exist in the ${assigned} collection`, value: 'none'}]
 

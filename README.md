@@ -6,12 +6,13 @@ The goal is to allow the easy creation of PDF templates that can be populated by
 
 ## Current issues:
 
-* The field select components currently do not save their values to the base text field.
-* A document must be present in the target collection to populate the field select option lists
+* Group and Array Field mapping functions do not allow for nested groups or arrays in collection configuration
+* Current method of setting default columns in enabled collections from plugin currently does not work.
 
 ### To-do:
 
-* Define built in globals fields.
-* Pass existing media collection to plugin to ensure the image component does not break Payload.
-* Ensure the field select component can only populate local fields based on parent field type, I.E. children elements of a section can only select fields within the group field selected by the parent section.
+* Finish pdfTemplate collection config.
+* Define built in globals.
+* Write a script to convert TTF font files to base64, and store that data in the pdfFonts global for easy font selection.
+* Write a script to convert selected images to base64 for embedding in pdf file.
 * Write the PDF generation script.
