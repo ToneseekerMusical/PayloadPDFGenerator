@@ -4,22 +4,12 @@ import { pdfElementPlacement } from "./pdfElementPlacement";
 import { pdfElementRotation } from "./pdfElementRotation";
 import ColorPickerField from "../components/colorPicker/colorPickerField";
 import { CollectionFieldList } from "../types";
-import { TextFieldSelectComponent } from "../components/fieldSelectComponents/textSelector/component";
 
 export function pdfTextFields(collectionConfig: CollectionFieldList){
   const field: Field = {
     name: 'textConfiguration',
     type: 'group',
     fields: [
-      {
-        name: 'sourceField',
-        type: 'text',
-        admin: {
-          components: {
-            Field: (props) => TextFieldSelectComponent({...props, collectionConfig}),
-          }
-        }
-      },
       {
         name: 'fieldLabel',
         type: 'text'

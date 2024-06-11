@@ -398,7 +398,7 @@ export interface PDFPath {
  * via the `definition` "PDFSection".
  */
 export interface PDFSection {
-  groupField?: string | null;
+  sourceField?: string | null;
   sectionOrientation: 'horizontal' | 'vertical';
   sectionWidth?: number | null;
   sectionHeight?: number | null;
@@ -408,8 +408,8 @@ export interface PDFSection {
   rightDivider?: boolean | null;
   groupFields?:
     | {
+        sourceField?: string | null;
         textConfiguration?: {
-          sourceField?: string | null;
           fieldLabel?: string | null;
           multilineText?: boolean | null;
           multilineWidth?: ('100pw' | '50pw' | '33pw' | '25pw' | '100sw' | '50sw' | '33sw' | '25sw' | 'fill') | null;
@@ -471,8 +471,8 @@ export interface PDFTable {
  * via the `definition` "PDFText".
  */
 export interface PDFText {
+  sourceField?: string | null;
   textConfiguration?: {
-    sourceField?: string | null;
     fieldLabel?: string | null;
     multilineText?: boolean | null;
     multilineWidth?: ('100pw' | '50pw' | '33pw' | '25pw' | '100sw' | '50sw' | '33sw' | '25sw' | 'fill') | null;

@@ -6,13 +6,11 @@ The goal is to allow the easy creation of PDF templates that can be populated by
 
 ## Current issues:
 
-* Group and Array Field mapping functions do not allow for nested groups or arrays in collection configuration
-* Current method of setting default columns in enabled collections from plugin currently does not work.
+* Current method of setting default columns in enabled collections from plugin to add the Generate PDF cell component to the collection list currently does not work.
 * Changing the PDF Template's assigned collection does nothing without reloading the editor.
 
 ### To-do:
 
-* Clear all assigned field mapping on assigned collection change. Currently, only array fields are cleared.
 * Finish pdfTemplate collection config.
 * Define built in globals.
 * Write a script to convert TTF font files to base64, and store that data in the pdfFonts global for easy font selection.

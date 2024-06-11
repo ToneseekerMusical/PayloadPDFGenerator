@@ -2,6 +2,7 @@ import { Block } from "payload/types";
 import { pdfTextFields } from "../fields/pdfTextFields";
 import { GroupFieldSelectComponent } from "../components/fieldSelectComponents/groupSelector/component";
 import { CollectionFieldList } from "../types";
+import { TextFieldSelectComponent } from "../components/fieldSelectComponents/textSelector/component";
 
 export function pdfSection(collectionConfig: CollectionFieldList) {
   const pdfSection: Block = {
@@ -10,7 +11,7 @@ export function pdfSection(collectionConfig: CollectionFieldList) {
     interfaceName: 'PDFSection',
     fields:[
       {
-        name: 'groupField',
+        name: 'sourceField',
         type: 'text',
         admin: {
           components: {
@@ -80,6 +81,15 @@ export function pdfSection(collectionConfig: CollectionFieldList) {
         name: 'groupFields',
         type: 'array',
         fields: [
+          {
+            name: 'sourceField',
+            type: 'text',
+            admin: {
+              components: {
+                Field: (props) => TextFieldSelectComponent({...props, collectionConfig, parentField:'sourceField'}),
+              }
+            }
+          },
           pdfTextFields(collectionConfig)
         ]
       }

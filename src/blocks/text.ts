@@ -1,6 +1,7 @@
 import { Block } from "payload/types";
 import { pdfTextFields } from "../fields/pdfTextFields";
 import { CollectionFieldList } from "../types";
+import { TextFieldSelectComponent } from "../components/fieldSelectComponents/textSelector/component";
 
 export function pdfText(collectionConfig: CollectionFieldList){
   const block: Block = {
@@ -8,6 +9,15 @@ export function pdfText(collectionConfig: CollectionFieldList){
     imageAltText: 'Creates a PDF text element from a field value',
     interfaceName: 'PDFText',
     fields:[
+      {
+        name: 'sourceField',
+        type: 'text',
+        admin: {
+          components: {
+            Field: (props) => TextFieldSelectComponent({...props, collectionConfig}),
+          }
+        }
+      },
       pdfTextFields(collectionConfig)
     ]
   }

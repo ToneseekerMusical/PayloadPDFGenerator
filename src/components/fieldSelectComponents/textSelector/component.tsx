@@ -13,15 +13,17 @@ type TextFieldSelectFieldProps = SelectFieldProps & {
 export const TextFieldSelectComponent: React.FC<TextFieldSelectFieldProps> = (props) => {
   const { value, setValue } = useField<string>({ path: props.path });
   const [options, setOptions] = React.useState([{label: '',value: 'none'}]);
-  let parentField: string
+  
   const assigned = useAllFormFields()[0].assignedCollections.value
+  
+  let parentField: string
   if (props.parentField !== undefined) {
     const parentPath = props.path.split(".").slice(0,2).join(".")+`.${props.parentField}`
     parentField = `${useAllFormFields()[0][parentPath].value}`
   }
 
   React.useEffect(()=>{
-    const noArrays = [{label:`No array fields exist in the ${assigned} collection`, value: 'none'}]
+    const noArrays = [{label:`No text fields exist in the ${assigned} collection`, value: 'none'}]
 
     const arrayFields = props.collectionConfig.filter((collection)=>{
       return collection.collection === assigned ? true : false

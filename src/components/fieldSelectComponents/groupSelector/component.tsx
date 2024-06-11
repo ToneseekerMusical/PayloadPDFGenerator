@@ -15,21 +15,37 @@ export const GroupFieldSelectComponent: React.FC<GroupFieldSelectFieldProps> = (
   const [options, setOptions] = React.useState([{label: '',value: 'none'}]);
 
   const assigned = useAllFormFields()[0].assignedCollections.value
-  const parent = useAllFormFields()[0]
 
-  //Need to add parent field filters
+  let parentField: string
+  if (props.parentField !== undefined) {
+    const parentPath = props.path.split(".").slice(0,2).join(".")+`.${props.parentField}`
+    parentField = `${useAllFormFields()[0][parentPath].value}`
+  }
+
   React.useEffect(()=>{
-    const noArrays = [{label:`No array fields exist in the ${assigned} collection`, value: 'none'}]
+    const noGroups = [{label:`No group fields exist in the ${assigned} collection`, value: 'none'}]
 
     const arrayFields = props.collectionConfig.filter((collection)=>{
       return collection.collection === assigned ? true : false
     })[0].fields.filter((fields)=>{
-      return fields.type === 'group' ? true : false
-    }).map((field)=>{
-      return {label: `${field.name}`, value: `${field.name}`}
+      if (parentField === fields.name){
+        return fields.name === parentField ? true : false
+      } else if (props.parentField === undefined) {
+        return fields.type === 'group' ? true : false
+      }
+    }).flatMap((field)=>{
+      if (parentField === field.name && field.fields !== undefined){
+        return field.fields.map((field)=>{
+          return {label: `${field.name}`, value: `${field.name}`}
+        })
+      } else if (parentField === field.name && field.fields === undefined){
+        return {label: `No fields exist on ${parentField}`, value: 'none'}
+      } else {
+        return {label: `${field.name}`, value: `${field.name}`}
+      }
     })
     
-    const fieldList = arrayFields.length === 0 ? noArrays : arrayFields
+    const fieldList = arrayFields.length === 0 ? noGroups : arrayFields
     
     arrayFields.length === 0 ? setValue('none') : null
 
