@@ -3,7 +3,7 @@ import { FieldList } from "../types"
 
 export default function fieldWalk(fields: Field[]){
   const fieldList: FieldList = fields.filter((field)=>{
-    let ignore = ['tabs', 'ui', 'collapsible', 'row']
+    let ignore = ['tabs', 'ui', 'collapsible', 'row', 'block']
     if (!ignore.includes(field.type)) {
       return true
     }

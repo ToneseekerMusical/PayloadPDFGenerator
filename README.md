@@ -6,6 +6,7 @@ The goal is to allow the easy creation of PDF templates that can be populated by
 
 ## Current issues:
 
+* pdfFont Global: field hooks in array child fields do not work correctly: Base64 field hook not updating value on save.
 * Current method of setting default columns in enabled collections from plugin to add the Generate PDF cell component to the collection list currently does not work.
 * Changing the PDF Template's assigned collection does nothing without reloading the editor.
 

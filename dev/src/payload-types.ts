@@ -568,6 +568,15 @@ export interface PdfWatermark {
  */
 export interface PdfFont {
   id: string;
+  fontList?:
+    | {
+        fontFile?: string | Media | null;
+        fontName?: string | null;
+        fontWeight?: ('bold' | 'italic' | 'normal' | 'bolditalic') | null;
+        base64String?: string | null;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
