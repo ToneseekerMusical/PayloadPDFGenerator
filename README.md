@@ -12,6 +12,7 @@ The goal is to allow the easy creation of PDF templates that can be populated by
 
 ### To-do:
 
+* Create a font select component that pulls data from pdfFont global
 * Finish pdfTemplate collection config.
 * Define built in globals.
 * Write a script to convert TTF font files to base64, and store that data in the pdfFonts global for easy font selection.
