@@ -122,9 +122,9 @@ export const PDFGenerator =
       }
 
       //This section is causing captureStackTrace errors
-      //if (PDFTemplates.fields[1].type === 'tabs'){
-      //  PDFTemplates.fields[1].tabs.push(fieldMapping)
-      //}
+      if (PDFTemplates.fields[1].type === 'tabs'){
+        PDFTemplates.fields[1].tabs.push(fieldMapping)
+      }
 
       config.collections = [
         ...(config.collections || []),
