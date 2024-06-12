@@ -6,18 +6,18 @@ import { extendWebpackConfig } from './webpack'
 import AfterDashboard from './components/AfterDashboard'
 import PDFTemplates from './collections/pdfTemplates'
 import PDFHeader from './globals/pdfHeader'
-import PDFFooter from './globals/pdfFooter'
 import PDFWatermark from './globals/pdfWatermark'
-import { BlockField, RowField, Tab, TabsField, UIField } from 'payload/types'
+import { RowField, Tab, TabsField, UIField } from 'payload/types'
 import generatePDFButton from './components/generateButton/inputField'
 import generatePDFCell from './components/generateButton/cell'
-import PDFFonts from './globals/pdfFonts'
 import fieldWalk from './utils/fieldWalk'
 import { pdfImage } from './blocks/image'
 import { pdfPath } from './blocks/path'
 import { pdfSection } from './blocks/section'
 import { pdfTable } from './blocks/table'
 import { pdfText } from './blocks/text'
+import { PDFFonts } from './globals/pdfFonts'
+import { PDFFooter } from './globals/pdfFooter'
 
 export const PDFGenerator =
   (pluginOptions: PluginConfig): Plugin =>
@@ -65,7 +65,7 @@ export const PDFGenerator =
         label: 'Field Mapping',
         fields: [
           {
-            name: 'Fields',
+            name: 'fields',
             type: 'blocks',
             blocks: [
               pdfImage(pluginOptions.uploadsCollection),
@@ -74,7 +74,7 @@ export const PDFGenerator =
               pdfTable(collectionFields),
               pdfText(collectionFields),
             ]
-          }
+          },
         ]
       }
 
@@ -117,10 +117,14 @@ export const PDFGenerator =
         return config
       }
 
-      PDFTemplates.fields.unshift(collectionSelection)
+      if (PDFTemplates.fields[0].type !== 'row'){
+        PDFTemplates.fields.unshift(collectionSelection)
+      }
 
-      //@ts-expect-error
-      PDFTemplates.fields[1].tabs.push(fieldMapping)
+      //This section is causing captureStackTrace errors
+      //if (PDFTemplates.fields[1].type === 'tabs'){
+      //  PDFTemplates.fields[1].tabs.push(fieldMapping)
+      //}
 
       config.collections = [
         ...(config.collections || []),
@@ -144,9 +148,9 @@ export const PDFGenerator =
       config.globals = [
         ...(config.globals || []),
         PDFHeader,
-        PDFFooter,
+        PDFFooter(pluginOptions.uploadsCollection),
         PDFWatermark,
-        PDFFonts
+        PDFFonts(pluginOptions.uploadsCollection)
       ]
 
       config.hooks = {

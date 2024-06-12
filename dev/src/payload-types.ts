@@ -548,7 +548,23 @@ export interface PdfHeader {
  */
 export interface PdfFooter {
   id: string;
-  title?: string | null;
+  footerLayout?:
+    | {
+        layoutName: string;
+        layoutConfig?: {
+          layoutBackground?: ('blank' | 'solid' | 'image') | null;
+          topDivider?: boolean | null;
+          pageNumbers?: boolean | null;
+          companyName?: boolean | null;
+          contactInfo?: boolean | null;
+          backgroundSettings?: {};
+          pageNumberSettings?: {};
+          companyNameSettings?: {};
+          contactInfoSettings?: {};
+        };
+        id?: string | null;
+      }[]
+    | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -573,7 +589,6 @@ export interface PdfFont {
         fontFile?: string | Media | null;
         fontName?: string | null;
         fontWeight?: ('bold' | 'italic' | 'normal' | 'bolditalic') | null;
-        base64String?: string | null;
         id?: string | null;
       }[]
     | null;
