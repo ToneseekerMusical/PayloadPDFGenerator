@@ -47,10 +47,37 @@ export function PDFFooterFields(relationTo: string){
               type: 'upload',
               relationTo: `${relationTo}`,
               admin: {
-                condition: (data, siblingData)=>{
+                condition: (siblingData)=>{
                   return siblingData.layoutBackground === 'image' ? true : false
                 }
               }
+            },
+            {
+              type: 'row',
+              fields: [
+                {
+                  name: 'width',
+                  type: 'number',
+                  min: 10,
+                  defaultValue: 10,
+                  admin: {
+                    condition: (siblingData)=>{
+                      return siblingData.layoutBackground === 'image' ? true : false
+                    }
+                  }
+                },
+                {
+                  name: 'height',
+                  type: 'number',
+                  min: 10,
+                  defaultValue: 10,
+                  admin: {
+                    condition: (siblingData)=>{
+                      return siblingData.layoutBackground === 'image' ? true : false
+                    }
+                  }
+                },
+              ]
             },
             {
               name: 'footerFillColor',

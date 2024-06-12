@@ -21,7 +21,7 @@ export interface Config {
   globals: {
     'pdf-header': PdfHeader;
     'pdf-footer': PdfFooter;
-    'pdf-watermark': PdfWatermark;
+    'pdf-watermarks': PdfWatermark;
     'pdf-fonts': PdfFont;
   };
 }
@@ -357,146 +357,8 @@ export interface PdfTemplate {
     layout?: ('continuous' | 'single' | 'twoleft' | 'tworight') | null;
     outlineDisplay?: ('none' | 'UseOutlines' | 'UseThumbs') | null;
   };
-  Fields?: (PDFImage | PDFPath | PDFSection | PDFTable | PDFText)[] | null;
   updatedAt: string;
   createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "PDFImage".
- */
-export interface PDFImage {
-  imageSource?: (string | null) | Media;
-  pdfElementPlacement?: {
-    xPosition?: number | null;
-    yPosition?: number | null;
-  };
-  /**
-   * @minItems 2
-   * @maxItems 2
-   */
-  imageWidth?: [number, number] | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'pdfImage';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "PDFPath".
- */
-export interface PDFPath {
-  pdfStrokeColor?: string | null;
-  pdfFillColor?: string | null;
-  pdfClosedPath?: boolean | null;
-  pathSourceField?: string | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'pdfPath';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "PDFSection".
- */
-export interface PDFSection {
-  sourceField?: string | null;
-  sectionOrientation: 'horizontal' | 'vertical';
-  sectionWidth?: number | null;
-  sectionHeight?: number | null;
-  topDivider?: boolean | null;
-  bottomDivider?: boolean | null;
-  leftDivider?: boolean | null;
-  rightDivider?: boolean | null;
-  groupFields?:
-    | {
-        sourceField?: string | null;
-        textConfiguration?: {
-          fieldLabel?: string | null;
-          multilineText?: boolean | null;
-          multilineWidth?: ('100pw' | '50pw' | '33pw' | '25pw' | '100sw' | '50sw' | '33sw' | '25sw' | 'fill') | null;
-          pdfElementPlacement?: {
-            xPosition?: number | null;
-            yPosition?: number | null;
-          };
-          justification?: ('left' | 'center' | 'right' | 'justify') | null;
-          baseline?: ('alphabetic' | 'ideographic' | 'bottom' | 'top' | 'middle' | 'hanging') | null;
-          pdfElementRotation?: {
-            rotateElement?: boolean | null;
-            angle?: number | null;
-            rotationDirection?: ('0' | '1') | null;
-          };
-          characterSpacing?: number | null;
-          lineHeightFactor?: number | null;
-          textColorOverride?: boolean | null;
-          textColor?: string | null;
-          fontOverride?: boolean | null;
-          fontSelection?: string | null;
-        };
-        id?: string | null;
-      }[]
-    | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'pdfSection';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "PDFTable".
- */
-export interface PDFTable {
-  sourceField?: string | null;
-  tableTitle?: string | null;
-  pdfElementPlacement?: {
-    xPosition?: number | null;
-    yPosition?: number | null;
-  };
-  columnSetup?: {
-    printHeaders?: boolean | null;
-    autoSizeColumns?: boolean | null;
-    headerFontSize?: number | null;
-    cellFontSize?: number | null;
-    columns?:
-      | {
-          sourceField?: string | null;
-          headerLabel?: string | null;
-          id?: string | null;
-        }[]
-      | null;
-  };
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'pdfTable';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "PDFText".
- */
-export interface PDFText {
-  sourceField?: string | null;
-  textConfiguration?: {
-    fieldLabel?: string | null;
-    multilineText?: boolean | null;
-    multilineWidth?: ('100pw' | '50pw' | '33pw' | '25pw' | '100sw' | '50sw' | '33sw' | '25sw' | 'fill') | null;
-    pdfElementPlacement?: {
-      xPosition?: number | null;
-      yPosition?: number | null;
-    };
-    justification?: ('left' | 'center' | 'right' | 'justify') | null;
-    baseline?: ('alphabetic' | 'ideographic' | 'bottom' | 'top' | 'middle' | 'hanging') | null;
-    pdfElementRotation?: {
-      rotateElement?: boolean | null;
-      angle?: number | null;
-      rotationDirection?: ('0' | '1') | null;
-    };
-    characterSpacing?: number | null;
-    lineHeightFactor?: number | null;
-    textColorOverride?: boolean | null;
-    textColor?: string | null;
-    fontOverride?: boolean | null;
-    fontSelection?: string | null;
-  };
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'pdfText';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -551,16 +413,39 @@ export interface PdfFooter {
   footerLayout?:
     | {
         layoutName: string;
-        layoutConfig?: {
+        topDivider?: boolean | null;
+        pageNumbers?: boolean | null;
+        companyName?: boolean | null;
+        contactInfo?: boolean | null;
+        backgroundSettings?: {
           layoutBackground?: ('blank' | 'solid' | 'image') | null;
-          topDivider?: boolean | null;
-          pageNumbers?: boolean | null;
-          companyName?: boolean | null;
-          contactInfo?: boolean | null;
-          backgroundSettings?: {};
-          pageNumberSettings?: {};
-          companyNameSettings?: {};
-          contactInfoSettings?: {};
+          backgroundImage?: string | Media | null;
+          width?: number | null;
+          height?: number | null;
+          footerFillColor?: string | null;
+          horizontalMargin?: number | null;
+          verticalMargin?: number | null;
+        };
+        dividerSettings?: {
+          dividerStrokeColor?: string | null;
+          dividerThickness?: number | null;
+          horizontalMargin?: number | null;
+          verticalMargin?: number | null;
+        };
+        pageNumberSettings?: {
+          format?: string | null;
+          collate?: boolean | null;
+          footerLocation?: ('left' | 'center' | 'right') | null;
+        };
+        companyNameSettings?: {
+          companyName?: string | null;
+          footerLocation?: ('left' | 'center' | 'right') | null;
+        };
+        contactInfoSettings?: {
+          phoneNumber?: string | null;
+          email?: string | null;
+          address?: string | null;
+          footerLocation?: ('left' | 'center' | 'right') | null;
         };
         id?: string | null;
       }[]
@@ -570,11 +455,18 @@ export interface PdfFooter {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "pdf-watermark".
+ * via the `definition` "pdf-watermarks".
  */
 export interface PdfWatermark {
   id: string;
-  title?: string | null;
+  watermarks?:
+    | {
+        watermark?: string | Media | null;
+        width?: number | null;
+        height?: number | null;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }

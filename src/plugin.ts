@@ -6,7 +6,7 @@ import { extendWebpackConfig } from './webpack'
 import AfterDashboard from './components/AfterDashboard'
 import PDFTemplates from './collections/pdfTemplates'
 import PDFHeader from './globals/pdfHeader'
-import PDFWatermark from './globals/pdfWatermark'
+import { PDFWatermark } from './globals/pdfWatermark'
 import { RowField, Tab, TabsField, UIField } from 'payload/types'
 import generatePDFButton from './components/generateButton/inputField'
 import generatePDFCell from './components/generateButton/cell'
@@ -51,6 +51,7 @@ export const PDFGenerator =
           }
         ]
       }
+
       //@ts-expect-error
       const collectionFields: CollectionFieldList = incomingConfig.collections.filter((collection)=>{
         return pluginOptions?.collections?.includes(collection.slug)
@@ -122,9 +123,9 @@ export const PDFGenerator =
       }
 
       //This section is causing captureStackTrace errors
-      if (PDFTemplates.fields[1].type === 'tabs'){
-        PDFTemplates.fields[1].tabs.push(fieldMapping)
-      }
+      //if (PDFTemplates.fields[1].type === 'tabs'){
+      //  PDFTemplates.fields[1].tabs.push(fieldMapping)
+      //}
 
       config.collections = [
         ...(config.collections || []),
@@ -149,7 +150,7 @@ export const PDFGenerator =
         ...(config.globals || []),
         PDFHeader,
         PDFFooter(pluginOptions.uploadsCollection),
-        PDFWatermark,
+        PDFWatermark(pluginOptions.uploadsCollection),
         PDFFonts(pluginOptions.uploadsCollection)
       ]
 

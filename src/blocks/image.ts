@@ -1,5 +1,6 @@
 import { Block } from "payload/types";
 import { pdfElementPlacement } from "../fields/pdfElementPlacement";
+import { pdfImageSize } from "../fields/pdfImageSize";
 
 export function pdfImage(relationTo: string) {
   const block: Block = {
@@ -14,10 +15,7 @@ export function pdfImage(relationTo: string) {
         hasMany: false
       },
       pdfElementPlacement,
-      {
-        name: 'imageWidth',
-        type: 'point',
-      }
+      ...pdfImageSize
     ]
   }
   return block
