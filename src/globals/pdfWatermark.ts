@@ -16,9 +16,15 @@ export function PDFWatermark(relationTo: string){
             type: 'row',
             fields: [
               {
+                name: 'watermarkName',
+                type: 'text',
+                required: true
+              },
+              {
                 name: 'watermark',
                 type: 'upload',
-                relationTo: `${relationTo}`
+                relationTo: `${relationTo}`,
+                required: true
               },
               ...pdfImageSize
             ]

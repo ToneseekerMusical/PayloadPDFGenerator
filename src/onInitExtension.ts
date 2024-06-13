@@ -1,8 +1,8 @@
 import type { Payload } from 'payload/dist/payload'
 
-import type { PluginTypes } from './types'
+import type { PluginConfig } from './types'
 
-export const onInitExtension = (pluginOptions: PluginTypes, payload: Payload): void => {
+export const onInitExtension = (pluginOptions: PluginConfig, payload: Payload): void => {
   const { express: app } = payload
 
   if (!app) return

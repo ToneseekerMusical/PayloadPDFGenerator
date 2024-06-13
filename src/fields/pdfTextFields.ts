@@ -3,6 +3,7 @@ import { FieldSelectComponent } from "../components/fieldSelector/component";
 import { pdfElementPlacement } from "./pdfElementPlacement";
 import { pdfElementRotation } from "./pdfElementRotation";
 import ColorPickerField from "../components/colorPicker/colorPickerField";
+import { globalSelectComponent } from "../components/fieldSelectComponents/globalSelector/component";
 
 export const pdfTextFields: Field = {
   name: 'textConfiguration',
@@ -96,7 +97,7 @@ export const pdfTextFields: Field = {
       type: 'text',
       admin: {
         components: {
-          Field: FieldSelectComponent
+          Field: (props) => globalSelectComponent({...props, global: 'pdf-fonts'})
         },
         condition: (_, siblingData) => {
           return siblingData.fontOverride

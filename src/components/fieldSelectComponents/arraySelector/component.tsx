@@ -1,7 +1,7 @@
 import * as React from 'react';
 import type { Props as SelectFieldProps } from 'payload/components/fields/Select'
 import { SelectInput, useAllFormFields, useField } from 'payload/components/forms';
-import { CollectionFieldList, FieldList } from '../../../types';
+import { CollectionFieldList } from '../../../types';
 
 type ArrayFieldSelectFieldProps = SelectFieldProps & {
   path: string,

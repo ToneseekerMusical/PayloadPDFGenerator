@@ -1,2 +1,2 @@
 export { PDFGenerator } from './plugin'
-export type { PluginTypes } from './types'
+export type { PluginConfig } from './types'

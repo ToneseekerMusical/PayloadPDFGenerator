@@ -5,7 +5,7 @@ import { RowLabelArgs } from "payload/dist/admin/components/forms/RowLabel/types
 export const pdfHeaderPath: Block = {
   slug: 'pdfHeaderPath',
   imageAltText: 'Creates a series of PDF path element from an array of points or vectors',
-  interfaceName: 'PDFPath',
+  interfaceName: 'PDFHeaderPath',
   fields:[
     {
       type: 'row',

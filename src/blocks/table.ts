@@ -3,6 +3,7 @@ import { pdfElementPlacement } from "../fields/pdfElementPlacement";
 import { ArrayFieldSelectComponent } from "../components/fieldSelectComponents/arraySelector/component";
 import { CollectionFieldList } from "../types";
 import { TextFieldSelectComponent } from "../components/fieldSelectComponents/textSelector/component";
+import { RowLabelArgs } from "payload/dist/admin/components/forms/RowLabel/types";
 
 export function pdfTable(collectionConfig: CollectionFieldList){
   const block: Block = {
@@ -62,6 +63,14 @@ export function pdfTable(collectionConfig: CollectionFieldList){
           {
             name: 'columns',
             type: 'array',
+            admin: {
+              components: {
+                RowLabel: ({data, index}: RowLabelArgs)=> {
+                  return data?.sourceField || `Path ${String(index).padStart(2,'0')}`
+                }
+              },
+              initCollapsed: true,
+            },
             fields: [
               {
                 name: 'sourceField',

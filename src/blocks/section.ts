@@ -3,6 +3,7 @@ import { pdfTextFields } from "../fields/pdfTextFields";
 import { GroupFieldSelectComponent } from "../components/fieldSelectComponents/groupSelector/component";
 import { CollectionFieldList } from "../types";
 import { TextFieldSelectComponent } from "../components/fieldSelectComponents/textSelector/component";
+import { RowLabelArgs } from "payload/dist/admin/components/forms/RowLabel/types";
 
 export function pdfSection(collectionConfig: CollectionFieldList) {
   const pdfSection: Block = {
@@ -85,6 +86,14 @@ export function pdfSection(collectionConfig: CollectionFieldList) {
       {
         name: 'sectionFields',
         type: 'array',
+        admin: {
+          components: {
+            RowLabel: ({data, index}: RowLabelArgs)=> {
+              return data?.sourceField || `Field ${String(index).padStart(2,'0')}`
+            }
+          },
+          initCollapsed: true
+        },
         fields: [
           {
             name: 'sourceField',

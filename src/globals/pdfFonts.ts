@@ -27,6 +27,9 @@ export function PDFFonts(relationTo: string) {
             filterOptions: {
               mimeType: {contains: 'application/octet-stream'}
             },
+            admin: {
+              description: 'Only TTF font files are able to be used in generated PDF files.'
+            }
           },
           {
             name: 'fontName',

@@ -4,7 +4,7 @@ import { pdfTextFields } from "../fields/pdfTextFields";
 export const pdfHeaderText: Block = {
   slug: 'pdfHeaderText',
   imageAltText: 'Creates a PDF text element from a field value',
-  interfaceName: 'PDFText',
+  interfaceName: 'PDFHeaderText',
   fields:[
     {
       name: 'fieldLabel',

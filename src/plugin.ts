@@ -1,20 +1,14 @@
 import type { Plugin } from 'payload/config'
-
 import { onInitExtension } from './onInitExtension'
 import type { CollectionFieldList, PluginConfig } from './types'
 import { extendWebpackConfig } from './webpack'
-import PDFTemplates from './collections/pdfTemplates'
+import { PDFTemplates } from './collections/pdfTemplates'
 import { PDFHeader } from './globals/pdfHeader'
 import { PDFWatermark } from './globals/pdfWatermark'
-import { RowField, SelectField, Tab, TabsField, UIField } from 'payload/types'
+import { SelectField, TabsField, UIField } from 'payload/types'
 import generatePDFButton from './components/generateButton/inputField'
 import generatePDFCell from './components/generateButton/cell'
 import fieldWalk from './utils/fieldWalk'
-import { pdfImage } from './blocks/image'
-import { pdfPath } from './blocks/path'
-import { pdfSection } from './blocks/section'
-import { pdfTable } from './blocks/table'
-import { pdfText } from './blocks/text'
 import { PDFFonts } from './globals/pdfFonts'
 import { PDFFooter } from './globals/pdfFooter'
 
@@ -27,29 +21,6 @@ export const PDFGenerator =
       }
 
       let config = { ...incomingConfig }
-
-      const collectionSelection: RowField = {
-        type:'row',
-        fields: [
-          {
-            name: 'title',
-            type: 'text',
-            admin: {
-              width: "50"
-            }
-          },
-          {
-            name: 'assignedCollections',
-            type: 'select',
-            options: pluginOptions.collections.map((collection:string)=>({
-              label: collection, value: collection
-            })),
-            admin: {
-              width: "50",
-            },
-          }
-        ]
-      }
 
       const headerCollections: SelectField = {
         name: 'assignedCollections',
@@ -68,23 +39,6 @@ export const PDFGenerator =
           fields: fieldWalk(collection.fields)
         }
       })
-
-      const fieldMapping: Tab = {
-        label: 'Field Mapping',
-        fields: [
-          {
-            name: 'fields',
-            type: 'blocks',
-            blocks: [
-              pdfImage(pluginOptions.uploadsCollection),
-              pdfPath(collectionFields),
-              pdfSection(collectionFields),
-              pdfTable(collectionFields),
-              pdfText(collectionFields),
-            ]
-          },
-        ]
-      }
 
       const pdfGeneratorButton: UIField = {
         name: 'generatePDF',
@@ -125,19 +79,10 @@ export const PDFGenerator =
         return config
       }
 
-      if (PDFTemplates.fields[0].type !== 'row'){
-        PDFTemplates.fields.unshift(collectionSelection)
-      }
-
-      //This section is causing captureStackTrace errors
-      //if (PDFTemplates.fields[1].type === 'tabs'){
-      //  PDFTemplates.fields[1].tabs.push(fieldMapping)
-      //}
-
       config.collections = [
         ...(config.collections || []),
         // Add additional collections here
-        PDFTemplates, // delete this line to remove the example collection
+        PDFTemplates(collectionFields, pluginOptions), // delete this line to remove the example collection
       ]
 
       config.endpoints = [
