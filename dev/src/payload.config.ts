@@ -60,7 +60,8 @@ export default buildConfig({
       enabled: true,
       tabbedUI: true,
       collections: ['examples','tests'],
-      uploadsCollection: 'media'
+      uploadsCollection: 'media',
+      headerCollections: ['examples']
     }),
   ],
   db: mongooseAdapter({

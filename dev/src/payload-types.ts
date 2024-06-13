@@ -400,9 +400,126 @@ export interface PayloadMigration {
  */
 export interface PdfHeader {
   id: string;
-  title?: string | null;
+  headerLayouts?:
+    | {
+        layoutName: string;
+        layout?: (PDFHeaderSection | PDFImage | PDFPath | PDFText)[] | null;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt?: string | null;
   createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PDFHeaderSection".
+ */
+export interface PDFHeaderSection {
+  sectionOrientation: 'horizontal' | 'vertical';
+  sectionWidth?: number | null;
+  sectionHeight?: number | null;
+  topDivider?: boolean | null;
+  bottomDivider?: boolean | null;
+  leftDivider?: boolean | null;
+  rightDivider?: boolean | null;
+  sectionFields?:
+    | {
+        fieldLabel?: string | null;
+        fieldValue: string;
+        textConfiguration?: {
+          multilineText?: boolean | null;
+          multilineWidth?: ('100pw' | '50pw' | '33pw' | '25pw' | '100sw' | '50sw' | '33sw' | '25sw' | 'fill') | null;
+          pdfElementPlacement?: {
+            xPosition?: number | null;
+            yPosition?: number | null;
+          };
+          justification?: ('left' | 'center' | 'right' | 'justify') | null;
+          baseline?: ('alphabetic' | 'ideographic' | 'bottom' | 'top' | 'middle' | 'hanging') | null;
+          pdfElementRotation?: {
+            rotateElement?: boolean | null;
+            angle?: number | null;
+            rotationDirection?: ('0' | '1') | null;
+          };
+          characterSpacing?: number | null;
+          lineHeightFactor?: number | null;
+          textColorOverride?: boolean | null;
+          textColor?: string | null;
+          fontOverride?: boolean | null;
+          fontSelection?: string | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'pdfHeaderSection';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PDFImage".
+ */
+export interface PDFImage {
+  imageSource?: (string | null) | Media;
+  pdfElementPlacement?: {
+    xPosition?: number | null;
+    yPosition?: number | null;
+  };
+  width?: number | null;
+  height?: number | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'pdfImage';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PDFPath".
+ */
+export interface PDFPath {
+  pdfStrokeColor?: string | null;
+  pdfFillColor?: string | null;
+  pdfClosedPath?: boolean | null;
+  pathData?:
+    | {
+        pathName?: string | null;
+        data?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'pdfHeaderPath';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PDFText".
+ */
+export interface PDFText {
+  fieldLabel?: string | null;
+  value: string;
+  textConfiguration?: {
+    multilineText?: boolean | null;
+    multilineWidth?: ('100pw' | '50pw' | '33pw' | '25pw' | '100sw' | '50sw' | '33sw' | '25sw' | 'fill') | null;
+    pdfElementPlacement?: {
+      xPosition?: number | null;
+      yPosition?: number | null;
+    };
+    justification?: ('left' | 'center' | 'right' | 'justify') | null;
+    baseline?: ('alphabetic' | 'ideographic' | 'bottom' | 'top' | 'middle' | 'hanging') | null;
+    pdfElementRotation?: {
+      rotateElement?: boolean | null;
+      angle?: number | null;
+      rotationDirection?: ('0' | '1') | null;
+    };
+    characterSpacing?: number | null;
+    lineHeightFactor?: number | null;
+    textColorOverride?: boolean | null;
+    textColor?: string | null;
+    fontOverride?: boolean | null;
+    fontSelection?: string | null;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'pdfHeaderText';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

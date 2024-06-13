@@ -11,34 +11,39 @@ export function pdfSection(collectionConfig: CollectionFieldList) {
     interfaceName: 'PDFSection',
     fields:[
       {
-        name: 'sourceField',
-        type: 'text',
-        admin: {
-          components: {
-            Field: (props) => GroupFieldSelectComponent({...props, collectionConfig})
-          }
-        }
-      },
-      {
-        name: 'sectionOrientation',
-        type: 'select',
-        options: [
-          {label: 'Horizontal', value: 'horizontal'},
-          {label: 'Vertical', value: 'vertical'},
-        ],
-        required: true
-      },
-      {
-        name: 'sectionWidth',
-        type: 'number',
-        min: 30,
-        defaultValue: 50
-      },
-      {
-        name: 'sectionHeight',
-        type: 'number',
-        min: 30,
-        defaultValue: 50,
+        type: 'row',
+        fields: [
+          {
+            name: 'sourceField',
+            type: 'text',
+            admin: {
+              components: {
+                Field: (props) => GroupFieldSelectComponent({...props, collectionConfig})
+              }
+            }
+          },
+          {
+            name: 'sectionOrientation',
+            type: 'select',
+            options: [
+              {label: 'Horizontal', value: 'horizontal'},
+              {label: 'Vertical', value: 'vertical'},
+            ],
+            required: true
+          },
+          {
+            name: 'sectionWidth',
+            type: 'number',
+            min: 30,
+            defaultValue: 50
+          },
+          {
+            name: 'sectionHeight',
+            type: 'number',
+            min: 30,
+            defaultValue: 50,
+          },
+        ]
       },
       {
         type: 'row',
@@ -78,7 +83,7 @@ export function pdfSection(collectionConfig: CollectionFieldList) {
         ]
       },
       {
-        name: 'groupFields',
+        name: 'sectionFields',
         type: 'array',
         fields: [
           {
@@ -90,7 +95,11 @@ export function pdfSection(collectionConfig: CollectionFieldList) {
               }
             }
           },
-          pdfTextFields(collectionConfig)
+          {
+            name: 'label',
+            type: 'text'
+          },
+          pdfTextFields
         ]
       }
     ]

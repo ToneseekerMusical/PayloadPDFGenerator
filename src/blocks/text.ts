@@ -18,7 +18,11 @@ export function pdfText(collectionConfig: CollectionFieldList){
           }
         }
       },
-      pdfTextFields(collectionConfig)
+      {
+        name: 'label',
+        type: 'text'
+      },
+      pdfTextFields
     ]
   }
   return block

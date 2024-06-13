@@ -3,11 +3,10 @@ import type { Plugin } from 'payload/config'
 import { onInitExtension } from './onInitExtension'
 import type { CollectionFieldList, PluginConfig } from './types'
 import { extendWebpackConfig } from './webpack'
-import AfterDashboard from './components/AfterDashboard'
 import PDFTemplates from './collections/pdfTemplates'
-import PDFHeader from './globals/pdfHeader'
+import { PDFHeader } from './globals/pdfHeader'
 import { PDFWatermark } from './globals/pdfWatermark'
-import { RowField, Tab, TabsField, UIField } from 'payload/types'
+import { RowField, SelectField, Tab, TabsField, UIField } from 'payload/types'
 import generatePDFButton from './components/generateButton/inputField'
 import generatePDFCell from './components/generateButton/cell'
 import fieldWalk from './utils/fieldWalk'
@@ -50,6 +49,14 @@ export const PDFGenerator =
             },
           }
         ]
+      }
+
+      const headerCollections: SelectField = {
+        name: 'assignedCollections',
+        type: 'select',
+        options: pluginOptions.headerCollections.map((collection:string)=>({
+          label: collection, value: collection
+        })),
       }
 
       //@ts-expect-error
@@ -107,7 +114,7 @@ export const PDFGenerator =
           // Add additional admin components here
           afterDashboard: [
             ...(config.admin?.components?.afterDashboard || []),
-            AfterDashboard,
+            //AfterDashboard,
           ],
         },
       }
@@ -148,7 +155,7 @@ export const PDFGenerator =
 
       config.globals = [
         ...(config.globals || []),
-        PDFHeader,
+        PDFHeader(pluginOptions.uploadsCollection, headerCollections, collectionFields),
         PDFFooter(pluginOptions.uploadsCollection),
         PDFWatermark(pluginOptions.uploadsCollection),
         PDFFonts(pluginOptions.uploadsCollection)

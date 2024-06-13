@@ -7,7 +7,8 @@ export interface PluginConfig {
   collections: string[],
   tabbedUI?: boolean,
   interfaceName?: string,
-  uploadsCollection: string
+  uploadsCollection: string,
+  headerCollections: string[]
 }
 
 export interface NewCollectionTypes {

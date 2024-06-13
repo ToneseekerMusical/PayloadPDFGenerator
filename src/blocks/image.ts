@@ -12,7 +12,10 @@ export function pdfImage(relationTo: string) {
         name: 'imageSource',
         type: 'relationship',
         relationTo: `${relationTo}`,
-        hasMany: false
+        hasMany: false,
+        filterOptions: {
+          mimeType: {contains: 'image/'}
+        },
       },
       pdfElementPlacement,
       ...pdfImageSize
