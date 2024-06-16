@@ -11,5 +11,6 @@ The goal is to allow the easy creation of PDF templates that can be populated by
 
 ### To-do:
 
+* Add toast errors to generatePDF function
 * Write a function to convert selected images and fonts to base64 for embedding in pdf file.
 * Write the PDF generation function

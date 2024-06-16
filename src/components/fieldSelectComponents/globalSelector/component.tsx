@@ -23,7 +23,6 @@ export const globalSelectComponent: React.FC<globalSelectFieldProps> = (props) =
         }).filter((option)=>{
           return option !== null ? true : false
         }).flatMap((option: any)=>{
-          console.log(option)
           return option.layoutName ? 
             {label: `${option.layoutName}`, value: `${option.layoutName}`} :
             option.watermarkName ? 
@@ -46,18 +45,15 @@ export const globalSelectComponent: React.FC<globalSelectFieldProps> = (props) =
     fetchOptions();
   }, []);
 
-  React.useEffect(() => {
-    if (value && !Array.isArray(value)) {
-      // convert saved stringified array back to an array
-      const newValue = JSON.parse(value);
-      setValue(newValue)
-    }
-  }, [value]);
-
   return (
     <div>
       <label className='field-label'>
-        Field Name
+        {
+          props.global === 'pdf-fonts' ? 'Default Font' :
+          props.global === 'pdf-watermarks' ? 'Watermark' :
+          props.global === 'pdf-footer' ? 'Footer Layout' :
+          'Header Layout'
+        }
       </label>
       <SelectInput
         path={props.path}
@@ -65,18 +61,8 @@ export const globalSelectComponent: React.FC<globalSelectFieldProps> = (props) =
         hasMany={false}
         options={options}
         value={value}
-        onChange={
-          (selectedOption) => {
-            if (!Array.isArray(selectedOption)) return
-            const newValue = selectedOption.map((option) => option.value)
-            setValue(newValue)
-          }
-        }
+        onChange={(e) => setValue(e.value)}
       />
     </div>
   )
 };
-
-function useCallback(arg0: (selectedOption: any) => void, arg1: ((val: unknown, modifyForm?: boolean) => void)[]) {
-  throw new Error('Function not implemented.');
-}

@@ -47,6 +47,7 @@
   "types": "dist/index.d.ts",
   "version": "0.0.0=1",
   "dependencies": {
+    "jspdf": "^2.5.1",
     "primereact": "^10.6.6"
   }
 }

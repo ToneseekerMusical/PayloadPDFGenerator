@@ -10,10 +10,10 @@ const generatePDFCell: React.FC<Props> = props => {
     <Button
       size="small"
       onClick={() => {
-        pdfGenerator(rowData)
+        pdfGenerator(rowData, collection.slug)
       }}
     >
-      Download PDF
+      Generate PDF
     </Button>
   )
 }

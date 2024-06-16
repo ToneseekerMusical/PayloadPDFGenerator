@@ -8,9 +8,9 @@ import { PDFWatermark } from './globals/pdfWatermark'
 import { SelectField, TabsField, UIField } from 'payload/types'
 import generatePDFButton from './components/generateButton/inputField'
 import generatePDFCell from './components/generateButton/cell'
-import fieldWalk from './utils/fieldWalk'
 import { PDFFonts } from './globals/pdfFonts'
 import { PDFFooter } from './globals/pdfFooter'
+import fieldWalk from './utils/pdfFunctions/fieldWalk'
 
 export const PDFGenerator =
   (pluginOptions: PluginConfig): Plugin =>
@@ -150,16 +150,11 @@ export const PDFGenerator =
                                     (field) => 'name' in field && field.name !== 'email',
                                   )
                                 : collection.fields) || []),
+                                pdfGeneratorButton,
                             ],
                             label: collection?.labels?.singular || 'Content',
                           },
                         ]),
-                    {
-                      fields: [
-                        pdfGeneratorButton,
-                      ],
-                      label: 'PDF Options',
-                    },
                   ],
                 },
               ]

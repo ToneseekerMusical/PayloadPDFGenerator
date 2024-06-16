@@ -263,65 +263,60 @@ export interface FormSubmission {
  */
 export interface PdfTemplate {
   id: string;
-  title?: string | null;
+  title: string;
   assignedCollections?: ('examples' | 'tests') | null;
+  enableCompression?: boolean | null;
   pageOptions: {
-    orientation?: ('portrait' | 'landscape') | null;
-    pageSize?:
-      | (
-          | 'letter'
-          | 'government-letter'
-          | 'legal'
-          | 'junior-legal'
-          | 'ledger'
-          | 'tabloid'
-          | 'credit-card'
-          | 'a0'
-          | 'a1'
-          | 'a2'
-          | 'a3'
-          | 'a4'
-          | 'a5'
-          | 'a7'
-          | 'a8'
-          | 'a9'
-          | 'a10'
-          | 'b0'
-          | 'b1'
-          | 'b2'
-          | 'b3'
-          | 'b4'
-          | 'b5'
-          | 'b6'
-          | 'b7'
-          | 'b8'
-          | 'b9'
-          | 'b10'
-          | 'c0'
-          | 'c1'
-          | 'c2'
-          | 'c3'
-          | 'c4'
-          | 'c5'
-          | 'c6'
-          | 'c7'
-          | 'c8'
-          | 'c9'
-          | 'c10'
-          | 'd1'
-          | 'custom'
-        )
-      | null;
+    orientation: 'portrait' | 'landscape';
+    pageSize:
+      | 'letter'
+      | 'government-letter'
+      | 'legal'
+      | 'junior-legal'
+      | 'ledger'
+      | 'tabloid'
+      | 'credit-card'
+      | 'a0'
+      | 'a1'
+      | 'a2'
+      | 'a3'
+      | 'a4'
+      | 'a5'
+      | 'a7'
+      | 'a8'
+      | 'a9'
+      | 'a10'
+      | 'b0'
+      | 'b1'
+      | 'b2'
+      | 'b3'
+      | 'b4'
+      | 'b5'
+      | 'b6'
+      | 'b7'
+      | 'b8'
+      | 'b9'
+      | 'b10'
+      | 'c0'
+      | 'c1'
+      | 'c2'
+      | 'c3'
+      | 'c4'
+      | 'c5'
+      | 'c6'
+      | 'c7'
+      | 'c8'
+      | 'c9'
+      | 'c10'
+      | 'd1'
+      | 'custom';
     customPageSize?: {
       length: number;
       width: number;
     };
-    margins: {
-      topMargin: number;
-      bottomMargin: number;
-      leftMargin: number;
-      rightMargin: number;
-    };
+    units: 'px' | 'pt' | 'mm' | 'cm' | 'm' | 'in';
+    horizontalMargin?: number | null;
+    verticalMargin?: number | null;
   };
   layoutOptions?: {
     headerLayout?: string | null;
@@ -330,7 +325,7 @@ export interface PdfTemplate {
   };
   fontOptions: {
     defaultFontSize?: number | null;
-    fonts?: ('test' | 'test2')[] | null;
+    defaultFont?: string | null;
     defaultTextColor: string;
   };
   pathOptions: {
@@ -342,8 +337,8 @@ export interface PdfTemplate {
     defaultLineCapStyle?: string | null;
     defaultLineJoinStyle?: string | null;
   };
-  fileOptions?: {
-    buttonBehavior?: ('download' | 'newTab' | 'curTab' | 'autoprint') | null;
+  fileOptions: {
+    buttonBehavior: 'download' | 'newTab' | 'curTab' | 'autoprint';
     fileNameField?: string | null;
   };
   useEncryption?: boolean | null;

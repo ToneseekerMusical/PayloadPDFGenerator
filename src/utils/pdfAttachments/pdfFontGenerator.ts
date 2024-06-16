@@ -1,21 +1,3 @@
-//Refactor to get font from database
-var opts = {
-  on: {
-    load: function (e, file) {
-      window.loadedFile = file;
-      document.getElementById('fontName').value = file.extra.nameNoExtension;
-
-      var fileReader = new FileReader();
-      fileReader.onload = function (e) {
-        window.loadedFileContents = e.target.result;
-        window.loadedFileContents = window.loadedFileContents.substr(window.loadedFileContents.indexOf('base64,') + 7)
-      };
-      fileReader.readAsDataURL(file);
-    }
-  }
-};
-FileReaderJS.setupInput(document.getElementById('file-input'), opts);
-
 function generateJsPDFFontFile() {
   var jsFile = '';
   var fontName = document.getElementById('fontName').value;

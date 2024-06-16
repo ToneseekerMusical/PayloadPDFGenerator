@@ -9,6 +9,9 @@ import { pdfPath } from '../blocks/path';
 import { pdfImage } from '../blocks/image';
 import { CollectionFieldList, PluginConfig } from '../types';
 import { globalSelectComponent } from '../components/fieldSelectComponents/globalSelector/component';
+import { FieldSelectComponent } from '../components/fieldSelector/component';
+import { TextFieldSelectComponent } from '../components/fieldSelectComponents/textSelector/component';
+import { pdfMargins } from '../fields/pdfMargins';
 
 export function PDFTemplates(collectionFields: CollectionFieldList, pluginOptions: PluginConfig){
   const PDFTemplates: CollectionConfig = {
@@ -26,7 +29,8 @@ export function PDFTemplates(collectionFields: CollectionFieldList, pluginOption
             type: 'text',
             admin: {
               width: "50"
-            }
+            },
+            required: true
           },
           {
             name: 'assignedCollections',
@@ -47,6 +51,10 @@ export function PDFTemplates(collectionFields: CollectionFieldList, pluginOption
             label: 'Document Setup',
             fields: [
               {
+                name: 'enableCompression',
+                type: 'checkbox'
+              },
+              {
                 name: 'pageOptions',
                 type: 'group',
                 fields: [
@@ -60,7 +68,8 @@ export function PDFTemplates(collectionFields: CollectionFieldList, pluginOption
                           {label:'Portrait', value:'portrait'},
                           {label:'Landscape', value:'landscape'},
                         ],
-                        defaultValue: 'portrait'
+                        defaultValue: 'portrait',
+                        required: true
                       },
                       {
                         name: 'pageSize',
@@ -109,7 +118,8 @@ export function PDFTemplates(collectionFields: CollectionFieldList, pluginOption
                           {label:'D1', value:'d1'},
                           {label:'Custom', value:'custom'}
                         ],
-                        defaultValue: 'letter'
+                        defaultValue: 'letter',
+                        required: true
                       },
                     ]
                   },
@@ -146,44 +156,20 @@ export function PDFTemplates(collectionFields: CollectionFieldList, pluginOption
                     }
                   },
                   {
-                    name: 'margins',
-                    type: 'group',
-                    fields: [
-                      {
-                        type: 'row',
-                        fields: [
-                          {
-                            name: 'topMargin',
-                            type: 'number',
-                            min: 5,
-                            required: true,
-                            defaultValue: 10
-                          },
-                          {
-                            name: 'bottomMargin',
-                            type: 'number',
-                            min: 5,
-                            required: true,
-                            defaultValue: 10
-                          },
-                          {
-                            name: 'leftMargin',
-                            type: 'number',
-                            min: 5,
-                            required: true,
-                            defaultValue: 10
-                          },
-                          {
-                            name: 'rightMargin',
-                            type: 'number',
-                            min: 5,
-                            required: true,
-                            defaultValue: 10
-                          },
-                        ]
-                      }
-                    ]
+                    name: 'units',
+                    type: 'select',
+                    options: [
+                      {label: 'Pixels', value: 'px'},
+                      {label: 'Points', value: 'pt'},
+                      {label: 'Millimeters', value: 'mm'},
+                      {label: 'Centimeters', value: 'cm'},
+                      {label: 'Meters', value: 'm'},
+                      {label: 'Inches', value: 'in'},
+                    ],
+                    defaultValue: 'px',
+                    required: true
                   },
+                  ...pdfMargins
                 ]
               },
               {
@@ -239,13 +225,13 @@ export function PDFTemplates(collectionFields: CollectionFieldList, pluginOption
                         defaultValue: 4
                       },
                       {
-                        name: 'fonts',
-                        type: 'select',
-                        options: [
-                          {label: 'test', value: 'test'},
-                          {label: 'test2', value: 'test2'}
-                        ],
-                        hasMany: true
+                        name: 'defaultFont',
+                        type: 'text',
+                        admin: {
+                          components: {
+                            Field: (props) => globalSelectComponent({...props, global: 'pdf-fonts'})
+                          },
+                        }
                       },
                       {
                         name: 'defaultTextColor',
@@ -338,7 +324,7 @@ export function PDFTemplates(collectionFields: CollectionFieldList, pluginOption
                     ]
                   }
                 ]
-              }
+              },
             ]
           },
           {
@@ -360,12 +346,17 @@ export function PDFTemplates(collectionFields: CollectionFieldList, pluginOption
                           {label:'Open in Current Tab', value:'curTab'},
                           {label:'Auto-print', value:'autoprint'},
                         ],
-                        defaultValue: 'download'
+                        defaultValue: 'download',
+                        required: true
                       },
                       {
                         name:'fileNameField',
                         type:'text',
-                        defaultValue: 'title'
+                        admin: {
+                          components: {
+                            Field: (props) => TextFieldSelectComponent({...props, collectionConfig: collectionFields })
+                          },
+                        }
                       }
                     ]
                   }
