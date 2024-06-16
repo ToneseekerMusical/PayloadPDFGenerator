@@ -17,7 +17,7 @@ export const globalSelectComponent: React.FC<globalSelectFieldProps> = (props) =
       try {
         const response = await fetch(`${process.env.PAYLOAD_PUBLIC_SERVER_URL}/api/globals/${props.global}`)
         const data = await response.json()
-        const options = Object.values(data)
+        let options = Object.values(data)
         .flatMap((option)=>{
           return typeof option !== 'string' ? option : null
         }).filter((option)=>{
@@ -32,6 +32,23 @@ export const globalSelectComponent: React.FC<globalSelectFieldProps> = (props) =
             {label:`Please create an in the ${props.global} document`,value:''}
         })
         
+        if (props.global === 'pdf-fonts'){
+          options = [...options,
+            {label: 'Helvetica', value: 'Helvetica'},
+            {label: 'Helvetica-Bold', value: 'Helvetica-Bold'},
+            {label: 'Helvetica-Oblique', value: 'Helvetica-Oblique'},
+            {label: 'Helvetica-BoldOblique', value: 'Helvetica-BoldOblique'},
+            {label: 'Courier', value: 'Courier'},
+            {label: 'Courier-Bold', value: 'Courier-Bold'},
+            {label: 'Courier-Oblique', value: 'Courier-Oblique'},
+            {label: 'Courier-BoldOblique', value: 'Courier-BoldOblique'},
+            {label: 'Times-Roman',  value: 'Times-Roman'}, 
+            {label: 'Times-Italic', value: 'Times-Italic'},
+            {label: 'Times-BoldItalic', value: 'Times-BoldItalic'},
+            {label: 'ZapfDingbats', value: 'ZapfDingbats'}
+          ]
+        }
+
         setOptions(
           options.sort(
             (a, b) => a.label.localeCompare(b.label)

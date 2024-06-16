@@ -265,7 +265,7 @@ export interface PdfTemplate {
   id: string;
   title: string;
   assignedCollections?: ('examples' | 'tests') | null;
-  enableCompression?: boolean | null;
+  enableCompression: boolean;
   pageOptions: {
     orientation: 'portrait' | 'landscape';
     pageSize:
@@ -314,7 +314,7 @@ export interface PdfTemplate {
       length: number;
       width: number;
     };
-    units: 'px' | 'pt' | 'mm' | 'cm' | 'm' | 'in';
+    units: 'px' | 'pt' | 'mm' | 'cm' | 'in';
     horizontalMargin?: number | null;
     verticalMargin?: number | null;
   };
@@ -325,7 +325,7 @@ export interface PdfTemplate {
   };
   fontOptions: {
     defaultFontSize?: number | null;
-    defaultFont?: string | null;
+    defaultFont: string;
     defaultTextColor: string;
   };
   pathOptions: {
@@ -341,7 +341,7 @@ export interface PdfTemplate {
     buttonBehavior: 'download' | 'newTab' | 'curTab' | 'autoprint';
     fileNameField?: string | null;
   };
-  useEncryption?: boolean | null;
+  useEncryption: boolean;
   encryptionSettings?: {
     userPassword?: string | null;
     ownerPassword?: string | null;

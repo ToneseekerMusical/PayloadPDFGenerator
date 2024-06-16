@@ -52,7 +52,8 @@ export function PDFTemplates(collectionFields: CollectionFieldList, pluginOption
             fields: [
               {
                 name: 'enableCompression',
-                type: 'checkbox'
+                type: 'checkbox',
+                required: true
               },
               {
                 name: 'pageOptions',
@@ -163,7 +164,6 @@ export function PDFTemplates(collectionFields: CollectionFieldList, pluginOption
                       {label: 'Points', value: 'pt'},
                       {label: 'Millimeters', value: 'mm'},
                       {label: 'Centimeters', value: 'cm'},
-                      {label: 'Meters', value: 'm'},
                       {label: 'Inches', value: 'in'},
                     ],
                     defaultValue: 'px',
@@ -231,7 +231,9 @@ export function PDFTemplates(collectionFields: CollectionFieldList, pluginOption
                           components: {
                             Field: (props) => globalSelectComponent({...props, global: 'pdf-fonts'})
                           },
-                        }
+                        },
+                        defaultValue: 'Courier',
+                        required: true
                       },
                       {
                         name: 'defaultTextColor',
@@ -364,7 +366,8 @@ export function PDFTemplates(collectionFields: CollectionFieldList, pluginOption
               },
               {
                 name: 'useEncryption',
-                type: 'checkbox'
+                type: 'checkbox',
+                required: true
               },
               {
                 name: 'encryptionSettings',

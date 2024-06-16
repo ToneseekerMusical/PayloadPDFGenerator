@@ -102,7 +102,9 @@ export const pdfTextFields: Field = {
         condition: (_, siblingData) => {
           return siblingData.fontOverride
         }
-      }
+      },
+      defaultValue: 'Courier',
+      required: true
     }
   ]
 }
