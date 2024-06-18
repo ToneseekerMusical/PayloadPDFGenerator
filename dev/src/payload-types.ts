@@ -266,6 +266,7 @@ export interface PdfTemplate {
   title: string;
   assignedCollections?: ('examples' | 'tests') | null;
   enableCompression: boolean;
+  rightToLeft: boolean;
   pageOptions: {
     orientation: 'portrait' | 'landscape';
     pageSize:
@@ -324,7 +325,9 @@ export interface PdfTemplate {
     watermark?: string | null;
   };
   fontOptions: {
-    defaultFontSize?: number | null;
+    defaultFontSize: number;
+    defaultCharacterSpace: number;
+    defaultLineHeightFactor: number;
     defaultFont: string;
     defaultTextColor: string;
   };
@@ -332,10 +335,10 @@ export interface PdfTemplate {
     defaultFillColor: string;
     defaultStrokeColor: string;
     defaultLineColor: string;
-    defaultStrokeWidth?: number | null;
-    defaultLineWidth?: number | null;
-    defaultLineCapStyle?: string | null;
-    defaultLineJoinStyle?: string | null;
+    defaultStrokeWidth: number;
+    defaultLineWidth: number;
+    defaultLineCapStyle: 'butt' | 'miter' | 'round' | 'square';
+    defaultLineJoinStyle: 'butt' | 'miter' | 'round' | 'square';
   };
   fileOptions: {
     buttonBehavior: 'download' | 'newTab' | 'curTab' | 'autoprint';
@@ -347,10 +350,10 @@ export interface PdfTemplate {
     ownerPassword?: string | null;
     userPermissions?: ('print' | 'modify' | 'copy' | 'annot-forms')[] | null;
   };
-  defaultDisplayMode?: {
-    zoom?: ('fullwidth' | 'fullheight' | 'fullpage' | 'original') | null;
-    layout?: ('continuous' | 'single' | 'twoleft' | 'tworight') | null;
-    outlineDisplay?: ('none' | 'UseOutlines' | 'UseThumbs') | null;
+  defaultDisplayMode: {
+    zoom: 'fullwidth' | 'fullheight' | 'fullpage' | 'original';
+    layout: 'continuous' | 'single' | 'twoleft' | 'tworight';
+    pmode?: ('UseOutlines' | 'UseThumbs' | 'FullScreen') | null;
   };
   fields?: (PDFImage | PDFPath | PDFSection | PDFTable | PDFText)[] | null;
   updatedAt: string;
@@ -530,7 +533,7 @@ export interface PayloadMigration {
  */
 export interface PdfHeader {
   id: string;
-  headerLayouts?:
+  layouts?:
     | {
         layoutName: string;
         layout?: (PDFHeaderSection | PDFImage | PDFHeaderPath | PDFHeaderText)[] | null;
@@ -641,7 +644,7 @@ export interface PDFHeaderText {
  */
 export interface PdfFooter {
   id: string;
-  footerLayouts?:
+  layouts?:
     | {
         layoutName: string;
         topDivider?: boolean | null;
@@ -693,9 +696,36 @@ export interface PdfWatermark {
   watermarks?:
     | {
         watermarkName: string;
-        watermark: string | Media;
-        width?: number | null;
-        height?: number | null;
+        watermarkType?: ('image' | 'text') | null;
+        imageSettings?: {
+          watermark: string | Media;
+          width?: number | null;
+          height?: number | null;
+        };
+        textSettings?: {
+          watermark: string;
+          textConfiguration?: {
+            multilineText?: boolean | null;
+            multilineWidth?: ('100pw' | '50pw' | '33pw' | '25pw' | '100sw' | '50sw' | '33sw' | '25sw' | 'fill') | null;
+            pdfElementPlacement?: {
+              xPosition?: number | null;
+              yPosition?: number | null;
+            };
+            justification?: ('left' | 'center' | 'right' | 'justify') | null;
+            baseline?: ('alphabetic' | 'ideographic' | 'bottom' | 'top' | 'middle' | 'hanging') | null;
+            pdfElementRotation?: {
+              rotateElement?: boolean | null;
+              angle?: number | null;
+              rotationDirection?: ('0' | '1') | null;
+            };
+            characterSpacing?: number | null;
+            lineHeightFactor?: number | null;
+            textColorOverride?: boolean | null;
+            textColor?: string | null;
+            fontOverride?: boolean | null;
+            fontSelection?: string | null;
+          };
+        };
         id?: string | null;
       }[]
     | null;
@@ -712,7 +742,7 @@ export interface PdfFont {
     | {
         fontFile?: string | Media | null;
         fontName?: string | null;
-        fontWeight?: ('bold' | 'italic' | 'normal' | 'bolditalic') | null;
+        fontEmphasis?: ('bold' | 'italic' | 'normal' | 'bolditalic') | null;
         id?: string | null;
       }[]
     | null;

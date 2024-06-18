@@ -51,9 +51,19 @@ export function PDFTemplates(collectionFields: CollectionFieldList, pluginOption
             label: 'Document Setup',
             fields: [
               {
-                name: 'enableCompression',
-                type: 'checkbox',
-                required: true
+                type: 'row',
+                fields: [
+                  {
+                    name: 'enableCompression',
+                    type: 'checkbox',
+                    required: true
+                  },
+                  {
+                    name: 'rightToLeft',
+                    type: 'checkbox',
+                    required: true
+                  }
+                ]
               },
               {
                 name: 'pageOptions',
@@ -222,7 +232,22 @@ export function PDFTemplates(collectionFields: CollectionFieldList, pluginOption
                         type: 'number',
                         min: 4,
                         max: 20,
-                        defaultValue: 4
+                        defaultValue: 4,
+                        required: true
+                      },
+                      {
+                        name: 'defaultCharacterSpace',
+                        type: 'number',
+                        min: 0,
+                        defaultValue: 1,
+                        required: true
+                      },
+                      {
+                        name: 'defaultLineHeightFactor',
+                        type: 'number',
+                        min: 0,
+                        defaultValue: 1.15,
+                        required: true
                       },
                       {
                         name: 'defaultFont',
@@ -308,21 +333,39 @@ export function PDFTemplates(collectionFields: CollectionFieldList, pluginOption
                         type: 'number',
                         min: 0,
                         defaultValue: 1,
+                        required: true
                       },
                       {
                         name: 'defaultLineWidth',
                         type: 'number',
                         min: 0,
                         defaultValue: 1,
+                        required: true
                       },
                       {
                         name: 'defaultLineCapStyle',
-                        type: 'text',
+                        type: 'select',
+                        options: [
+                          {label: 'Butt', value: 'butt'},
+                          {label: 'Miter', value: 'miter'},
+                          {label: 'Round', value: 'round'},
+                          {label: 'Square', value: 'square'},
+                        ],
+                        defaultValue: 'butt',
+                        required: true
                       },
                       {
                         name: 'defaultLineJoinStyle',
-                        type: 'text',
-                      }
+                        type: 'select',
+                        options: [
+                          {label: 'Butt', value: 'butt'},
+                          {label: 'Miter', value: 'miter'},
+                          {label: 'Round', value: 'round'},
+                          {label: 'Square', value: 'square'},
+                        ],
+                        defaultValue: 'butt',
+                        required: true
+                      },
                     ]
                   }
                 ]
@@ -420,7 +463,8 @@ export function PDFTemplates(collectionFields: CollectionFieldList, pluginOption
                           {label: 'Full Page', value: 'fullpage'},
                           {label: 'original', value: 'original'},
                         ],
-                        defaultValue: 'fullwidth'
+                        defaultValue: 'fullwidth',
+                        required: true
                       },
                       {
                         name: 'layout',
@@ -431,17 +475,18 @@ export function PDFTemplates(collectionFields: CollectionFieldList, pluginOption
                           {label: 'Two Column Left', value: 'twoleft'},
                           {label: 'Two Column Right', value: 'tworight'}
                         ],
-                        defaultValue: 'continuous'
+                        defaultValue: 'continuous',
+                        required: true
                       },
                       {
-                        name: 'outlineDisplay',
+                        name: 'pmode',
+                        label: 'outlineDisplay',
                         type: 'select',
                         options: [
-                          {label: 'None', value: 'none'},
                           {label: 'Bookmarks', value: 'UseOutlines'},
                           {label: 'Thumbnails', value: 'UseThumbs'},
+                          {label: 'Fullscreen', value: 'FullScreen'},
                         ],
-                        defaultValue: 'none'
                       }
                     ]
                   }

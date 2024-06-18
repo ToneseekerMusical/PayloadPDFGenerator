@@ -28,7 +28,10 @@ export const globalSelectComponent: React.FC<globalSelectFieldProps> = (props) =
             option.watermarkName ? 
             {label: `${option.watermarkName}`, value: `${option.watermarkName}`} :
             option.fontFile ? 
-            {label: `${option.fontFile.filename}`, value: `${option.fontFile.url}`} :
+            {
+              label: `${option.fontFile.filename}`,
+              value: option.fontFile.url ? `{"url": "${option.fontFile.url}", "fontName": "${option.fontName}", "emphasis": "${option.fontEmphasis}"}`
+              : `${option.fontFile.filename}` } :
             {label:`Please create an in the ${props.global} document`,value:''}
         })
         

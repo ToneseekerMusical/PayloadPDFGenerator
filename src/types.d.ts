@@ -26,9 +26,10 @@ export interface CollectionFieldList {
   fields: FieldList[];
 }[]
 
-export interface fontList {
-  defaultFont: string,
-  overrides?: string[]
+export interface Font{
+  url: string;
+  fontName: string;
+  emphasis: string;
 }
 
 export interface pdf {
@@ -38,7 +39,34 @@ export interface pdf {
   putOnlyUsedFonts?: Boolean
   compress?: Boolean
   precision?: Number
-  encryption?: Boolean
+  encryption?: {
+    userPassword?: string | null | undefined,
+    ownerPassword?: string | null | undefined,
+    userPermissions?: Array<'print' | 'modify' | 'copy' | 'annot-forms'> | null | undefined
+  }
+}
+
+export interface pdfDefaults {
+  displayMode:{
+    zoom: "fullwidth" | "fullheight" | "fullpage" | "original";
+    layout: "continuous" | "single" | "twoleft" | "tworight";
+    pmode: "UseOutlines" | "UseThumbs" | "FullScreen" | null | undefined;
+  },
+  rightToLeft: boolean;
+  path:{
+    lineCap:"butt" | "miter" | "round" | "square";
+    lineJoin:"butt" | "miter" | "round" | "square";
+    fillColor:string;
+    drawColor:string;
+    lineWidth:number;
+  },
+  font:{
+    font:string;
+    fontSize:number;
+    lineHeightFactor:number;
+    textColor:string;
+    charSpace:number;
+  }
 }
 
 export interface PdfTemplate {
@@ -46,6 +74,7 @@ export interface PdfTemplate {
   title: string;
   assignedCollections?: ('examples' | 'tests') | null;
   enableCompression: boolean;
+  rightToLeft: boolean;
   pageOptions: {
     orientation: 'portrait' | 'landscape';
     pageSize:
@@ -104,7 +133,9 @@ export interface PdfTemplate {
     watermark?: string | null;
   };
   fontOptions: {
-    defaultFontSize?: number | null;
+    defaultFontSize: number;
+    defaultCharacterSpace: number;
+    defaultLineHeightFactor: number;
     defaultFont: string;
     defaultTextColor: string;
   };
@@ -112,10 +143,10 @@ export interface PdfTemplate {
     defaultFillColor: string;
     defaultStrokeColor: string;
     defaultLineColor: string;
-    defaultStrokeWidth?: number | null;
-    defaultLineWidth?: number | null;
-    defaultLineCapStyle?: string | null;
-    defaultLineJoinStyle?: string | null;
+    defaultStrokeWidth: number;
+    defaultLineWidth: number;
+    defaultLineCapStyle: 'butt' | 'miter' | 'round' | 'square';
+    defaultLineJoinStyle: 'butt' | 'miter' | 'round' | 'square';
   };
   fileOptions: {
     buttonBehavior: 'download' | 'newTab' | 'curTab' | 'autoprint';
@@ -127,10 +158,10 @@ export interface PdfTemplate {
     ownerPassword?: string | null;
     userPermissions?: ('print' | 'modify' | 'copy' | 'annot-forms')[] | null;
   };
-  defaultDisplayMode?: {
-    zoom?: ('fullwidth' | 'fullheight' | 'fullpage' | 'original') | null;
-    layout?: ('continuous' | 'single' | 'twoleft' | 'tworight') | null;
-    outlineDisplay?: ('none' | 'UseOutlines' | 'UseThumbs') | null;
+  defaultDisplayMode: {
+    zoom: 'fullwidth' | 'fullheight' | 'fullpage' | 'original';
+    layout: 'continuous' | 'single' | 'twoleft' | 'tworight';
+    pmode?: ('UseOutlines' | 'UseThumbs' | 'FullScreen') | null;
   };
   fields?: (PDFImage | PDFPath | PDFSection | PDFTable | PDFText)[] | null;
   updatedAt: string;

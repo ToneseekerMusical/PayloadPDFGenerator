@@ -10,7 +10,7 @@ export function PDFFooter(relationTo: string){
     },
     fields: [
       {
-        name: 'footerLayouts',
+        name: 'layouts',
         type: 'array',
         admin: {
           components: {

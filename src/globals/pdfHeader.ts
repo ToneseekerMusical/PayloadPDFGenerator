@@ -14,7 +14,7 @@ export function PDFHeader(relationTo: string, collectionSelection: SelectField, 
     },
     fields: [
       {
-        name: 'headerLayouts',
+        name: 'layouts',
         type: 'array',
         admin: {
           initCollapsed: true,

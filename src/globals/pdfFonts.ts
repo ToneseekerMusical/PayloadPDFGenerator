@@ -36,7 +36,7 @@ export function PDFFonts(relationTo: string) {
             type: 'text'
           },
           {
-            name: 'fontWeight',
+            name: 'fontEmphasis',
             type: 'select',
             options: [
               {label: 'Bold', value: 'bold'},
