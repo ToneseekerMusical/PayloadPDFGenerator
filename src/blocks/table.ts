@@ -29,7 +29,7 @@ export function pdfTable(collectionConfig: CollectionFieldList){
           }
         ]
       },
-      pdfElementPlacement,
+      ...pdfElementPlacement,
       {
         name: 'columnSetup',
         type: 'group',

@@ -22,6 +22,11 @@ export function pdfText(collectionConfig: CollectionFieldList){
         name: 'label',
         type: 'text'
       },
+      {
+        name: 'textStyleOverrides',
+        type: 'checkbox',
+        required: true
+      },
       pdfTextFields
     ]
   }

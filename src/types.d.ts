@@ -1,3 +1,5 @@
+import { Matrix } from "jspdf"
+
 export interface PluginConfig {
   /**
    * Enable or disable plugin
@@ -9,6 +11,11 @@ export interface PluginConfig {
   interfaceName?: string,
   uploadsCollection: string,
   headerCollections: string[]
+}
+
+export interface pdfCursor {
+  xPos: number,
+  yPos: number
 }
 
 export interface NewCollectionTypes {
@@ -32,6 +39,11 @@ export interface Font{
   emphasis: string;
 }
 
+export interface Margins {
+  horz: number;
+  vert: number;
+}
+
 export interface pdf {
   orientation?: 'p' | 'portrait' | 'l' | 'landscape'
   unit?: 'pt' | 'px' | 'in' | 'mm' | 'cm' | 'ex' | 'em' | 'pc'
@@ -45,6 +57,38 @@ export interface pdf {
     userPermissions?: Array<'print' | 'modify' | 'copy' | 'annot-forms'> | null | undefined
   }
 }
+
+export interface textOverrides {
+  multilineText: boolean;
+  multilineWidth?: ('100pw' | '50pw' | '33pw' | '25pw' | '100sw' | '50sw' | '33sw' | '25sw' | 'fill') | null;
+  overrideTextAlignment: boolean;
+  align?: ('left' | 'center' | 'right' | 'justify') | null;
+  baseline?: ('alphabetic' | 'ideographic' | 'bottom' | 'top' | 'middle' | 'hanging') | null;
+  rotateElement: boolean;
+  angle?: number | null;
+  rotationDirection?: ('0' | '1') | null;
+  overrideCharacterSpacing: boolean;
+  charSpace?: number | null;
+  overrideLineHeightFactor: boolean;
+  lineHeightFactor: number;
+  textColorOverride: boolean;
+  textColor?: string | null;
+  fontOverride: boolean;
+  fontSelection?: string | null;
+  overrideTextRendering: boolean;
+  renderingMode?:
+    | (
+        | 'fill'
+        | 'stroke'
+        | 'fillThenStroke'
+        | 'invisible'
+        | 'fillAndAddForClipping'
+        | 'strokeAndAddPathForClipping'
+        | 'fillThenStrokeAndAddToPathForClipping'
+        | 'addToPathForClipping'
+      )
+    | null;
+};
 
 export interface pdfDefaults {
   displayMode:{
@@ -61,12 +105,63 @@ export interface pdfDefaults {
     lineWidth:number;
   },
   font:{
-    font:string;
+    font:Font;
     fontSize:number;
     lineHeightFactor:number;
     textColor:string;
     charSpace:number;
   }
+}
+
+export interface PdfWatermark {
+  id: string;
+  watermarks: {
+    watermarkName: string;
+    watermarkType?: ('image' | 'text') | null;
+    imageSettings?: {
+      watermark: string | Media;
+      width: number;
+      height: number;
+    };
+    textSettings?: {
+      watermark: string;
+      textStyleOverrides: boolean;
+      overrides?: {
+        multilineText: boolean;
+        multilineWidth?: ('100pw' | '50pw' | '33pw' | '25pw' | '100sw' | '50sw' | '33sw' | '25sw' | 'fill') | null;
+        overrideTextAlignment: boolean;
+        align?: ('left' | 'center' | 'right' | 'justify') | null;
+        baseline?: ('alphabetic' | 'ideographic' | 'bottom' | 'top' | 'middle' | 'hanging') | null;
+        rotateElement: boolean;
+        angle?: number | null;
+        rotationDirection?: ('0' | '1') | null;
+        overrideCharacterSpacing: boolean;
+        charSpace?: number | null;
+        overrideLineHeightFactor: boolean;
+        lineHeightFactor: number;
+        textColorOverride: boolean;
+        textColor?: string | null;
+        fontOverride: boolean;
+        fontSelection?: string | null;
+        overrideTextRendering: boolean;
+        renderingMode?:
+          | (
+              | 'fill'
+              | 'stroke'
+              | 'fillThenStroke'
+              | 'invisible'
+              | 'fillAndAddForClipping'
+              | 'strokeAndAddPathForClipping'
+              | 'fillThenStrokeAndAddToPathForClipping'
+              | 'addToPathForClipping'
+            )
+          | null;
+      };
+    };
+    id?: string | null;
+  }[];
+  updatedAt?: string | null;
+  createdAt?: string | null;
 }
 
 export interface PdfTemplate {
@@ -166,4 +261,50 @@ export interface PdfTemplate {
   fields?: (PDFImage | PDFPath | PDFSection | PDFTable | PDFText)[] | null;
   updatedAt: string;
   createdAt: string;
+}
+
+export interface PdfFooter {
+  id: string;
+  layouts?:
+    | {
+        layoutName: string;
+        topDivider?: boolean | null;
+        pageNumbers?: boolean | null;
+        companyName?: boolean | null;
+        contactInfo?: boolean | null;
+        backgroundSettings?: {
+          layoutBackground?: ('blank' | 'solid' | 'image') | null;
+          backgroundImage?: string | Media | null;
+          width?: number | null;
+          height?: number | null;
+          footerFillColor?: string | null;
+          horizontalMargin?: number | null;
+          verticalMargin?: number | null;
+        };
+        dividerSettings?: {
+          dividerStrokeColor?: string | null;
+          dividerThickness?: number | null;
+          horizontalMargin?: number | null;
+          verticalMargin?: number | null;
+        };
+        pageNumberSettings?: {
+          format?: string | null;
+          collate?: boolean | null;
+          footerLocation?: ('left' | 'center' | 'right') | null;
+        };
+        companyNameSettings?: {
+          companyName?: string | null;
+          footerLocation?: ('left' | 'center' | 'right') | null;
+        };
+        contactInfoSettings?: {
+          phoneNumber?: string | null;
+          email?: string | null;
+          address?: string | null;
+          footerLocation?: ('left' | 'center' | 'right') | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
 }

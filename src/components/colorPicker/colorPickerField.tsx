@@ -39,7 +39,7 @@ const ColorPickerField: React.FC<Props> = (props) => {
   } = props;
   const p = path ? path : ''
   const {
-    value = "",
+    value = "#000000",
     setValue,
     errorMessage,
     showError,

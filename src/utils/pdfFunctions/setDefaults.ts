@@ -11,7 +11,7 @@ export function setDefaults(doc: jsPDF, defaults: pdfDefaults): jsPDF{
   doc.setDrawColor(defaults.path.drawColor)
   doc.setLineWidth(defaults.path.lineWidth)
 
-  doc.setFont(defaults.font.font)
+  doc.setFont(defaults.font.font.fontName)
   doc.setFontSize(defaults.font.fontSize)
   doc.setLineHeightFactor(defaults.font.lineHeightFactor)
   doc.setTextColor(defaults.font.textColor)

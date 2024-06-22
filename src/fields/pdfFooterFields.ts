@@ -5,24 +5,38 @@ import ColorPickerField from "../components/colorPicker/colorPickerField"
 export function PDFFooterFields(relationTo: string){
   const pdfFooterFields: Field[] = [
     {
-      type: 'row',
+      name: 'layout',
+      type: 'group',
       fields: [
         {
-          name: 'topDivider',
-          type: 'checkbox',
+          name: 'footerHeight',
+          type: 'number',
+          defaultValue: 20,
+          min: 10,
+          required: true,
         },
+        ...pdfMargins,
         {
-          name: 'pageNumbers',
-          type: 'checkbox'
+          type: 'row',
+          fields: [
+            {
+              name: 'topDivider',
+              type: 'checkbox',
+            },
+            {
+              name: 'pageNumbers',
+              type: 'checkbox'
+            },
+            {
+              name: 'companyName',
+              type: 'checkbox'
+            },
+            {
+              name: 'contactInfo',
+              type: 'checkbox'
+            }
+          ]
         },
-        {
-          name: 'companyName',
-          type: 'checkbox'
-        },
-        {
-          name: 'contactInfo',
-          type: 'checkbox'
-        }
       ]
     },
     {

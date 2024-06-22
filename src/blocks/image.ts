@@ -17,7 +17,7 @@ export function pdfImage(relationTo: string) {
           mimeType: {contains: 'image/'}
         },
       },
-      pdfElementPlacement,
+      ...pdfElementPlacement,
       ...pdfImageSize
     ]
   }

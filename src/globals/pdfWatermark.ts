@@ -12,6 +12,7 @@ export function PDFWatermark(relationTo: string){
       {
         name: 'watermarks',
         type: 'array',
+        required: true,
         fields: [
           {
             type: 'row',
@@ -54,6 +55,12 @@ export function PDFWatermark(relationTo: string){
                   {
                     name: 'watermark',
                     type: 'text',
+                    defaultValue: 'Payload PDF Generator',
+                    required: true
+                  },
+                  {
+                    name: 'textStyleOverrides',
+                    type: 'checkbox',
                     required: true
                   },
                   pdfTextFields

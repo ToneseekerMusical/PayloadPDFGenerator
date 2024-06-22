@@ -108,6 +108,11 @@ export function pdfSection(collectionConfig: CollectionFieldList) {
             name: 'label',
             type: 'text'
           },
+          {
+            name: 'textStyleOverrides',
+            type: 'checkbox',
+            required: true
+          },
           pdfTextFields
         ]
       }

@@ -39,7 +39,7 @@ export default async function pdfGenerator(fields: { [path: string]: unknown; },
       lineWidth:template.pathOptions.defaultLineWidth,
     },
     font:{
-      font:template.fontOptions.defaultFont,
+      font:JSON.parse(template.fontOptions.defaultFont),
       fontSize:template.fontOptions.defaultFontSize,
       lineHeightFactor:template.fontOptions.defaultLineHeightFactor,
       textColor:template.fontOptions.defaultTextColor,

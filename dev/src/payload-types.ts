@@ -316,8 +316,8 @@ export interface PdfTemplate {
       width: number;
     };
     units: 'px' | 'pt' | 'mm' | 'cm' | 'in';
-    horizontalMargin?: number | null;
-    verticalMargin?: number | null;
+    horizontalMargin: number;
+    verticalMargin: number;
   };
   layoutOptions?: {
     headerLayout?: string | null;
@@ -355,7 +355,7 @@ export interface PdfTemplate {
     layout: 'continuous' | 'single' | 'twoleft' | 'tworight';
     pmode?: ('UseOutlines' | 'UseThumbs' | 'FullScreen') | null;
   };
-  fields?: (PDFImage | PDFPath | PDFSection | PDFTable | PDFText)[] | null;
+  fields: (PDFImage | PDFPath | PDFSection | PDFTable | PDFText | PDFDivider)[];
   updatedAt: string;
   createdAt: string;
 }
@@ -365,12 +365,11 @@ export interface PdfTemplate {
  */
 export interface PDFImage {
   imageSource?: (string | null) | Media;
-  pdfElementPlacement?: {
-    xPosition?: number | null;
-    yPosition?: number | null;
-  };
-  width?: number | null;
-  height?: number | null;
+  placement: 'relative' | 'absolute';
+  xPosition: number;
+  yPosition: number;
+  width: number;
+  height: number;
   id?: string | null;
   blockName?: string | null;
   blockType: 'pdfImage';
@@ -405,26 +404,37 @@ export interface PDFSection {
     | {
         sourceField?: string | null;
         label?: string | null;
-        textConfiguration?: {
-          multilineText?: boolean | null;
+        textStyleOverrides: boolean;
+        overrides?: {
+          multilineText: boolean;
           multilineWidth?: ('100pw' | '50pw' | '33pw' | '25pw' | '100sw' | '50sw' | '33sw' | '25sw' | 'fill') | null;
-          pdfElementPlacement?: {
-            xPosition?: number | null;
-            yPosition?: number | null;
-          };
-          justification?: ('left' | 'center' | 'right' | 'justify') | null;
+          overrideTextAlignment: boolean;
+          align?: ('left' | 'center' | 'right' | 'justify') | null;
           baseline?: ('alphabetic' | 'ideographic' | 'bottom' | 'top' | 'middle' | 'hanging') | null;
-          pdfElementRotation?: {
-            rotateElement?: boolean | null;
-            angle?: number | null;
-            rotationDirection?: ('0' | '1') | null;
-          };
-          characterSpacing?: number | null;
-          lineHeightFactor?: number | null;
-          textColorOverride?: boolean | null;
+          rotateElement: boolean;
+          angle?: number | null;
+          rotationDirection?: ('0' | '1') | null;
+          overrideCharacterSpacing: boolean;
+          charSpace?: number | null;
+          overrideLineHeightFactor: boolean;
+          lineHeightFactor: number;
+          textColorOverride: boolean;
           textColor?: string | null;
-          fontOverride?: boolean | null;
+          fontOverride: boolean;
           fontSelection?: string | null;
+          overrideTextRendering: boolean;
+          renderingMode?:
+            | (
+                | 'fill'
+                | 'stroke'
+                | 'fillThenStroke'
+                | 'invisible'
+                | 'fillAndAddForClipping'
+                | 'strokeAndAddPathForClipping'
+                | 'fillThenStrokeAndAddToPathForClipping'
+                | 'addToPathForClipping'
+              )
+            | null;
         };
         id?: string | null;
       }[]
@@ -440,10 +450,9 @@ export interface PDFSection {
 export interface PDFTable {
   sourceField?: string | null;
   tableTitle?: string | null;
-  pdfElementPlacement?: {
-    xPosition?: number | null;
-    yPosition?: number | null;
-  };
+  placement: 'relative' | 'absolute';
+  xPosition: number;
+  yPosition: number;
   columnSetup?: {
     printHeaders?: boolean | null;
     autoSizeColumns?: boolean | null;
@@ -468,30 +477,56 @@ export interface PDFTable {
 export interface PDFText {
   sourceField?: string | null;
   label?: string | null;
-  textConfiguration?: {
-    multilineText?: boolean | null;
+  textStyleOverrides: boolean;
+  overrides?: {
+    multilineText: boolean;
     multilineWidth?: ('100pw' | '50pw' | '33pw' | '25pw' | '100sw' | '50sw' | '33sw' | '25sw' | 'fill') | null;
-    pdfElementPlacement?: {
-      xPosition?: number | null;
-      yPosition?: number | null;
-    };
-    justification?: ('left' | 'center' | 'right' | 'justify') | null;
+    overrideTextAlignment: boolean;
+    align?: ('left' | 'center' | 'right' | 'justify') | null;
     baseline?: ('alphabetic' | 'ideographic' | 'bottom' | 'top' | 'middle' | 'hanging') | null;
-    pdfElementRotation?: {
-      rotateElement?: boolean | null;
-      angle?: number | null;
-      rotationDirection?: ('0' | '1') | null;
-    };
-    characterSpacing?: number | null;
-    lineHeightFactor?: number | null;
-    textColorOverride?: boolean | null;
+    rotateElement: boolean;
+    angle?: number | null;
+    rotationDirection?: ('0' | '1') | null;
+    overrideCharacterSpacing: boolean;
+    charSpace?: number | null;
+    overrideLineHeightFactor: boolean;
+    lineHeightFactor: number;
+    textColorOverride: boolean;
     textColor?: string | null;
-    fontOverride?: boolean | null;
+    fontOverride: boolean;
     fontSelection?: string | null;
+    overrideTextRendering: boolean;
+    renderingMode?:
+      | (
+          | 'fill'
+          | 'stroke'
+          | 'fillThenStroke'
+          | 'invisible'
+          | 'fillAndAddForClipping'
+          | 'strokeAndAddPathForClipping'
+          | 'fillThenStrokeAndAddToPathForClipping'
+          | 'addToPathForClipping'
+        )
+      | null;
   };
   id?: string | null;
   blockName?: string | null;
   blockType: 'pdfText';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PDFDivider".
+ */
+export interface PDFDivider {
+  dividerThickness: number;
+  dividerColor?: string | null;
+  dividerWidth?: ('100pw' | '50pw' | '33pw' | '25pw' | '100sw' | '50sw' | '33sw' | '25sw' | 'fill') | null;
+  align?: ('left' | 'center' | 'right') | null;
+  topGap: number;
+  bottomGap: number;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'pdfDivider';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -559,26 +594,40 @@ export interface PDFHeaderSection {
     | {
         fieldLabel?: string | null;
         fieldValue: string;
-        textConfiguration?: {
-          multilineText?: boolean | null;
+        placement: 'relative' | 'absolute';
+        xPosition: number;
+        yPosition: number;
+        textStyleOverrides: boolean;
+        overrides?: {
+          multilineText: boolean;
           multilineWidth?: ('100pw' | '50pw' | '33pw' | '25pw' | '100sw' | '50sw' | '33sw' | '25sw' | 'fill') | null;
-          pdfElementPlacement?: {
-            xPosition?: number | null;
-            yPosition?: number | null;
-          };
-          justification?: ('left' | 'center' | 'right' | 'justify') | null;
+          overrideTextAlignment: boolean;
+          align?: ('left' | 'center' | 'right' | 'justify') | null;
           baseline?: ('alphabetic' | 'ideographic' | 'bottom' | 'top' | 'middle' | 'hanging') | null;
-          pdfElementRotation?: {
-            rotateElement?: boolean | null;
-            angle?: number | null;
-            rotationDirection?: ('0' | '1') | null;
-          };
-          characterSpacing?: number | null;
-          lineHeightFactor?: number | null;
-          textColorOverride?: boolean | null;
+          rotateElement: boolean;
+          angle?: number | null;
+          rotationDirection?: ('0' | '1') | null;
+          overrideCharacterSpacing: boolean;
+          charSpace?: number | null;
+          overrideLineHeightFactor: boolean;
+          lineHeightFactor: number;
+          textColorOverride: boolean;
           textColor?: string | null;
-          fontOverride?: boolean | null;
+          fontOverride: boolean;
           fontSelection?: string | null;
+          overrideTextRendering: boolean;
+          renderingMode?:
+            | (
+                | 'fill'
+                | 'stroke'
+                | 'fillThenStroke'
+                | 'invisible'
+                | 'fillAndAddForClipping'
+                | 'strokeAndAddPathForClipping'
+                | 'fillThenStrokeAndAddToPathForClipping'
+                | 'addToPathForClipping'
+              )
+            | null;
         };
         id?: string | null;
       }[]
@@ -613,26 +662,37 @@ export interface PDFHeaderPath {
 export interface PDFHeaderText {
   fieldLabel?: string | null;
   value: string;
-  textConfiguration?: {
-    multilineText?: boolean | null;
+  textStyleOverrides: boolean;
+  overrides?: {
+    multilineText: boolean;
     multilineWidth?: ('100pw' | '50pw' | '33pw' | '25pw' | '100sw' | '50sw' | '33sw' | '25sw' | 'fill') | null;
-    pdfElementPlacement?: {
-      xPosition?: number | null;
-      yPosition?: number | null;
-    };
-    justification?: ('left' | 'center' | 'right' | 'justify') | null;
+    overrideTextAlignment: boolean;
+    align?: ('left' | 'center' | 'right' | 'justify') | null;
     baseline?: ('alphabetic' | 'ideographic' | 'bottom' | 'top' | 'middle' | 'hanging') | null;
-    pdfElementRotation?: {
-      rotateElement?: boolean | null;
-      angle?: number | null;
-      rotationDirection?: ('0' | '1') | null;
-    };
-    characterSpacing?: number | null;
-    lineHeightFactor?: number | null;
-    textColorOverride?: boolean | null;
+    rotateElement: boolean;
+    angle?: number | null;
+    rotationDirection?: ('0' | '1') | null;
+    overrideCharacterSpacing: boolean;
+    charSpace?: number | null;
+    overrideLineHeightFactor: boolean;
+    lineHeightFactor: number;
+    textColorOverride: boolean;
     textColor?: string | null;
-    fontOverride?: boolean | null;
+    fontOverride: boolean;
     fontSelection?: string | null;
+    overrideTextRendering: boolean;
+    renderingMode?:
+      | (
+          | 'fill'
+          | 'stroke'
+          | 'fillThenStroke'
+          | 'invisible'
+          | 'fillAndAddForClipping'
+          | 'strokeAndAddPathForClipping'
+          | 'fillThenStrokeAndAddToPathForClipping'
+          | 'addToPathForClipping'
+        )
+      | null;
   };
   id?: string | null;
   blockName?: string | null;
@@ -647,24 +707,29 @@ export interface PdfFooter {
   layouts?:
     | {
         layoutName: string;
-        topDivider?: boolean | null;
-        pageNumbers?: boolean | null;
-        companyName?: boolean | null;
-        contactInfo?: boolean | null;
-        backgroundSettings?: {
+        layout: {
+          footerHeight: number;
+          horizontalMargin: number;
+          verticalMargin: number;
+          topDivider?: boolean | null;
+          pageNumbers?: boolean | null;
+          companyName?: boolean | null;
+          contactInfo?: boolean | null;
+        };
+        backgroundSettings: {
           layoutBackground?: ('blank' | 'solid' | 'image') | null;
           backgroundImage?: string | Media | null;
           width?: number | null;
           height?: number | null;
           footerFillColor?: string | null;
-          horizontalMargin?: number | null;
-          verticalMargin?: number | null;
+          horizontalMargin: number;
+          verticalMargin: number;
         };
         dividerSettings?: {
           dividerStrokeColor?: string | null;
           dividerThickness?: number | null;
-          horizontalMargin?: number | null;
-          verticalMargin?: number | null;
+          horizontalMargin: number;
+          verticalMargin: number;
         };
         pageNumberSettings?: {
           format?: string | null;
@@ -693,42 +758,51 @@ export interface PdfFooter {
  */
 export interface PdfWatermark {
   id: string;
-  watermarks?:
-    | {
-        watermarkName: string;
-        watermarkType?: ('image' | 'text') | null;
-        imageSettings?: {
-          watermark: string | Media;
-          width?: number | null;
-          height?: number | null;
-        };
-        textSettings?: {
-          watermark: string;
-          textConfiguration?: {
-            multilineText?: boolean | null;
-            multilineWidth?: ('100pw' | '50pw' | '33pw' | '25pw' | '100sw' | '50sw' | '33sw' | '25sw' | 'fill') | null;
-            pdfElementPlacement?: {
-              xPosition?: number | null;
-              yPosition?: number | null;
-            };
-            justification?: ('left' | 'center' | 'right' | 'justify') | null;
-            baseline?: ('alphabetic' | 'ideographic' | 'bottom' | 'top' | 'middle' | 'hanging') | null;
-            pdfElementRotation?: {
-              rotateElement?: boolean | null;
-              angle?: number | null;
-              rotationDirection?: ('0' | '1') | null;
-            };
-            characterSpacing?: number | null;
-            lineHeightFactor?: number | null;
-            textColorOverride?: boolean | null;
-            textColor?: string | null;
-            fontOverride?: boolean | null;
-            fontSelection?: string | null;
-          };
-        };
-        id?: string | null;
-      }[]
-    | null;
+  watermarks: {
+    watermarkName: string;
+    watermarkType?: ('image' | 'text') | null;
+    imageSettings?: {
+      watermark: string | Media;
+      width: number;
+      height: number;
+    };
+    textSettings?: {
+      watermark: string;
+      textStyleOverrides: boolean;
+      overrides?: {
+        multilineText: boolean;
+        multilineWidth?: ('100pw' | '50pw' | '33pw' | '25pw' | '100sw' | '50sw' | '33sw' | '25sw' | 'fill') | null;
+        overrideTextAlignment: boolean;
+        align?: ('left' | 'center' | 'right' | 'justify') | null;
+        baseline?: ('alphabetic' | 'ideographic' | 'bottom' | 'top' | 'middle' | 'hanging') | null;
+        rotateElement: boolean;
+        angle?: number | null;
+        rotationDirection?: ('0' | '1') | null;
+        overrideCharacterSpacing: boolean;
+        charSpace?: number | null;
+        overrideLineHeightFactor: boolean;
+        lineHeightFactor: number;
+        textColorOverride: boolean;
+        textColor?: string | null;
+        fontOverride: boolean;
+        fontSelection?: string | null;
+        overrideTextRendering: boolean;
+        renderingMode?:
+          | (
+              | 'fill'
+              | 'stroke'
+              | 'fillThenStroke'
+              | 'invisible'
+              | 'fillAndAddForClipping'
+              | 'strokeAndAddPathForClipping'
+              | 'fillThenStrokeAndAddToPathForClipping'
+              | 'addToPathForClipping'
+            )
+          | null;
+      };
+    };
+    id?: string | null;
+  }[];
   updatedAt?: string | null;
   createdAt?: string | null;
 }

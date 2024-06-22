@@ -15,6 +15,11 @@ export const pdfHeaderText: Block = {
       type: 'text',
       required: true
     },
+    {
+      name: 'textStyleOverrides',
+      type: 'checkbox',
+      required: true
+    },
     pdfTextFields
   ]
 }

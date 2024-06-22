@@ -1,6 +1,7 @@
 import { Block } from "payload/types";
 import { pdfTextFields } from "../fields/pdfTextFields";
 import { RowLabelArgs } from "payload/dist/admin/components/forms/RowLabel/types";
+import { pdfElementPlacement } from "../fields/pdfElementPlacement";
 
 export const pdfHeaderSection: Block = {
   slug: 'pdfHeaderSection',
@@ -88,6 +89,12 @@ export const pdfHeaderSection: Block = {
         {
           name: 'fieldValue',
           type: 'text',
+          required: true
+        },
+        ...pdfElementPlacement,
+        {
+          name: 'textStyleOverrides',
+          type: 'checkbox',
           required: true
         },
         pdfTextFields

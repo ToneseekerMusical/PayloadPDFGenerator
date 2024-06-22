@@ -12,6 +12,7 @@ import { globalSelectComponent } from '../components/fieldSelectComponents/globa
 import { FieldSelectComponent } from '../components/fieldSelector/component';
 import { TextFieldSelectComponent } from '../components/fieldSelectComponents/textSelector/component';
 import { pdfMargins } from '../fields/pdfMargins';
+import { pdfDivider } from '../blocks/divider';
 
 export function PDFTemplates(collectionFields: CollectionFieldList, pluginOptions: PluginConfig){
   const PDFTemplates: CollectionConfig = {
@@ -506,9 +507,11 @@ export function PDFTemplates(collectionFields: CollectionFieldList, pluginOption
                   pdfSection(collectionFields),
                   pdfTable(collectionFields),
                   pdfText(collectionFields),
-                ]
+                  pdfDivider
+                ],
+                required: true
               },
-            ]
+            ],
           }
         ]
       }
