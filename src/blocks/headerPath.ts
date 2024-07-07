@@ -18,7 +18,8 @@ export const pdfHeaderPath: Block = {
               Field: ColorPickerField
             },
             width: "33%"
-          }
+          },
+          defaultValue: '#000000'
         },
         {
           name: 'pdfFillColor',
@@ -28,7 +29,8 @@ export const pdfHeaderPath: Block = {
               Field: ColorPickerField
             },
             width: "33%"
-          }
+          },
+          defaultValue: '#000000'
         },
         {
           name: 'pdfClosedPath',

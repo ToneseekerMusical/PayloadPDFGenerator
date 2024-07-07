@@ -232,8 +232,7 @@ export function PDFTemplates(collectionFields: CollectionFieldList, pluginOption
                         name: 'defaultFontSize',
                         type: 'number',
                         min: 4,
-                        max: 20,
-                        defaultValue: 4,
+                        defaultValue: 16,
                         required: true
                       },
                       {
@@ -402,7 +401,9 @@ export function PDFTemplates(collectionFields: CollectionFieldList, pluginOption
                           components: {
                             Field: (props) => TextFieldSelectComponent({...props, collectionConfig: collectionFields })
                           },
-                        }
+                        },
+                        required: true,
+                        defaultValue: 'createdAt'
                       }
                     ]
                   }
@@ -422,11 +423,13 @@ export function PDFTemplates(collectionFields: CollectionFieldList, pluginOption
                     fields: [
                       {
                         name: 'userPassword',
-                        type: 'text'
+                        type: 'text',
+                        required: true,
                       },
                       {
                         name: 'ownerPassword',
-                        type: 'text'
+                        type: 'text',
+                        required: true
                       },
                       {
                         name: 'userPermissions',
@@ -437,7 +440,8 @@ export function PDFTemplates(collectionFields: CollectionFieldList, pluginOption
                           {label: 'Copy', value: 'copy'},
                           {label: 'Annotate', value: 'annot-forms'},
                         ],
-                        hasMany: true
+                        hasMany: true,
+                        required: true,
                       }
                     ]
                   }

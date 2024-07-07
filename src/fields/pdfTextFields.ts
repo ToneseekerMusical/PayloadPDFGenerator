@@ -16,6 +16,28 @@ export const pdfTextFields: Field = {
       type: 'row',
       fields: [
         {
+          name: 'overrideFontSize',
+          type: 'checkbox',
+          required: true
+        },
+        {
+          name: 'fontSize',
+          type: 'number',
+          required: true,
+          defaultValue: 16,
+          min: 1,
+          admin: {
+            condition: (_, siblingData)=>{
+              return siblingData.overrideFontSize
+            }
+          }
+        },
+      ]
+    },
+    {
+      type: 'row',
+      fields: [
+        {
           name: 'multilineText',
           type: 'checkbox',
           defaultValue: false,
@@ -168,6 +190,37 @@ export const pdfTextFields: Field = {
       type: 'row',
       fields: [
         {
+          name: 'overrideTextRendering',
+          type: 'checkbox',
+          required: true
+        },
+        {
+          name: 'renderingMode',
+          type: 'select',
+          options: [
+            {label: 'Fill', value: 'fill'},
+            {label: 'Stroke', value: 'stroke'},
+            {label: 'Fill then Stroke', value: 'fillThenStroke'},
+            {label: 'Invisible', value: 'invisible'},
+            {label: 'Fill and add for clipping', value: 'fillAndAddForClipping'},
+            {label: 'Stroke and add path for clipping', value: 'strokeAndAddPathForClipping'},
+            {label: 'Fill then Stroke and add to path for clipping', value: 'fillThenStrokeAndAddToPathForClipping'},
+            {label: 'Add to path for clipping', value: 'addToPathForClipping'},
+          ],
+          required: true,
+          defaultValue: 'fill',
+          admin: {
+            condition: (_,siblingData)=>{
+              return siblingData.overrideTextRendering
+            }
+          }
+        }
+      ]
+    },
+    {
+      type: 'row',
+      fields: [
+        {
           name: 'fontOverride',
           type: 'checkbox',
           defaultValue: false,
@@ -189,29 +242,5 @@ export const pdfTextFields: Field = {
         }
       ]
     },
-    {
-      type: 'row',
-      fields: [
-        {
-          name: 'overrideTextRendering',
-          type: 'checkbox',
-          required: true
-        },
-        {
-          name: 'renderingMode',
-          type: 'select',
-          options: [
-            {label: 'Fill', value: 'fill'},
-            {label: 'Stroke', value: 'stroke'},
-            {label: 'Fill then Stroke', value: 'fillThenStroke'},
-            {label: 'Invisible', value: 'invisible'},
-            {label: 'Fill and add for clipping', value: 'fillAndAddForClipping'},
-            {label: 'Stroke and add path for clipping', value: 'strokeAndAddPathForClipping'},
-            {label: 'Fill then Stroke and add to path for clipping', value: 'fillThenStrokeAndAddToPathForClipping'},
-            {label: 'Add to path for clipping', value: 'addToPathForClipping'},
-          ]
-        }
-      ]
-    }
   ]
 }

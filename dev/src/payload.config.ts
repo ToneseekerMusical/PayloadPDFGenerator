@@ -33,7 +33,7 @@ export default buildConfig({
   },
   editor: slateEditor({}),
   collections: [
-    Examples, Users, Tests, Media
+    Users, Tests, Media
   ],
   typescript: {
     outputFile: path.resolve(__dirname, 'payload-types.ts'),
@@ -42,26 +42,12 @@ export default buildConfig({
     schemaOutputFile: path.resolve(__dirname, 'generated-schema.graphql'),
   },
   plugins: [
-    FormBuilder({
-      fields: {
-        text: true,
-        textarea: true,
-        select: true,
-        email: true,
-        state: true,
-        country: true,
-        checkbox: true,
-        number: true,
-        message: true,
-        payment: false
-      }
-    }),
     PDFGenerator({
       enabled: true,
       tabbedUI: true,
       collections: ['examples','tests'],
       uploadsCollection: 'media',
-      headerCollections: ['examples']
+      headerCollections: ['tests']
     }),
   ],
   db: mongooseAdapter({

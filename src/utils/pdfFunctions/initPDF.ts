@@ -1,6 +1,6 @@
-import jsPDF from "jspdf"
+import jsPDF, { jsPDFOptions } from "jspdf"
 
-export default function initPDF(options: any): jsPDF{
+export default function initPDF(options: jsPDFOptions): jsPDF{
   const file = new jsPDF(options)
   return file
 }

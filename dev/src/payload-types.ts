@@ -8,12 +8,9 @@
 
 export interface Config {
   collections: {
-    examples: Example;
     users: User;
     tests: Test;
     media: Media;
-    forms: Form;
-    'form-submissions': FormSubmission;
     'pdf-templates': PdfTemplate;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -24,16 +21,6 @@ export interface Config {
     'pdf-watermarks': PdfWatermark;
     'pdf-fonts': PdfFont;
   };
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "examples".
- */
-export interface Example {
-  id: string;
-  someField?: string | null;
-  updatedAt: string;
-  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -105,157 +92,6 @@ export interface Media {
   height?: number | null;
   focalX?: number | null;
   focalY?: number | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "forms".
- */
-export interface Form {
-  id: string;
-  title: string;
-  fields?:
-    | (
-        | {
-            name: string;
-            label?: string | null;
-            width?: number | null;
-            required?: boolean | null;
-            defaultValue?: boolean | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'checkbox';
-          }
-        | {
-            name: string;
-            label?: string | null;
-            width?: number | null;
-            required?: boolean | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'country';
-          }
-        | {
-            name: string;
-            label?: string | null;
-            width?: number | null;
-            required?: boolean | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'email';
-          }
-        | {
-            message?:
-              | {
-                  [k: string]: unknown;
-                }[]
-              | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'message';
-          }
-        | {
-            name: string;
-            label?: string | null;
-            width?: number | null;
-            defaultValue?: number | null;
-            required?: boolean | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'number';
-          }
-        | {
-            name: string;
-            label?: string | null;
-            width?: number | null;
-            defaultValue?: string | null;
-            options?:
-              | {
-                  label: string;
-                  value: string;
-                  id?: string | null;
-                }[]
-              | null;
-            required?: boolean | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'select';
-          }
-        | {
-            name: string;
-            label?: string | null;
-            width?: number | null;
-            required?: boolean | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'state';
-          }
-        | {
-            name: string;
-            label?: string | null;
-            width?: number | null;
-            defaultValue?: string | null;
-            required?: boolean | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'text';
-          }
-        | {
-            name: string;
-            label?: string | null;
-            width?: number | null;
-            defaultValue?: string | null;
-            required?: boolean | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'textarea';
-          }
-      )[]
-    | null;
-  submitButtonLabel?: string | null;
-  confirmationType?: ('message' | 'redirect') | null;
-  confirmationMessage?:
-    | {
-        [k: string]: unknown;
-      }[]
-    | null;
-  redirect?: {
-    url: string;
-  };
-  emails?:
-    | {
-        emailTo?: string | null;
-        cc?: string | null;
-        bcc?: string | null;
-        replyTo?: string | null;
-        emailFrom?: string | null;
-        subject: string;
-        message?:
-          | {
-              [k: string]: unknown;
-            }[]
-          | null;
-        id?: string | null;
-      }[]
-    | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "form-submissions".
- */
-export interface FormSubmission {
-  id: string;
-  form: string | Form;
-  submissionData?:
-    | {
-        field: string;
-        value: string;
-        id?: string | null;
-      }[]
-    | null;
-  updatedAt: string;
-  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -342,13 +178,13 @@ export interface PdfTemplate {
   };
   fileOptions: {
     buttonBehavior: 'download' | 'newTab' | 'curTab' | 'autoprint';
-    fileNameField?: string | null;
+    fileNameField: string;
   };
   useEncryption: boolean;
   encryptionSettings?: {
-    userPassword?: string | null;
-    ownerPassword?: string | null;
-    userPermissions?: ('print' | 'modify' | 'copy' | 'annot-forms')[] | null;
+    userPassword: string;
+    ownerPassword: string;
+    userPermissions: ('print' | 'modify' | 'copy' | 'annot-forms')[];
   };
   defaultDisplayMode: {
     zoom: 'fullwidth' | 'fullheight' | 'fullpage' | 'original';
@@ -364,7 +200,7 @@ export interface PdfTemplate {
  * via the `definition` "PDFImage".
  */
 export interface PDFImage {
-  imageSource?: (string | null) | Media;
+  imageSource: string | Media;
   placement: 'relative' | 'absolute';
   xPosition: number;
   yPosition: number;
@@ -406,6 +242,8 @@ export interface PDFSection {
         label?: string | null;
         textStyleOverrides: boolean;
         overrides?: {
+          overrideFontSize: boolean;
+          fontSize?: number | null;
           multilineText: boolean;
           multilineWidth?: ('100pw' | '50pw' | '33pw' | '25pw' | '100sw' | '50sw' | '33sw' | '25sw' | 'fill') | null;
           overrideTextAlignment: boolean;
@@ -417,11 +255,9 @@ export interface PDFSection {
           overrideCharacterSpacing: boolean;
           charSpace?: number | null;
           overrideLineHeightFactor: boolean;
-          lineHeightFactor: number;
+          lineHeightFactor?: number | null;
           textColorOverride: boolean;
           textColor?: string | null;
-          fontOverride: boolean;
-          fontSelection?: string | null;
           overrideTextRendering: boolean;
           renderingMode?:
             | (
@@ -435,6 +271,8 @@ export interface PDFSection {
                 | 'addToPathForClipping'
               )
             | null;
+          fontOverride: boolean;
+          fontSelection?: string | null;
         };
         id?: string | null;
       }[]
@@ -475,10 +313,14 @@ export interface PDFTable {
  * via the `definition` "PDFText".
  */
 export interface PDFText {
+  type: 'static' | 'dynamic';
   sourceField?: string | null;
+  value?: string | null;
   label?: string | null;
   textStyleOverrides: boolean;
   overrides?: {
+    overrideFontSize: boolean;
+    fontSize?: number | null;
     multilineText: boolean;
     multilineWidth?: ('100pw' | '50pw' | '33pw' | '25pw' | '100sw' | '50sw' | '33sw' | '25sw' | 'fill') | null;
     overrideTextAlignment: boolean;
@@ -490,11 +332,9 @@ export interface PDFText {
     overrideCharacterSpacing: boolean;
     charSpace?: number | null;
     overrideLineHeightFactor: boolean;
-    lineHeightFactor: number;
+    lineHeightFactor?: number | null;
     textColorOverride: boolean;
     textColor?: string | null;
-    fontOverride: boolean;
-    fontSelection?: string | null;
     overrideTextRendering: boolean;
     renderingMode?:
       | (
@@ -508,6 +348,8 @@ export interface PDFText {
           | 'addToPathForClipping'
         )
       | null;
+    fontOverride: boolean;
+    fontSelection?: string | null;
   };
   id?: string | null;
   blockName?: string | null;
@@ -571,7 +413,7 @@ export interface PdfHeader {
   layouts?:
     | {
         layoutName: string;
-        layout?: (PDFHeaderSection | PDFImage | PDFHeaderPath | PDFHeaderText)[] | null;
+        layout?: (PDFHeaderSection | PDFImage | PDFHeaderPath | PDFText)[] | null;
         id?: string | null;
       }[]
     | null;
@@ -599,6 +441,8 @@ export interface PDFHeaderSection {
         yPosition: number;
         textStyleOverrides: boolean;
         overrides?: {
+          overrideFontSize: boolean;
+          fontSize?: number | null;
           multilineText: boolean;
           multilineWidth?: ('100pw' | '50pw' | '33pw' | '25pw' | '100sw' | '50sw' | '33sw' | '25sw' | 'fill') | null;
           overrideTextAlignment: boolean;
@@ -610,11 +454,9 @@ export interface PDFHeaderSection {
           overrideCharacterSpacing: boolean;
           charSpace?: number | null;
           overrideLineHeightFactor: boolean;
-          lineHeightFactor: number;
+          lineHeightFactor?: number | null;
           textColorOverride: boolean;
           textColor?: string | null;
-          fontOverride: boolean;
-          fontSelection?: string | null;
           overrideTextRendering: boolean;
           renderingMode?:
             | (
@@ -628,6 +470,8 @@ export interface PDFHeaderSection {
                 | 'addToPathForClipping'
               )
             | null;
+          fontOverride: boolean;
+          fontSelection?: string | null;
         };
         id?: string | null;
       }[]
@@ -654,49 +498,6 @@ export interface PDFHeaderPath {
   id?: string | null;
   blockName?: string | null;
   blockType: 'pdfHeaderPath';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "PDFHeaderText".
- */
-export interface PDFHeaderText {
-  fieldLabel?: string | null;
-  value: string;
-  textStyleOverrides: boolean;
-  overrides?: {
-    multilineText: boolean;
-    multilineWidth?: ('100pw' | '50pw' | '33pw' | '25pw' | '100sw' | '50sw' | '33sw' | '25sw' | 'fill') | null;
-    overrideTextAlignment: boolean;
-    align?: ('left' | 'center' | 'right' | 'justify') | null;
-    baseline?: ('alphabetic' | 'ideographic' | 'bottom' | 'top' | 'middle' | 'hanging') | null;
-    rotateElement: boolean;
-    angle?: number | null;
-    rotationDirection?: ('0' | '1') | null;
-    overrideCharacterSpacing: boolean;
-    charSpace?: number | null;
-    overrideLineHeightFactor: boolean;
-    lineHeightFactor: number;
-    textColorOverride: boolean;
-    textColor?: string | null;
-    fontOverride: boolean;
-    fontSelection?: string | null;
-    overrideTextRendering: boolean;
-    renderingMode?:
-      | (
-          | 'fill'
-          | 'stroke'
-          | 'fillThenStroke'
-          | 'invisible'
-          | 'fillAndAddForClipping'
-          | 'strokeAndAddPathForClipping'
-          | 'fillThenStrokeAndAddToPathForClipping'
-          | 'addToPathForClipping'
-        )
-      | null;
-  };
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'pdfHeaderText';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -737,7 +538,7 @@ export interface PdfFooter {
           footerLocation?: ('left' | 'center' | 'right') | null;
         };
         companyNameSettings?: {
-          companyName?: string | null;
+          companyName: string;
           footerLocation?: ('left' | 'center' | 'right') | null;
         };
         contactInfoSettings?: {
@@ -758,51 +559,7 @@ export interface PdfFooter {
  */
 export interface PdfWatermark {
   id: string;
-  watermarks: {
-    watermarkName: string;
-    watermarkType?: ('image' | 'text') | null;
-    imageSettings?: {
-      watermark: string | Media;
-      width: number;
-      height: number;
-    };
-    textSettings?: {
-      watermark: string;
-      textStyleOverrides: boolean;
-      overrides?: {
-        multilineText: boolean;
-        multilineWidth?: ('100pw' | '50pw' | '33pw' | '25pw' | '100sw' | '50sw' | '33sw' | '25sw' | 'fill') | null;
-        overrideTextAlignment: boolean;
-        align?: ('left' | 'center' | 'right' | 'justify') | null;
-        baseline?: ('alphabetic' | 'ideographic' | 'bottom' | 'top' | 'middle' | 'hanging') | null;
-        rotateElement: boolean;
-        angle?: number | null;
-        rotationDirection?: ('0' | '1') | null;
-        overrideCharacterSpacing: boolean;
-        charSpace?: number | null;
-        overrideLineHeightFactor: boolean;
-        lineHeightFactor: number;
-        textColorOverride: boolean;
-        textColor?: string | null;
-        fontOverride: boolean;
-        fontSelection?: string | null;
-        overrideTextRendering: boolean;
-        renderingMode?:
-          | (
-              | 'fill'
-              | 'stroke'
-              | 'fillThenStroke'
-              | 'invisible'
-              | 'fillAndAddForClipping'
-              | 'strokeAndAddPathForClipping'
-              | 'fillThenStrokeAndAddToPathForClipping'
-              | 'addToPathForClipping'
-            )
-          | null;
-      };
-    };
-    id?: string | null;
-  }[];
+  watermark: (PDFImage | PDFText)[];
   updatedAt?: string | null;
   createdAt?: string | null;
 }

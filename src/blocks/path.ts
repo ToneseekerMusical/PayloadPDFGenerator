@@ -20,7 +20,8 @@ export function pdfPath(collectionConfig: CollectionFieldList){
                 Field: ColorPickerField
               },
               width: "33%"
-            }
+            },
+            defaultValue: '#000000'
           },
           {
             name: 'pdfFillColor',
@@ -30,14 +31,15 @@ export function pdfPath(collectionConfig: CollectionFieldList){
                 Field: ColorPickerField
               },
               width: "33%"
-            }
+            },
+            defaultValue: '#000000'
           },
           {
             name: 'pdfClosedPath',
             type: 'checkbox',
             admin: {
               width: '33%'
-            }
+            },
           },
         ]
       },

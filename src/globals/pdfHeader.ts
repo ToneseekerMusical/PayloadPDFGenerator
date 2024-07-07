@@ -5,8 +5,9 @@ import { pdfHeaderSection } from '../blocks/headerSection';
 import { pdfHeaderPath } from '../blocks/headerPath';
 import { pdfHeaderText } from '../blocks/headerText';
 import { RowLabelArgs } from 'payload/dist/admin/components/forms/RowLabel/types';
+import { pdfText } from '../blocks/text';
 
-export function PDFHeader(relationTo: string, collectionSelection: SelectField, collectionFields: CollectionFieldList){
+export function PDFHeader(relationTo: string, collectionFields: CollectionFieldList){
   const PDFHeaders: GlobalConfig = {
     slug: 'pdf-header',
     admin: {
@@ -40,7 +41,7 @@ export function PDFHeader(relationTo: string, collectionSelection: SelectField, 
               pdfHeaderSection,
               pdfImage(relationTo),
               pdfHeaderPath,
-              pdfHeaderText
+              pdfText()
             ]
           }
         ]

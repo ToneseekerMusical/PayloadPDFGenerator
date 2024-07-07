@@ -22,15 +22,7 @@ export const PDFGenerator =
 
       let config = { ...incomingConfig }
 
-      const headerCollections: SelectField = {
-        name: 'assignedCollections',
-        type: 'select',
-        options: pluginOptions.headerCollections.map((collection:string)=>({
-          label: collection, value: collection
-        })),
-      }
 
-      //@ts-expect-error
       const collectionFields: CollectionFieldList = incomingConfig.collections.filter((collection)=>{
         return pluginOptions?.collections?.includes(collection.slug)
       }).map((collection)=>{
@@ -100,7 +92,7 @@ export const PDFGenerator =
 
       config.globals = [
         ...(config.globals || []),
-        PDFHeader(pluginOptions.uploadsCollection, headerCollections, collectionFields),
+        PDFHeader(pluginOptions.uploadsCollection, collectionFields),
         PDFFooter(pluginOptions.uploadsCollection),
         PDFWatermark(pluginOptions.uploadsCollection),
         PDFFonts(pluginOptions.uploadsCollection)

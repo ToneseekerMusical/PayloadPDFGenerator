@@ -1,5 +1,5 @@
-import jsPDF from "jspdf";
-import { Font, PdfTemplate, pdf, pdfDefaults } from "../types";
+import jsPDF, { jsPDFOptions } from "jspdf";
+import { Font, PdfTemplate, pdfOptions, pdfDefaults, Margins, pdfCursor } from "../types";
 import initPDF from "./pdfFunctions/initPDF";
 import getTemplates from "./pdfFunctions/pdfTemplateQuery";
 import { outputPDF } from "./pdfFunctions/openSaveBehavior";
@@ -13,12 +13,12 @@ export default async function pdfGenerator(fields: { [path: string]: unknown; },
   if (template === undefined){
     return
   }
-  console.log(template)
-  console.log(fields)
-  const options: pdf = {
+
+  const options: jsPDFOptions = {
     putOnlyUsedFonts: true,
     orientation: template.pageOptions.orientation ? template.pageOptions.orientation : 'p',
-    format: template.pageOptions.pageSize !== 'custom' ? template.pageOptions.pageSize : [template.pageOptions.customPageSize?.width, template.pageOptions.customPageSize?.length],
+    format: template.pageOptions.pageSize !== 'custom' ? template.pageOptions.pageSize : template.pageOptions.customPageSize !== undefined ?
+      [(template.pageOptions.customPageSize?.width, template.pageOptions.customPageSize?.length)] : undefined,
     unit: template.pageOptions.units ? template.pageOptions.units : 'px',
     compress: template.enableCompression,
     encryption: template.useEncryption ? template.encryptionSettings : undefined
@@ -47,22 +47,25 @@ export default async function pdfGenerator(fields: { [path: string]: unknown; },
     }
   }
 
-  //@ts-expect-error
-  const fileName: {reportName: string, fileNameField: string} | undefined = template.fileOptions.fileNameField ? {
+  const margins: Margins = {
+    horz: template.pageOptions.horizontalMargin,
+    vert: template.pageOptions.verticalMargin
+  }
+
+  const fileName: {reportName: string; fileNameField: string;} | undefined = template.fileOptions.fileNameField ? {
     reportName: template.title,
-    //need to pass fileNameField value, not name
-    fileNameField: fields[template.fileOptions.fileNameField]
+    fileNameField: `${fields[template.fileOptions.fileNameField]}`
   } : undefined
 
-  let fonts: Array<Font> = []
+  let fonts: Array<Font | string> = []
   if( template.fields ){
     fonts = template.fields?.flatMap((field)=>{
       if (field.blockType === 'pdfText'){
-        return field.textConfiguration.fontOverride ? field.textConfiguration.fontSelection : null
+        return field.overrides?.fontOverride ? field.overrides.fontSelection : null
       }
       if (field.blockType === 'pdfSection'){
-        return field.sectionFields.flatMap((field: any)=>{
-          return field.textConfiguration.fontOverride ? field.textConfiguration.fontSelection : null
+        return field.sectionFields?.flatMap((field: any)=>{
+          return field.overrides.fontOverride ? field.overrides.fontSelection : null
         })
       }
     }).filter((font)=>{
@@ -70,9 +73,8 @@ export default async function pdfGenerator(fields: { [path: string]: unknown; },
     }).flat()
   }
   fonts.unshift(JSON.parse(template.fontOptions.defaultFont))
-  fonts = [... new Set(fonts)].map((font)=>{
+  let customFonts: Array<Font> = [... new Set(fonts)].map((font)=>{
     if (typeof font === 'string'){
-      //@ts-expect-error
       return font.startsWith('{') ? JSON.parse(font) : null
     }
   }).filter((font)=>{
@@ -80,15 +82,22 @@ export default async function pdfGenerator(fields: { [path: string]: unknown; },
     : font === undefined ? false
     : true
   })
-  
+
+
   let file: jsPDF = initPDF(options)
-  file = await fontLoader(file, fonts)
+      
+  const cursor: pdfCursor = {
+    xPos: margins.horz,
+    yPos: margins.vert
+  }
+
+  file = await fontLoader(file, customFonts)
   file = setDefaults(file, defaults)
-  template.layoutOptions?.headerLayout ? insertLayout(file,'pdf-header',template.layoutOptions.headerLayout) : null
-  template.layoutOptions?.footerLayout ? insertLayout(file,'pdf-footer',template.layoutOptions.footerLayout) : null
+  //template.layoutOptions?.headerLayout ? insertLayout(file,'pdf-header',template.layoutOptions.headerLayout) : null
+  //template.layoutOptions?.footerLayout ? insertLayout(file,'pdf-footer',template.layoutOptions.footerLayout) : null
   
 
   
-  template.layoutOptions?.watermark ? insertWatermark(file,template.layoutOptions.watermark) : null
+  template.layoutOptions?.watermark ? insertWatermark(file,template.layoutOptions.watermark, margins) : null
   outputPDF(template.fileOptions.buttonBehavior, file, fileName)
 }

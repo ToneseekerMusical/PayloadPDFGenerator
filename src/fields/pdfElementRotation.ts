@@ -15,12 +15,12 @@ export const pdfElementRotation: Field = {
       min: 0,
       max: 359,
       defaultValue: 0,
+      required: true,
       admin: {
         condition: (_, siblingData) => {
           return siblingData.rotateElement
         }
       },
-      required: true
     },
     {
       name: 'rotationDirection',

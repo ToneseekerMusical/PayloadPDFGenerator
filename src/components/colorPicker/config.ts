@@ -16,7 +16,8 @@ const colorField: Field = {
       Field: InputField,
       Cell,
     }
-  }
+  },
+  defaultValue: '#000000'
 };
 
 export default colorField;

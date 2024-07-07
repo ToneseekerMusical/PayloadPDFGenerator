@@ -1,53 +1,75 @@
 import jsPDF, { TextOptionsLight } from "jspdf";
-import { Margins, pdfCursor, textOverrides } from "../../types";
+import { Margins, textElement, pdfCursor} from "../../types";
 
 export function addText(
   doc: jsPDF,
-  cursor: pdfCursor,
-  textValue: string,
-  overrides: textOverrides,
+  text: textElement,
   margins: Margins,
+  cursor: pdfCursor,
   sectionWidth?: number,
-): jsPDF {
-  overrides.align
-  const textOverrides: TextOptionsLight = {
-    align: overrides.align !== null ? overrides.align 
-      : undefined,
-    baseline: overrides.baseline !== null ? overrides.baseline
-      : undefined,
-    angle: overrides.angle !== null ? overrides.angle
-      : undefined,
-    rotationDirection: overrides.rotationDirection === null ? undefined
-      : overrides.rotationDirection === '0' ? 0 
-      : overrides.rotationDirection === '1' ? 1 
-      : undefined, 
-    charSpace: overrides.charSpace !== null ? overrides.charSpace
-      : undefined,
-    lineHeightFactor: overrides.lineHeightFactor !== null ? overrides.lineHeightFactor
-      : undefined,
-    maxWidth: overrides.multilineWidth === null ? undefined
-      : overrides.multilineWidth === '100pw' ? doc.internal.pageSize.width - margins?.horz * 2
-      : overrides.multilineWidth === '50pw' ? doc.internal.pageSize.width / 2 - margins?.horz * 1.5
-      : overrides.multilineWidth === '33pw' ? doc.internal.pageSize.width / 3 - margins?.horz * 1.5
-      : overrides.multilineWidth === '25pw' ? doc.internal.pageSize.width / 4 - margins?.horz * 1.5
-      : overrides.multilineWidth === '100sw' && sectionWidth !== undefined ? sectionWidth / 4 - margins?.horz * 1.5
-      : overrides.multilineWidth === '50sw' && sectionWidth !== undefined ? sectionWidth / 4 - margins?.horz * 1.5
-      : overrides.multilineWidth === '33sw' && sectionWidth !== undefined ? sectionWidth / 4 - margins?.horz * 1.5
-      : overrides.multilineWidth === '25sw' && sectionWidth !== undefined ? sectionWidth / 4 - margins?.horz * 1.5
-      : overrides.multilineWidth === 'fill' ? doc.internal.pageSize.width - cursor.xPos - margins?.horz * 2
-      : undefined,
-    renderingMode: overrides.renderingMode !== null ? overrides.renderingMode
-      : undefined
-  }
+  field?: any
+): {doc: jsPDF, cursor: pdfCursor} {
   
-  console.log(doc.getTextColor())
-  if(overrides.textColorOverride && overrides.textColor && doc.getTextColor() !== overrides.textColor){
-    doc.setTextColor(overrides.textColor)
-  }
-  console.log(doc.getFont())
-  if(overrides.fontOverride && overrides.fontSelection && doc.getFont().fontName !== overrides.fontSelection){
+  const textOverrides: TextOptionsLight | undefined = text.overrides ? {
+    align: text.overrides.align !== null ? text.overrides.align 
+      : undefined,
+    baseline: text.overrides.baseline !== null ? text.overrides.baseline
+      : undefined,
+    angle: text.overrides.angle !== null ? text.overrides.angle
+      : undefined,
+    rotationDirection: text.overrides.rotationDirection === null ? undefined
+      : text.overrides.rotationDirection === '0' ? 0 
+      : text.overrides.rotationDirection === '1' ? 1 
+      : undefined, 
+    charSpace: text.overrides.charSpace !== null ? text.overrides.charSpace
+      : undefined,
+    lineHeightFactor: text.overrides.lineHeightFactor !== null ? text.overrides.lineHeightFactor
+      : undefined,
+    maxWidth: text.overrides.multilineWidth === null ? undefined
+      : text.overrides.multilineWidth === '100pw' ? doc.internal.pageSize.width - margins?.horz * 2
+      : text.overrides.multilineWidth === '50pw' ? doc.internal.pageSize.width / 2 - margins?.horz * 1.5
+      : text.overrides.multilineWidth === '33pw' ? doc.internal.pageSize.width / 3 - margins?.horz * 1.5
+      : text.overrides.multilineWidth === '25pw' ? doc.internal.pageSize.width / 4 - margins?.horz * 1.5
+      : text.overrides.multilineWidth === '100sw' && sectionWidth !== undefined ? sectionWidth / 4 - margins?.horz * 1.5
+      : text.overrides.multilineWidth === '50sw' && sectionWidth !== undefined ? sectionWidth / 4 - margins?.horz * 1.5
+      : text.overrides.multilineWidth === '33sw' && sectionWidth !== undefined ? sectionWidth / 4 - margins?.horz * 1.5
+      : text.overrides.multilineWidth === '25sw' && sectionWidth !== undefined ? sectionWidth / 4 - margins?.horz * 1.5
+      : text.overrides.multilineWidth === 'fill' ? doc.internal.pageSize.width - cursor.xPos - margins?.horz * 2
+      : undefined,
+    renderingMode: text.overrides.renderingMode !== null ? text.overrides.renderingMode
+      : undefined
+  } : undefined
 
+  if(text.overrides?.textColorOverride && doc.getTextColor() !== text.overrides.textColor){
+    const prevColor = doc.getTextColor()
+    text.overrides.textColor ? doc.setTextColor(text.overrides.textColor)
+      : doc.setTextColor(prevColor)
   }
-  doc.text(textValue,cursor.xPos,cursor.yPos,textOverrides)
-  return doc
+  if(text.overrides?.fontOverride && text.overrides.fontSelection){
+    doc.setFont(text.overrides.fontSelection)
+  }
+
+  if(text.overrides?.overrideFontSize && text.overrides.fontSize){
+    doc.setFontSize(text.overrides.fontSize)
+  }
+
+  if(text.overrides?.overrideLineHeightFactor && text.overrides.lineHeightFactor){
+    doc.setLineHeightFactor(text.overrides.lineHeightFactor)
+  }
+
+  let input: string = 'Error'
+  if (text.label) {
+    input = `${text.label}`
+  }
+  if ( text.value ){
+    input = input !== 'Error' ? `${input} ${text.value}` : `${text.value}`
+  } else if ( text.sourceField ) {
+    input = input !== 'Error' ? `${input} ${field}` : `${field}`
+  }
+
+  let pdfCursor = cursor
+
+  doc.text(input,pdfCursor.xPos,pdfCursor.yPos, textOverrides)
+
+  return {doc: doc, cursor: pdfCursor}
 }

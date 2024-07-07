@@ -104,7 +104,8 @@ export function PDFFooterFields(relationTo: string){
                 condition: (_, siblingData)=>{
                   return siblingData.layoutBackground === 'solid' ? true : false
                 }
-              }
+              },
+              defaultValue: '#000000'
             },
             ...pdfMargins
           ]
@@ -123,7 +124,8 @@ export function PDFFooterFields(relationTo: string){
               Field: ColorPickerField
             },
             width: "33%",
-          }
+          },
+          defaultValue: '#000000'
         },
         {
           type: 'row',
@@ -195,7 +197,8 @@ export function PDFFooterFields(relationTo: string){
           fields: [
             {
               name: 'companyName',
-              type: 'text'
+              type: 'text',
+              required: true
             },
             {
               name: 'footerLocation',

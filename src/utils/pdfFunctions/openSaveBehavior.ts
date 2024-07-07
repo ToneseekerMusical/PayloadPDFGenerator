@@ -4,7 +4,6 @@ function savePDF(doc: jsPDF, filename: {reportName: string, fileNameField: strin
   setTimeout(() => {
     let fileNameString = filename.reportName
     fileNameString = filename.fileNameField ? `${fileNameString} ${filename.fileNameField}` : filename.fileNameField
-
     doc.save(`${fileNameString}`)
   }, 500)
 }
@@ -23,8 +22,7 @@ function openInCurrentTab(doc: jsPDF){
 }
 
 function openInNewTab(doc: jsPDF){
-  setTimeout(() => {
-    
+  setTimeout(() => { 
     doc.output('dataurlnewwindow')
   }, 500)
 }

@@ -16,6 +16,7 @@ export function pdfImage(relationTo: string) {
         filterOptions: {
           mimeType: {contains: 'image/'}
         },
+        required: true,
       },
       ...pdfElementPlacement,
       ...pdfImageSize
