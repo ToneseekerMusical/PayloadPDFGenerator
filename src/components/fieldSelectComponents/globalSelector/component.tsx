@@ -24,15 +24,12 @@ export const globalSelectComponent: React.FC<globalSelectFieldProps> = (props) =
           return option !== null ? true : false
         }).flatMap((option: any)=>{
           return option.layoutName ? 
-            {label: `${option.layoutName}`, value: `${option.layoutName}`} :
-            option.watermarkName ? 
-            {label: `${option.watermarkName}`, value: `${option.watermarkName}`} :
+            {label: `${option.layoutName}`, value: `${option.layoutName}`}
+            : option.blockName ? 
+            {label: `${option.blockName}`, value: `${option.blockName}`} :
             option.fontFile ? 
-            {
-              label: `${option.fontFile.filename}`,
-              value: option.fontFile.url ? `{"url": "${option.fontFile.url}", "fontName": "${option.fontName}", "emphasis": "${option.fontEmphasis}"}`
-              : `${option.fontFile.filename}` } :
-            {label:`Please create an in the ${props.global} document`,value:''}
+            {label: `${option.fontFile.filename}`,value: option.fontFile.url ? `{"url": "${option.fontFile.url}", "fontName": "${option.fontName}", "emphasis": "${option.fontEmphasis}"}`: `${option.fontFile.filename}` }
+            : {label:`Please create a  in the ${props.global} document`,value:''}
         })
         
         if (props.global === 'pdf-fonts'){

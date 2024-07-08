@@ -559,7 +559,7 @@ export interface PdfFooter {
  */
 export interface PdfWatermark {
   id: string;
-  watermark: (PDFImage | PDFText)[];
+  watermarks: (PDFImage | PDFText)[];
   updatedAt?: string | null;
   createdAt?: string | null;
 }

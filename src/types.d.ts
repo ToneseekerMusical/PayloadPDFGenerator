@@ -362,13 +362,48 @@ export interface textElementOverrides {
   fontSelection?: string | null;
 }
 
-export interface textElement {
+export interface PDFText {
   type: 'static' | 'dynamic';
   sourceField?: string | null;
   value?: string | null;
   label?: string | null;
   textStyleOverrides: boolean;
-  overrides?: textElementOverrides
+  overrides?: {
+    overrideFontSize: boolean;
+    fontSize?: number | null;
+    multilineText: boolean;
+    multilineWidth?: ('100pw' | '50pw' | '33pw' | '25pw' | '100sw' | '50sw' | '33sw' | '25sw' | 'fill') | null;
+    overrideTextAlignment: boolean;
+    align?: ('left' | 'center' | 'right' | 'justify') | null;
+    baseline?: ('alphabetic' | 'ideographic' | 'bottom' | 'top' | 'middle' | 'hanging') | null;
+    rotateElement: boolean;
+    angle?: number | null;
+    rotationDirection?: ('0' | '1') | null;
+    overrideCharacterSpacing: boolean;
+    charSpace?: number | null;
+    overrideLineHeightFactor: boolean;
+    lineHeightFactor?: number | null;
+    textColorOverride: boolean;
+    textColor?: string | null;
+    overrideTextRendering: boolean;
+    renderingMode?:
+      | (
+          | 'fill'
+          | 'stroke'
+          | 'fillThenStroke'
+          | 'invisible'
+          | 'fillAndAddForClipping'
+          | 'strokeAndAddPathForClipping'
+          | 'fillThenStrokeAndAddToPathForClipping'
+          | 'addToPathForClipping'
+        )
+      | null;
+    fontOverride: boolean;
+    fontSelection?: string | null;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'pdfText';
 }
 
 export interface imageElement {
@@ -530,7 +565,7 @@ export interface PdfFooter {
 
 export interface PdfWatermark {
   id: string;
-  watermark: (PDFImage | PDFText)[];
+  watermarks: (PDFImage | PDFText)[];
   updatedAt?: string | null;
   createdAt?: string | null;
 }

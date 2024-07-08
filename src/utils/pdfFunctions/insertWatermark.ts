@@ -1,11 +1,10 @@
 import jsPDF from "jspdf";
-import { toBase64 } from "../pdfAttachments/base64Conversion";
-import { Margins, PdfWatermark, pdfCursor, textElement } from "../../types";
+import { Margins, PDFImage, PDFText, PdfWatermark, pdfCursor } from "../../types";
 import { addText } from "../pdfElements/text";
 import { addImage } from "../pdfElements/image";
 
 export async function insertWatermark(doc: jsPDF, watermarkName: string, margins:Margins): Promise<jsPDF>{
-      
+  
   const cursor: pdfCursor = {
     xPos: doc.internal.pageSize.width/2,
     yPos: doc.internal.pageSize.height/2
@@ -16,27 +15,26 @@ export async function insertWatermark(doc: jsPDF, watermarkName: string, margins
   try {
     const response = await fetch(`${process.env.PAYLOAD_PUBLIC_SERVER_URL}/api/globals/pdf-watermarks`)
     const data: PdfWatermark = await response.json()
-    const watermark = data.watermark.filter((wm)=>{
-      return wm.watermarkName === watermarkName ? true : false
+    const watermark: PDFText | PDFImage = data.watermarks.filter((wm)=>{
+      return wm.blockName === watermarkName ? true : false
     })[0]
 
     const totalPages = doc.getNumberOfPages()
     for (let i = 1; i <= totalPages; i++) {
       doc.setPage(i);
-      
-      if (watermark.textSettings !== undefined){
-        watermark.textSettings.type = 'static'
+
+      if (watermark.blockType === 'pdfText'){
         result = addText(
           doc,
-          watermark.textSettings,
+          watermark,
           margins,
           cursor,
         )
       }
-      if (watermark.imageSettings !== undefined){
+      if (watermark.blockType === 'pdfImage'){
         result = await addImage(
           doc,
-          watermark.imageSettings,
+          watermark,
           cursor
         )
       }

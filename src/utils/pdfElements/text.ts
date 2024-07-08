@@ -1,42 +1,42 @@
 import jsPDF, { TextOptionsLight } from "jspdf";
-import { Margins, textElement, pdfCursor} from "../../types";
+import { Margins, PDFText, pdfCursor, textElementOverrides} from "../../types";
 
 export function addText(
   doc: jsPDF,
-  text: textElement,
+  text: PDFText,
   margins: Margins,
   cursor: pdfCursor,
   sectionWidth?: number,
   field?: any
 ): {doc: jsPDF, cursor: pdfCursor} {
-  
+
   const textOverrides: TextOptionsLight | undefined = text.overrides ? {
-    align: text.overrides.align !== null ? text.overrides.align 
-      : undefined,
-    baseline: text.overrides.baseline !== null ? text.overrides.baseline
-      : undefined,
-    angle: text.overrides.angle !== null ? text.overrides.angle
-      : undefined,
-    rotationDirection: text.overrides.rotationDirection === null ? undefined
-      : text.overrides.rotationDirection === '0' ? 0 
+    align: text.overrides.overrideTextAlignment && text.overrides.align !== null ? 
+      text.overrides.align : undefined,
+    baseline: text.overrides.overrideTextAlignment && text.overrides.baseline !== null ?
+      text.overrides.baseline : undefined,
+    angle: text.overrides.rotateElement && text.overrides.angle !== null ?
+      text.overrides.angle : undefined,
+    rotationDirection: text.overrides.rotateElement && text.overrides.rotationDirection === null ?
+      undefined : text.overrides.rotationDirection === '0' ? 0 
       : text.overrides.rotationDirection === '1' ? 1 
       : undefined, 
-    charSpace: text.overrides.charSpace !== null ? text.overrides.charSpace
+    charSpace: text.overrides.overrideCharacterSpacing && text.overrides.charSpace !== null ?
+      text.overrides.charSpace : undefined,
+    lineHeightFactor: text.overrides.overrideLineHeightFactor && text.overrides.lineHeightFactor !== null ?
+      text.overrides.lineHeightFactor : undefined,
+    maxWidth: text.overrides.multilineText === false && text.overrides.multilineWidth === null ? undefined
+      : text.overrides.multilineText && text.overrides.multilineWidth === '100pw' ? doc.internal.pageSize.width - margins?.horz * 2
+      : text.overrides.multilineText && text.overrides.multilineWidth === '50pw' ? doc.internal.pageSize.width / 2 - margins?.horz * 1.5
+      : text.overrides.multilineText && text.overrides.multilineWidth === '33pw' ? doc.internal.pageSize.width / 3 - margins?.horz * 1.5
+      : text.overrides.multilineText && text.overrides.multilineWidth === '25pw' ? doc.internal.pageSize.width / 4 - margins?.horz * 1.5
+      : text.overrides.multilineText && text.overrides.multilineWidth === '100sw' && sectionWidth !== undefined ? sectionWidth / 4 - margins?.horz * 1.5
+      : text.overrides.multilineText && text.overrides.multilineWidth === '50sw' && sectionWidth !== undefined ? sectionWidth / 4 - margins?.horz * 1.5
+      : text.overrides.multilineText && text.overrides.multilineWidth === '33sw' && sectionWidth !== undefined ? sectionWidth / 4 - margins?.horz * 1.5
+      : text.overrides.multilineText && text.overrides.multilineWidth === '25sw' && sectionWidth !== undefined ? sectionWidth / 4 - margins?.horz * 1.5
+      : text.overrides.multilineText && text.overrides.multilineWidth === 'fill' ? doc.internal.pageSize.width - cursor.xPos - margins?.horz * 2
       : undefined,
-    lineHeightFactor: text.overrides.lineHeightFactor !== null ? text.overrides.lineHeightFactor
-      : undefined,
-    maxWidth: text.overrides.multilineWidth === null ? undefined
-      : text.overrides.multilineWidth === '100pw' ? doc.internal.pageSize.width - margins?.horz * 2
-      : text.overrides.multilineWidth === '50pw' ? doc.internal.pageSize.width / 2 - margins?.horz * 1.5
-      : text.overrides.multilineWidth === '33pw' ? doc.internal.pageSize.width / 3 - margins?.horz * 1.5
-      : text.overrides.multilineWidth === '25pw' ? doc.internal.pageSize.width / 4 - margins?.horz * 1.5
-      : text.overrides.multilineWidth === '100sw' && sectionWidth !== undefined ? sectionWidth / 4 - margins?.horz * 1.5
-      : text.overrides.multilineWidth === '50sw' && sectionWidth !== undefined ? sectionWidth / 4 - margins?.horz * 1.5
-      : text.overrides.multilineWidth === '33sw' && sectionWidth !== undefined ? sectionWidth / 4 - margins?.horz * 1.5
-      : text.overrides.multilineWidth === '25sw' && sectionWidth !== undefined ? sectionWidth / 4 - margins?.horz * 1.5
-      : text.overrides.multilineWidth === 'fill' ? doc.internal.pageSize.width - cursor.xPos - margins?.horz * 2
-      : undefined,
-    renderingMode: text.overrides.renderingMode !== null ? text.overrides.renderingMode
+    renderingMode: text.overrides.overrideTextRendering && text.overrides.renderingMode !== null ? text.overrides.renderingMode
       : undefined
   } : undefined
 

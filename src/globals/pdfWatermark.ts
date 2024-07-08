@@ -11,7 +11,7 @@ export function PDFWatermark(relationTo: string, collectionConfig: CollectionFie
     },
     fields: [
       {
-        name: 'watermark',
+        name: 'watermarks',
         type: 'blocks',
         blocks: [
           pdfImage(relationTo),
