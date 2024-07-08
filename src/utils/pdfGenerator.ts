@@ -93,11 +93,11 @@ export default async function pdfGenerator(fields: { [path: string]: unknown; },
 
   file = await fontLoader(file, customFonts)
   file = setDefaults(file, defaults)
-  //template.layoutOptions?.headerLayout ? insertLayout(file,'pdf-header',template.layoutOptions.headerLayout) : null
+  template.layoutOptions?.headerLayout ? insertLayout(file,'pdf-header',template.layoutOptions.headerLayout) : null
   //template.layoutOptions?.footerLayout ? insertLayout(file,'pdf-footer',template.layoutOptions.footerLayout) : null
   
 
-  
+
   template.layoutOptions?.watermark ? insertWatermark(file,template.layoutOptions.watermark, margins) : null
   outputPDF(template.fileOptions.buttonBehavior, file, fileName)
 }
