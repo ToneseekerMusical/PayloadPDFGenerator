@@ -10,7 +10,9 @@ type globalSelectFieldProps = SelectFieldProps & {
 export const globalSelectComponent: React.FC<globalSelectFieldProps> = (props) => {
   const { value, setValue } = useField<string>({ path: props.path });
   const [options, setOptions] = React.useState([{label: '',value: 'none'}]);
-
+  if(props.global === 'pdf-header' || props.global === 'pdf-footer') {
+    props.global = 'pdf-global-section-layouts'
+  }
   // Fetch options on component mount
   React.useEffect(() => {
     const fetchOptions = async () => {
