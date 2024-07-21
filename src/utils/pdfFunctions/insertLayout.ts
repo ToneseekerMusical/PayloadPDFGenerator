@@ -1,20 +1,20 @@
 import jsPDF from "jspdf";
-import { toBase64 } from "../pdfAttachments/base64Conversion";
+import { Margins, pdfCursor } from "../../types";
 
-export async function insertLayout(doc: jsPDF, global: string, layoutName: string): Promise<jsPDF>{
-  console.log(layoutName)
+export async function insertLayout(doc: jsPDF, global: string, layoutName: string, margins: Margins): Promise<{doc:jsPDF,cursor:pdfCursor}>{
+
+  const cursor: pdfCursor = {
+    xPos: margins.horz,
+    yPos: margins.vert
+  }
+
   try {
     const response = await fetch(`${process.env.PAYLOAD_PUBLIC_SERVER_URL}/api/globals/${global}`)
-    if(global === 'pdf-watermarks'){
-      const data = await response.blob()
-      const image = await toBase64(data)
-    } else {
-      const data = await response.json()
-      console.log(data.layouts)
-    }
-
+    const data = await response.json()
+    console.log(data.layouts)
+    
   } catch (e) {
     console.log(e)
   }
-  return doc
+  return {doc, cursor}
 }

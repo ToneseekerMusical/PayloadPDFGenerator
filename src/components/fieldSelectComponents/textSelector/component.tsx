@@ -2,6 +2,7 @@ import * as React from 'react';
 import type { Props as SelectFieldProps } from 'payload/components/fields/Select'
 import { SelectInput, useAllFormFields, useField } from 'payload/components/forms';
 import { CollectionFieldList, PluginConfig } from '../../../types'
+import { FormField } from 'payload/types';
 
 
 type TextFieldSelectFieldProps = SelectFieldProps & {
@@ -13,15 +14,27 @@ type TextFieldSelectFieldProps = SelectFieldProps & {
 export const TextFieldSelectComponent: React.FC<TextFieldSelectFieldProps> = (props) => {
   const { value, setValue } = useField<string>({ path: props.path });
   const [options, setOptions] = React.useState([{label: '',value: 'none'}]);
-  
-  const assigned = useAllFormFields()[0].assignedCollections.value
+
+  var index: number = +props.path.split('.')[1]
+  const [headerAssigned]: FormField[] = Object.entries(useAllFormFields()[0]).filter(entry => {
+    return entry[0] === `layouts.${index}.assignedCollections` ? true : false
+  }).flatMap(entries=>{
+    return entries[1]
+  })
+
+  const sectionAssigned = useAllFormFields()[0].assignedCollections !== undefined ? 
+    useAllFormFields()[0].assignedCollections.value : undefined
+
+  const assigned = sectionAssigned === undefined ? headerAssigned.value : sectionAssigned
   
   let parentField: string
   if (props.parentField !== undefined) {
-    const parentPath = props.path.split(".").slice(0,2).join(".")+`.${props.parentField}`
+    
+    const parentPath = useAllFormFields()[0].assignedCollections !== undefined ? 
+      props.path.split(".").slice(0,2).join(".")+`.${props.parentField}`
+      : props.path.split(".").slice(0,4).join(".")+`.${props.parentField}`
     parentField = `${useAllFormFields()[0][parentPath].value}`
   }
-
   React.useEffect(()=>{
     const noArrays = [{label:`No text fields exist in the ${assigned} collection`, value: 'none'}]
 
@@ -47,7 +60,7 @@ export const TextFieldSelectComponent: React.FC<TextFieldSelectFieldProps> = (pr
     })
 
     const fieldList = arrayFields.length === 0 ? noArrays : arrayFields
-    
+    fieldList.push({label: 'Static', value: 'static'})
     arrayFields.length === 0 ? setValue('none') : null
 
     setOptions(

@@ -41,13 +41,8 @@ export const pdfDivider: Block = {
         {label: '25% Section Width', value: '25sw'},
         {label: 'Fill Remaining', value: 'fill'},
       ],
-      admin: {
-        condition: (_, siblingData) => {
-          return siblingData.multilineText
-        }
-      },
       required: true,
-      defaultValue: 'fill'
+      defaultValue: '100pw'
     },
     {
       name: 'align',

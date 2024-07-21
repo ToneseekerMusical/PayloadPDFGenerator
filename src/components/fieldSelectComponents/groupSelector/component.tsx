@@ -1,7 +1,8 @@
 import * as React from 'react';
 import type { Props as SelectFieldProps } from 'payload/components/fields/Select'
 import { SelectInput, useAllFormFields, useField } from 'payload/components/forms';
-import { CollectionFieldList, PluginConfig } from '../../../types'
+import { CollectionFieldList } from '../../../types'
+import { FormField } from 'payload/types';
 
 type GroupFieldSelectFieldProps = SelectFieldProps & {
   path: string,
@@ -14,7 +15,17 @@ export const GroupFieldSelectComponent: React.FC<GroupFieldSelectFieldProps> = (
   const { value, setValue } = useField<string>({ path: props.path });
   const [options, setOptions] = React.useState([{label: '',value: 'none'}]);
 
-  const assigned = useAllFormFields()[0].assignedCollections.value
+  var index: number = +props.path.split('.')[1]
+  const [headerAssigned]: FormField[] = Object.entries(useAllFormFields()[0]).filter(entry => {
+    return entry[0] === `layouts.${index}.assignedCollections` ? true : false
+  }).flatMap(entries=>{
+    return entries[1]
+  })
+
+  const sectionAssigned = useAllFormFields()[0].assignedCollections !== undefined ? 
+    useAllFormFields()[0].assignedCollections.value : undefined
+
+  const assigned = sectionAssigned === undefined ? headerAssigned.value : sectionAssigned
 
   let parentField: string
   if (props.parentField !== undefined) {

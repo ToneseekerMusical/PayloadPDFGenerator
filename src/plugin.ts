@@ -3,9 +3,9 @@ import { onInitExtension } from './onInitExtension'
 import type { CollectionFieldList, PluginConfig } from './types'
 import { extendWebpackConfig } from './webpack'
 import { PDFTemplates } from './collections/pdfTemplates'
-import { PDFHeader } from './globals/pdfHeader'
+import { PDFGlobalSectionLayouts } from './globals/pdfGlobalSectionLayouts'
 import { PDFWatermark } from './globals/pdfWatermark'
-import { SelectField, TabsField, UIField } from 'payload/types'
+import { TabsField, UIField } from 'payload/types'
 import generatePDFButton from './components/generateButton/inputField'
 import generatePDFCell from './components/generateButton/cell'
 import { PDFFonts } from './globals/pdfFonts'
@@ -22,7 +22,7 @@ export const PDFGenerator =
 
       let config = { ...incomingConfig }
 
-
+      //@ts-expect-error
       const collectionFields: CollectionFieldList = incomingConfig.collections.filter((collection)=>{
         return pluginOptions?.collections?.includes(collection.slug)
       }).map((collection)=>{
@@ -92,9 +92,8 @@ export const PDFGenerator =
 
       config.globals = [
         ...(config.globals || []),
-        PDFHeader(pluginOptions.uploadsCollection, collectionFields),
-        PDFFooter(pluginOptions.uploadsCollection),
-        PDFWatermark(pluginOptions.uploadsCollection),
+        PDFGlobalSectionLayouts(pluginOptions.uploadsCollection, collectionFields, pluginOptions),
+        PDFWatermark(pluginOptions.uploadsCollection, collectionFields),
         PDFFonts(pluginOptions.uploadsCollection)
       ]
 

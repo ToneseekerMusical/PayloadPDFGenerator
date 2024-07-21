@@ -93,8 +93,8 @@ export default async function pdfGenerator(fields: { [path: string]: unknown; },
 
   file = await fontLoader(file, customFonts)
   file = setDefaults(file, defaults)
-  template.layoutOptions?.headerLayout ? insertLayout(file,'pdf-header',template.layoutOptions.headerLayout) : null
-  //template.layoutOptions?.footerLayout ? insertLayout(file,'pdf-footer',template.layoutOptions.footerLayout) : null
+  template.layoutOptions?.headerLayout ? insertLayout(file,'pdf-header',template.layoutOptions.headerLayout, margins) : null
+  //template.layoutOptions?.footerLayout ? insertLayout(file,'pdf-footer',template.layoutOptions.footerLayout, margins) : null
   
 
 

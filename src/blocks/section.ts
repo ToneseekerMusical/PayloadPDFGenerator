@@ -105,6 +105,28 @@ export function pdfSection(collectionConfig: CollectionFieldList) {
             }
           },
           {
+            name: 'value',
+            type: 'text',
+            required: true,
+            admin: {
+              condition: (data, siblingData)=>{
+                const width = data?.sourceField || [],
+                  row = {
+                    id: siblingData.id,
+                    sourceField: siblingData.sourceField
+                  }
+                  let show = true
+                  if (row.sourceField === 'static') {
+                    return true
+                  }
+                  if (row.sourceField !== 'static'){
+                    return false
+                  }
+                return show
+              }
+            }
+          },
+          {
             name: 'label',
             type: 'text'
           },

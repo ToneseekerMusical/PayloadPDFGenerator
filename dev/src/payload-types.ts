@@ -16,8 +16,7 @@ export interface Config {
     'payload-migrations': PayloadMigration;
   };
   globals: {
-    'pdf-header': PdfHeader;
-    'pdf-footer': PdfFooter;
+    'pdf-global-section-layouts': PdfGlobalSectionLayout;
     'pdf-watermarks': PdfWatermark;
     'pdf-fonts': PdfFont;
   };
@@ -239,6 +238,7 @@ export interface PDFSection {
   sectionFields?:
     | {
         sourceField?: string | null;
+        value?: string | null;
         label?: string | null;
         textStyleOverrides: boolean;
         overrides?: {
@@ -362,7 +362,7 @@ export interface PDFText {
 export interface PDFDivider {
   dividerThickness: number;
   dividerColor?: string | null;
-  dividerWidth?: ('100pw' | '50pw' | '33pw' | '25pw' | '100sw' | '50sw' | '33sw' | '25sw' | 'fill') | null;
+  dividerWidth: '100pw' | '50pw' | '33pw' | '25pw' | '100sw' | '50sw' | '33sw' | '25sw' | 'fill';
   align?: ('left' | 'center' | 'right') | null;
   topGap: number;
   bottomGap: number;
@@ -406,32 +406,144 @@ export interface PayloadMigration {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "pdf-header".
+ * via the `definition` "pdf-global-section-layouts".
  */
-export interface PdfHeader {
+export interface PdfGlobalSectionLayout {
   id: string;
-  layouts?:
+  layouts?: (PDFHeaderLayout | PDFFooterLayout)[] | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PDFHeaderLayout".
+ */
+export interface PDFHeaderLayout {
+  assignedCollections?: ('examples' | 'tests') | null;
+  layoutName: string;
+  layoutSettings: {
+    layoutOrientation: 'horizontal' | 'vertical';
+    layoutFlow: 'row' | 'reverseRow' | 'column';
+    anchorPoint:
+      | 'topLeft'
+      | 'topCenter'
+      | 'topRight'
+      | 'midLeft'
+      | 'midCenter'
+      | 'midRight'
+      | 'botLeft'
+      | 'botCenter'
+      | 'botRight';
+  };
+  positionType: 'relative' | 'absolute';
+  xPos?: number | null;
+  yPos?: number | null;
+  widthType: 'relative' | 'fixed';
+  fixedWidth?: number | null;
+  relativeWidth?: ('100pw' | '50pw' | '33pw' | '25pw' | '100sw' | '50sw' | '33sw' | '25sw' | 'fill') | null;
+  heightType: 'relative' | 'fixed';
+  fixedHeight?: number | null;
+  relativeHeight?: ('100ph' | '50ph' | '33ph' | '25ph' | '100sh' | '50sh' | '33sh' | '25sh' | 'fill') | null;
+  topDivider: boolean;
+  bottomDivider: boolean;
+  leftDivider: boolean;
+  rightDivider: boolean;
+  layoutSections?: (PDFSection | PDFImage | PDFHeaderPath | PDFText)[] | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'pdfHeaderLayout';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PDFHeaderPath".
+ */
+export interface PDFHeaderPath {
+  pdfStrokeColor?: string | null;
+  pdfFillColor?: string | null;
+  pdfClosedPath?: boolean | null;
+  pathData?:
     | {
-        layoutName: string;
-        layout?: (PDFHeaderSection | PDFImage | PDFHeaderPath | PDFText)[] | null;
+        pathName?: string | null;
+        data?: string | null;
         id?: string | null;
       }[]
     | null;
-  updatedAt?: string | null;
-  createdAt?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'pdfHeaderPath';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PDFFooterLayout".
+ */
+export interface PDFFooterLayout {
+  assignedCollections?: ('examples' | 'tests') | null;
+  layoutName: string;
+  layoutSettings: {
+    layoutOrientation: 'horizontal' | 'vertical';
+    layoutFlow: 'row' | 'reverseRow' | 'column';
+    anchorPoint:
+      | 'topLeft'
+      | 'topCenter'
+      | 'topRight'
+      | 'midLeft'
+      | 'midCenter'
+      | 'midRight'
+      | 'botLeft'
+      | 'botCenter'
+      | 'botRight';
+  };
+  positionType: 'relative' | 'absolute';
+  xPos?: number | null;
+  yPos?: number | null;
+  widthType: 'relative' | 'fixed';
+  fixedWidth?: number | null;
+  relativeWidth?: ('100pw' | '50pw' | '33pw' | '25pw' | '100sw' | '50sw' | '33sw' | '25sw' | 'fill') | null;
+  heightType: 'relative' | 'fixed';
+  fixedHeight?: number | null;
+  relativeHeight?: ('100ph' | '50ph' | '33ph' | '25ph' | '100sh' | '50sh' | '33sh' | '25sh' | 'fill') | null;
+  topDivider: boolean;
+  bottomDivider: boolean;
+  leftDivider: boolean;
+  rightDivider: boolean;
+  layoutSections?: (PDFHeaderSection | PDFImage | PDFHeaderPath | PDFText)[] | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'pdfFooterLayout';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "PDFHeaderSection".
  */
 export interface PDFHeaderSection {
+  sourceField?: string | null;
   sectionOrientation: 'horizontal' | 'vertical';
-  sectionWidth?: number | null;
-  sectionHeight?: number | null;
-  topDivider?: boolean | null;
-  bottomDivider?: boolean | null;
-  leftDivider?: boolean | null;
-  rightDivider?: boolean | null;
+  sectionFlow: 'row' | 'reverseRow' | 'column';
+  anchorPoint:
+    | 'topLeft'
+    | 'topCenter'
+    | 'topRight'
+    | 'midLeft'
+    | 'midCenter'
+    | 'midRight'
+    | 'botLeft'
+    | 'botCenter'
+    | 'botRight';
+  sectionPosition: {
+    positionType: 'relative' | 'absolute';
+    xPos?: number | null;
+    yPos?: number | null;
+  };
+  widthType: 'relative' | 'fixed';
+  fixedWidth?: number | null;
+  relativeWidth?: ('100pw' | '50pw' | '33pw' | '25pw' | '100sw' | '50sw' | '33sw' | '25sw' | 'fill') | null;
+  heightType: 'relative' | 'fixed';
+  fixedHeight?: number | null;
+  relativeHeight?: ('100ph' | '50ph' | '33ph' | '25ph' | '100sh' | '50sh' | '33sh' | '25sh' | 'fill') | null;
+  topDivider: boolean;
+  bottomDivider: boolean;
+  leftDivider: boolean;
+  rightDivider: boolean;
   sectionFields?:
     | {
         fieldLabel?: string | null;
@@ -479,79 +591,6 @@ export interface PDFHeaderSection {
   id?: string | null;
   blockName?: string | null;
   blockType: 'pdfHeaderSection';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "PDFHeaderPath".
- */
-export interface PDFHeaderPath {
-  pdfStrokeColor?: string | null;
-  pdfFillColor?: string | null;
-  pdfClosedPath?: boolean | null;
-  pathData?:
-    | {
-        pathName?: string | null;
-        data?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'pdfHeaderPath';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "pdf-footer".
- */
-export interface PdfFooter {
-  id: string;
-  layouts?:
-    | {
-        layoutName: string;
-        layout: {
-          footerHeight: number;
-          horizontalMargin: number;
-          verticalMargin: number;
-          topDivider?: boolean | null;
-          pageNumbers?: boolean | null;
-          companyName?: boolean | null;
-          contactInfo?: boolean | null;
-        };
-        backgroundSettings: {
-          layoutBackground?: ('blank' | 'solid' | 'image') | null;
-          backgroundImage?: string | Media | null;
-          width?: number | null;
-          height?: number | null;
-          footerFillColor?: string | null;
-          horizontalMargin: number;
-          verticalMargin: number;
-        };
-        dividerSettings?: {
-          dividerStrokeColor?: string | null;
-          dividerThickness?: number | null;
-          horizontalMargin: number;
-          verticalMargin: number;
-        };
-        pageNumberSettings?: {
-          format?: string | null;
-          collate?: boolean | null;
-          footerLocation?: ('left' | 'center' | 'right') | null;
-        };
-        companyNameSettings?: {
-          companyName: string;
-          footerLocation?: ('left' | 'center' | 'right') | null;
-        };
-        contactInfoSettings?: {
-          phoneNumber?: string | null;
-          email?: string | null;
-          address?: string | null;
-          footerLocation?: ('left' | 'center' | 'right') | null;
-        };
-        id?: string | null;
-      }[]
-    | null;
-  updatedAt?: string | null;
-  createdAt?: string | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
