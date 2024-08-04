@@ -1,10 +1,10 @@
 import { Block } from "payload/types";
 import { CollectionFieldList, PluginConfig } from "../types";
 import { layoutFields } from "../fields/layoutSettings";
-import { pdfHeaderSection } from "./headerSection";
 import { pdfImage } from "./image";
-import { pdfHeaderPath } from "./headerPath";
 import { pdfText } from "./text";
+import { pdfPath } from "./path";
+import { pdfSection } from "./section";
 
 export function pdfFooterLayout(relationTo: string, collectionFields: CollectionFieldList, pluginOptions: PluginConfig) {
   const pdfFooterLayout: Block = {
@@ -35,9 +35,9 @@ export function pdfFooterLayout(relationTo: string, collectionFields: Collection
           initCollapsed: true
         },
         blocks: [
-          pdfHeaderSection(collectionFields, pluginOptions),
+          pdfSection(collectionFields),
           pdfImage(relationTo),
-          pdfHeaderPath,
+          pdfPath(collectionFields),
           pdfText()
         ]
       }

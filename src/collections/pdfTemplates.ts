@@ -42,6 +42,7 @@ export function PDFTemplates(collectionFields: CollectionFieldList, pluginOption
             admin: {
               width: "50",
             },
+            required: true
           }
         ]
       },

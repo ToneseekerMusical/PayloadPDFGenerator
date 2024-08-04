@@ -424,31 +424,66 @@ export interface PDFHeaderLayout {
   layoutSettings: {
     layoutOrientation: 'horizontal' | 'vertical';
     layoutFlow: 'row' | 'reverseRow' | 'column';
-    anchorPoint:
-      | 'topLeft'
-      | 'topCenter'
-      | 'topRight'
-      | 'midLeft'
-      | 'midCenter'
-      | 'midRight'
-      | 'botLeft'
-      | 'botCenter'
-      | 'botRight';
+    background: {
+      backgroundType?: ('solid' | 'gradient' | 'image') | null;
+      backgroundColor?: string | null;
+      ignoreMargins: boolean;
+    };
+    position: {
+      anchorPoint:
+        | 'topLeft'
+        | 'topCenter'
+        | 'topRight'
+        | 'midLeft'
+        | 'midCenter'
+        | 'midRight'
+        | 'botLeft'
+        | 'botCenter'
+        | 'botRight';
+      positionType: 'relative' | 'absolute';
+      xPos?: number | null;
+      yPos?: number | null;
+    };
+    dimensions: {
+      widthType: 'relative' | 'fixed';
+      fixedWidth?: number | null;
+      relativeWidth?: ('100pw' | '50pw' | '33pw' | '25pw' | '100sw' | '50sw' | '33sw' | '25sw' | 'fill') | null;
+      heightType: 'relative' | 'fixed';
+      fixedHeight?: number | null;
+      relativeHeight?: ('100ph' | '50ph' | '33ph' | '25ph' | '100sh' | '50sh' | '33sh' | '25sh' | 'fill') | null;
+    };
+    borders: {
+      topBorder: boolean;
+      topBorderSettings?: {
+        borderStrokeColor?: string | null;
+        borderThickness?: number | null;
+        horizontalMargin: number;
+        verticalMargin: number;
+      };
+      bottomBorder: boolean;
+      bottomBorderSettings?: {
+        borderStrokeColor?: string | null;
+        borderThickness?: number | null;
+        horizontalMargin: number;
+        verticalMargin: number;
+      };
+      leftBorder: boolean;
+      leftBorderSettings?: {
+        borderStrokeColor?: string | null;
+        borderThickness?: number | null;
+        horizontalMargin: number;
+        verticalMargin: number;
+      };
+      rightBorder: boolean;
+      rightBorderSettings?: {
+        borderStrokeColor?: string | null;
+        borderThickness?: number | null;
+        horizontalMargin: number;
+        verticalMargin: number;
+      };
+    };
   };
-  positionType: 'relative' | 'absolute';
-  xPos?: number | null;
-  yPos?: number | null;
-  widthType: 'relative' | 'fixed';
-  fixedWidth?: number | null;
-  relativeWidth?: ('100pw' | '50pw' | '33pw' | '25pw' | '100sw' | '50sw' | '33sw' | '25sw' | 'fill') | null;
-  heightType: 'relative' | 'fixed';
-  fixedHeight?: number | null;
-  relativeHeight?: ('100ph' | '50ph' | '33ph' | '25ph' | '100sh' | '50sh' | '33sh' | '25sh' | 'fill') | null;
-  topDivider: boolean;
-  bottomDivider: boolean;
-  leftDivider: boolean;
-  rightDivider: boolean;
-  layoutSections?: (PDFSection | PDFImage | PDFHeaderPath | PDFText)[] | null;
+  layoutFields?: (PDFSection | PDFImage | PDFHeaderPath | PDFText)[] | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'pdfHeaderLayout';
@@ -482,30 +517,65 @@ export interface PDFFooterLayout {
   layoutSettings: {
     layoutOrientation: 'horizontal' | 'vertical';
     layoutFlow: 'row' | 'reverseRow' | 'column';
-    anchorPoint:
-      | 'topLeft'
-      | 'topCenter'
-      | 'topRight'
-      | 'midLeft'
-      | 'midCenter'
-      | 'midRight'
-      | 'botLeft'
-      | 'botCenter'
-      | 'botRight';
+    background: {
+      backgroundType?: ('solid' | 'gradient' | 'image') | null;
+      backgroundColor?: string | null;
+      ignoreMargins: boolean;
+    };
+    position: {
+      anchorPoint:
+        | 'topLeft'
+        | 'topCenter'
+        | 'topRight'
+        | 'midLeft'
+        | 'midCenter'
+        | 'midRight'
+        | 'botLeft'
+        | 'botCenter'
+        | 'botRight';
+      positionType: 'relative' | 'absolute';
+      xPos?: number | null;
+      yPos?: number | null;
+    };
+    dimensions: {
+      widthType: 'relative' | 'fixed';
+      fixedWidth?: number | null;
+      relativeWidth?: ('100pw' | '50pw' | '33pw' | '25pw' | '100sw' | '50sw' | '33sw' | '25sw' | 'fill') | null;
+      heightType: 'relative' | 'fixed';
+      fixedHeight?: number | null;
+      relativeHeight?: ('100ph' | '50ph' | '33ph' | '25ph' | '100sh' | '50sh' | '33sh' | '25sh' | 'fill') | null;
+    };
+    borders: {
+      topBorder: boolean;
+      topBorderSettings?: {
+        borderStrokeColor?: string | null;
+        borderThickness?: number | null;
+        horizontalMargin: number;
+        verticalMargin: number;
+      };
+      bottomBorder: boolean;
+      bottomBorderSettings?: {
+        borderStrokeColor?: string | null;
+        borderThickness?: number | null;
+        horizontalMargin: number;
+        verticalMargin: number;
+      };
+      leftBorder: boolean;
+      leftBorderSettings?: {
+        borderStrokeColor?: string | null;
+        borderThickness?: number | null;
+        horizontalMargin: number;
+        verticalMargin: number;
+      };
+      rightBorder: boolean;
+      rightBorderSettings?: {
+        borderStrokeColor?: string | null;
+        borderThickness?: number | null;
+        horizontalMargin: number;
+        verticalMargin: number;
+      };
+    };
   };
-  positionType: 'relative' | 'absolute';
-  xPos?: number | null;
-  yPos?: number | null;
-  widthType: 'relative' | 'fixed';
-  fixedWidth?: number | null;
-  relativeWidth?: ('100pw' | '50pw' | '33pw' | '25pw' | '100sw' | '50sw' | '33sw' | '25sw' | 'fill') | null;
-  heightType: 'relative' | 'fixed';
-  fixedHeight?: number | null;
-  relativeHeight?: ('100ph' | '50ph' | '33ph' | '25ph' | '100sh' | '50sh' | '33sh' | '25sh' | 'fill') | null;
-  topDivider: boolean;
-  bottomDivider: boolean;
-  leftDivider: boolean;
-  rightDivider: boolean;
   layoutSections?: (PDFHeaderSection | PDFImage | PDFHeaderPath | PDFText)[] | null;
   id?: string | null;
   blockName?: string | null;

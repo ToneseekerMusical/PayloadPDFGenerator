@@ -1,11 +1,10 @@
 import { Block } from "payload/types";
 import { CollectionFieldList, PluginConfig } from "../types";
 import { layoutFields } from "../fields/layoutSettings";
-import { pdfHeaderSection } from "./headerSection";
 import { pdfImage } from "./image";
-import { pdfHeaderPath } from "./headerPath";
 import { pdfText } from "./text";
 import { pdfSection } from "./section";
+import { pdfPath } from "./path";
 
 export function pdfHeaderLayout(relationTo: string, collectionFields: CollectionFieldList, pluginOptions: PluginConfig) {
   const pdfHeaderLayout: Block = {
@@ -30,7 +29,7 @@ export function pdfHeaderLayout(relationTo: string, collectionFields: Collection
       },
       ...layoutFields,
       {
-        name: 'layoutSections',
+        name: 'layoutFields',
         type: 'blocks',
         admin: {
           initCollapsed: true
@@ -38,7 +37,7 @@ export function pdfHeaderLayout(relationTo: string, collectionFields: Collection
         blocks: [
           pdfSection(collectionFields),
           pdfImage(relationTo),
-          pdfHeaderPath,
+          pdfPath(collectionFields),
           pdfText()
         ]
       }

@@ -9,7 +9,7 @@ Feel free to contribute if this project interests you.
 ## Current issues:
 
 * Current method of setting default columns in enabled collections from plugin to add the Generate PDF cell component to the collection list currently does not work.
-* Changing the PDF Template's assigned collection does nothing without refreshing the page.
+* Changing the PDF Template's assigned collection breaks the template if dynamic field mappings are present. Need to make Assigned Collection read only on edit.
 * Font Loader function failes 90% of the time, but will occasionally work. Need to investigate, low priority at the moment.
 
 ### To-do:

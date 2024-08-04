@@ -102,7 +102,6 @@ export const sectionLayoutFields: Field[] = [
         type: 'number',
         min: 30,
         defaultValue: 50,
-        required: true,
         admin: {
           condition: (siblingData) => {
             return siblingData.widthType === 'fixed' ? true : false
@@ -123,7 +122,6 @@ export const sectionLayoutFields: Field[] = [
           {label: '25% Section Width', value: '25sw'},
           {label: 'Fill Remaining', value: 'fill'},
         ],
-        required: true,
         defaultValue: '100pw',
         admin: {
           condition: (siblingData) => {
